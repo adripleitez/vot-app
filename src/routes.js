@@ -27,53 +27,60 @@ import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
 
 var routes = [
   {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/ordenes-de-trabajo",
-    name: "Orden de Trabajo",
-    icon: "ni ni-pin-3 text-orange",
-    component: OrdenDeTrabajo,
-    layout: "/admin"
-  },
-  {
     path: "/nueva-orden",
     name: "Nueva orden",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "ni ni-single-02 text-white",
     component: NuevaOrdenDeTrabajo,
     layout: "/admin"
   },
   {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
+    path: "/ordenes-de-trabajo",
+    name: "Órdenes de Trabajo",
+    icon: "ni ni-collection text-blue",
+    component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
-    component: Login,
-    layout: "/auth"
+    path: "/vehiculos",
+    name: "Vehículos",
+    icon: "ni ni-collection text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
   },
   {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth"
-  }
+    path: "/servicios",
+    name: "Servicios",
+    icon: "ni ni-planet text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/productos",
+    name: "Productos",
+    icon: "ni ni-bullet-list-67 text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/clientes",
+    name: "Clientes",
+    icon: "ni ni-key-25 text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/facturas",
+    name: "Facturas",
+    icon: "ni ni-circle-08 text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: "ni ni-tv-2 text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
 ];
 export default routes;

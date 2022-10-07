@@ -14318,7 +14318,7 @@ button.bg-lighter:focus {
 }
 
 .bg-gradient-info {
-  background: linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important;
+  background: linear-gradient(87deg, #11cdef 0, #8d48d9 100%) !important;
 }
 
 .bg-gradient-warning {
@@ -14613,7 +14613,7 @@ button.section-darker:focus {
 }
 
 .bg-gradient-info {
-  background: linear-gradient(87deg, #11cdef 0, #1171ef 100%) !important;
+  background: linear-gradient(87deg, #11cdef 0, #8d48d9 100%) !important;
 }
 
 .bg-gradient-warning {
@@ -21528,6 +21528,13 @@ button:focus,
 
 .table .badge i {
   margin-right: 10px;
+}
+
+#sidenav-main > div > div > ul > li:nth-child(1) > a{
+  background-color: blue;
+  border-radius: 1em;
+  margin: 2em;
+  color: white;
 }
 
 /*# sourceMappingURL=argon-dashboard-react.css.map */

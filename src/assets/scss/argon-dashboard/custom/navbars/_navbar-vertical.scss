@@ -109,6 +109,7 @@
     .navbar-nav .nav-link {
         display: flex;
         align-items: center;
+        color: rgba(0, 0, 0, 0.6);
     }
 
     .navbar-nav .nav-link[data-toggle="collapse"] {
@@ -234,6 +235,20 @@
                                 left: 0;
                                 right: auto;
                                 border-left: 2px solid $primary;
+                                border-bottom: 0;
+                            }
+                        }
+                    }
+
+                    .navbar-nav > li:nth-child(1) > a{
+                        background-color: blue;
+                        border-radius: 1em;
+                        margin: 2em;
+                        color: white;
+
+                        &.active {
+                            &:before {
+                                border-left: 0px solid $primary;
                                 border-bottom: 0;
                             }
                         }
