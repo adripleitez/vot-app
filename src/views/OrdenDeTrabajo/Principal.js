@@ -59,6 +59,8 @@ const Tables = () => {
                     <th scope="col">Estado</th>
                     <th scope="col">Empleado</th>
                     <th scope="col">Vehículo</th>
+                    <th scope="col">Fecha inicio</th>
+                    <th scope="col">Fecha cierre</th>
                     <th scope="col" />
                   </tr>
                 </thead>
@@ -122,6 +124,12 @@ const Tables = () => {
                     </td>
                     <td>
                       P564685
+                    </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
                     </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
@@ -218,6 +226,12 @@ const Tables = () => {
                     <td>
                       P564685
                     </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
+                    </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
                         <DropdownToggle
@@ -312,6 +326,12 @@ const Tables = () => {
                     </td>
                     <td>
                       P564685
+                    </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
                     </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
@@ -408,6 +428,12 @@ const Tables = () => {
                     <td>
                       P564685
                     </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
+                    </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
                         <DropdownToggle
@@ -502,6 +528,12 @@ const Tables = () => {
                     </td>
                     <td>
                       P564685
+                    </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
                     </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
@@ -598,6 +630,12 @@ const Tables = () => {
                     <td>
                       P564685
                     </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
+                    </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
                         <DropdownToggle
@@ -692,6 +730,12 @@ const Tables = () => {
                     </td>
                     <td>
                       P564685
+                    </td>
+                    <td>
+                      06-01-2020
+                    </td>
+                    <td>
+                      07-02-2020
                     </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
