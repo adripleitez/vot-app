@@ -22,6 +22,8 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import OrdenDeTrabajo from "views/OrdenDeTrabajo/Principal";
+import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
 
 var routes = [
   {
@@ -39,17 +41,17 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/maps",
-    name: "Maps",
+    path: "/ordenes-de-trabajo",
+    name: "Orden de Trabajo",
     icon: "ni ni-pin-3 text-orange",
-    component: Maps,
+    component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
+    path: "/nueva-orden",
+    name: "Nueva orden",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
+    component: NuevaOrdenDeTrabajo,
     layout: "/admin"
   },
   {
