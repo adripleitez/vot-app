@@ -10,19 +10,138 @@ import {
     Table,
     Row,
     Col,
-    Badge
+    Badge,
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
+import { useState } from "react";
+import { db } from './../../firebase'
+import { collection, addDoc } from "firebase/firestore";
 
 const Profile = () => {
+    const defaultClient = {
+        dui: "",
+        name: "",
+        lastname: "",
+        tel: "",
+        email: "",
+        type: "",
+        repName: "",
+        repLastname: "",
+    };
+    const defaultVehicle = {
+        numberplate: "",
+        type: "",
+        motor: "",
+        year: "",
+        brand: "",
+        model: "",
+        color: "",
+        vin: "",
+    };
+
+    const [client, setClient] = useState(defaultClient);
+
+    const [vehicle, setVehicle] = useState(defaultVehicle);
+
+    const handleClientChange = (e) => {
+        const { name, value } = e.target;
+        setClient({ ...client, [name]: value })
+    };
+
+    const handleVehicleChange = (e) => {
+        const { name, value } = e.target;
+        setVehicle({ ...client, [name]: value })
+        console.log(name, value);
+    };
+
+    //save client
+    const handleClient = async (e) => {
+        e.preventDefault();
+        await addDoc(collection(db, 'Cliente'), client);
+    };
+
+    //save vehicle
+    const handleVehicle = async (e) => {
+        e.preventDefault();
+        console.log(vehicle);
+        await db.collection("Vehiculos").doc().set(client);
+    };
+
+    var curr = new Date();
+    curr.setDate(curr.getDate());
+    var date = curr.toISOString().substring(0,10);
+
     return (
         <>
             <Header />
             {/* Page content */}
             <Container className="mt--7" fluid>
+                <Row className="mb-3">
+                    <Col className="order-xl-1" xl="12">
+                        <Card className="bg-secondary shadow">
+                            <CardHeader className="bg-white border-0">
+                                <Row className="align-items-center">
+                                    <Col xs="8">
+                                        <h3 className="mb-0">Orden de trabajo</h3>
+                                    </Col>
+                                    <Col className="text-right" xs="4">
+                                        <Button
+                                            color="primary"
+                                            href="#orden"
+                                            onClick={handleClient}
+                                            size="sm"
+                                        >
+                                            Guardar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </CardHeader>
+                            <CardBody>
+                                <Row className="justify-content-left">
+                                    <Col lg="4">
+                                        <FormGroup>
+                                            <label
+                                                className="form-control-label"
+                                                htmlFor="input-id-orden"
+                                            >
+                                                ID
+                                            </label>
+                                            <Input
+                                                name="dui"
+                                                className="form-control-alternative"
+                                                placeholder="OT-000000"
+                                                id="input-id-orden"
+                                                type="text"
+                                                onChange={handleClientChange}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col lg="4">
+                                        <FormGroup>
+                                            <label
+                                                className="form-control-label"
+                                                htmlFor="input-date"
+                                            >
+                                                Fecha Registrado
+                                            </label>
+                                            <Input
+                                                name="date"
+                                                className="form-control-alternative"
+                                                id="input-date"
+                                                defaultValue={date}
+                                                type="date"
+                                                onChange={handleClientChange}
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
                 <Row>
-                    <Col className="order-xl-1" xl="6">
+                    <Col className="order-xl-1 mb-3" xl="6">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -32,8 +151,8 @@ const Profile = () => {
                                     <Col className="text-right" xs="4">
                                         <Button
                                             color="primary"
-                                            href="#pablo"
-                                            onClick={(e) => e.preventDefault()}
+                                            href="#cliente"
+                                            onClick={handleClient}
                                             size="sm"
                                         >
                                             Guardar
@@ -54,10 +173,12 @@ const Profile = () => {
                                                         DUI
                                                     </label>
                                                     <Input
+                                                        name="dui"
                                                         className="form-control-alternative"
                                                         id="input-dui"
                                                         placeholder="00000000-0"
                                                         type="text"
+                                                        onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -72,10 +193,12 @@ const Profile = () => {
                                                         Nombres
                                                     </label>
                                                     <Input
+                                                        name="name"
                                                         className="form-control-alternative"
                                                         id="input-name"
                                                         placeholder="Nombre"
                                                         type="text"
+                                                        onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -88,10 +211,12 @@ const Profile = () => {
                                                         Apellidos
                                                     </label>
                                                     <Input
+                                                        name="lastname"
                                                         className="form-control-alternative"
                                                         id="input-lastname"
                                                         placeholder="Apellidos"
                                                         type="text"
+                                                        onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -106,10 +231,12 @@ const Profile = () => {
                                                         Teléfono
                                                     </label>
                                                     <Input
+                                                        name="tel"
                                                         className="form-control-alternative"
                                                         id="input-tel"
                                                         placeholder="2222-2222"
                                                         type="text"
+                                                        onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -122,10 +249,12 @@ const Profile = () => {
                                                         Correo Electronico
                                                     </label>
                                                     <Input
+                                                        name="email"
                                                         className="form-control-alternative"
                                                         id="input-email"
                                                         placeholder="example@gmail.com"
                                                         type="email"
+                                                        onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -136,7 +265,7 @@ const Profile = () => {
                         </Card>
                     </Col>
 
-                    <Col className="order-xl-1" xl="6">
+                    <Col className="order-xl-1 mb-3" xl="6">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -147,7 +276,7 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#vehiculo"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={handleVehicle}
                                             size="sm"
                                         >
                                             Guardar
@@ -168,10 +297,12 @@ const Profile = () => {
                                                         Placa
                                                     </label>
                                                     <Input
+                                                        name="numberplate"
                                                         className="form-control-alternative"
                                                         id="input-number-plate"
                                                         placeholder="000000"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -184,10 +315,12 @@ const Profile = () => {
                                                         Numero Motor
                                                     </label>
                                                     <Input
+                                                        name="motor"
                                                         className="form-control-alternative"
                                                         id="input-num-motor"
                                                         placeholder="00000000000"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -200,10 +333,12 @@ const Profile = () => {
                                                         Año
                                                     </label>
                                                     <Input
+                                                        name="year"
                                                         className="form-control-alternative"
                                                         id="input-year"
                                                         placeholder="2022"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -218,10 +353,12 @@ const Profile = () => {
                                                         Marca
                                                     </label>
                                                     <Input
+                                                        name="brand"
                                                         className="form-control-alternative"
                                                         id="input-brand"
                                                         placeholder="Toyota"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -234,10 +371,12 @@ const Profile = () => {
                                                         Modelo
                                                     </label>
                                                     <Input
+                                                        name="model"
                                                         className="form-control-alternative"
                                                         id="input-model"
                                                         placeholder="Corolla"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -250,10 +389,12 @@ const Profile = () => {
                                                         Color
                                                     </label>
                                                     <Input
+                                                        name="color"
                                                         className="form-control-alternative"
                                                         id="input-color"
                                                         placeholder="Azul"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -268,10 +409,12 @@ const Profile = () => {
                                                         Chasis VIN
                                                     </label>
                                                     <Input
+                                                        name="vin"
                                                         className="form-control-alternative"
                                                         id="input-vin"
                                                         placeholder="00000000000000000"
                                                         type="text"
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -282,7 +425,7 @@ const Profile = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row>
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
@@ -314,9 +457,7 @@ const Profile = () => {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">
-                                                Cambio de aceite
-                                            </th>
+                                            <th scope="row">Cambio de aceite</th>
                                             <td>$10 USD</td>
                                             <td>
                                                 <Badge color="" className="badge-dot mr-4">
@@ -325,14 +466,10 @@ const Profile = () => {
                                                 </Badge>
                                             </td>
 
-                                            <td>
-                                                Sección 1
-                                            </td>
+                                            <td>Sección 1</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">
-                                                Cambio de aceite
-                                            </th>
+                                            <th scope="row">Cambio de aceite</th>
                                             <td>$10 USD</td>
                                             <td>
                                                 <Badge color="" className="badge-dot mr-4">
@@ -341,14 +478,10 @@ const Profile = () => {
                                                 </Badge>
                                             </td>
 
-                                            <td>
-                                                Sección 1
-                                            </td>
+                                            <td>Sección 1</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">
-                                                Cambio de aceite
-                                            </th>
+                                            <th scope="row">Cambio de aceite</th>
                                             <td>$10 USD</td>
                                             <td>
                                                 <Badge color="" className="badge-dot mr-4">
@@ -357,14 +490,10 @@ const Profile = () => {
                                                 </Badge>
                                             </td>
 
-                                            <td>
-                                                Sección 1
-                                            </td>
+                                            <td>Sección 1</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">
-                                                Cambio de aceite
-                                            </th>
+                                            <th scope="row">Cambio de aceite</th>
                                             <td>$10 USD</td>
                                             <td>
                                                 <Badge color="" className="badge-dot mr-4">
@@ -373,9 +502,7 @@ const Profile = () => {
                                                 </Badge>
                                             </td>
 
-                                            <td>
-                                                Sección 1
-                                            </td>
+                                            <td>Sección 1</td>
                                         </tr>
                                     </tbody>
                                 </Table>
