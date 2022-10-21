@@ -288,6 +288,141 @@ const Profile = () => {
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
                                     <Col xs="8">
+                                        <h3 className="mb-0">Diagnóstico</h3>
+                                    </Col>
+                                    <Col className="text-right" xs="4">
+                                        <Button
+                                            color="primary"
+                                            href="#servicios"
+                                            onClick={(e) => e.preventDefault()}
+                                            size="sm"
+                                        >
+                                            Guardar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </CardHeader>
+                            <CardBody>
+                            <div className="pl-lg-4">
+                                <Row>
+                                <Col md="12">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-observaciontes-taller"
+                                    >
+                                        Observaciones del Taller
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        defaultValue=""
+                                        id="input-observaciontes-taller"
+                                        placeholder=""
+                                        type="text"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                </Row>
+                                <Row>
+                                <Col md="12">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-observaciontes-cliente"
+                                    >
+                                        Observaciones del Cliente
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        defaultValue=""
+                                        id="input-observaciontes-cliente"
+                                        placeholder=""
+                                        type="text"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                </Row>
+                                <Row>
+                                <Col lg="4">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-fecha-diag"
+                                    >
+                                        Fecha de Diagnóstico
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        id="fecha-diag"
+                                        placeholder="XX-XX-XXXX"
+                                        type="text"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                <Col lg="4">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-km"
+                                    >
+                                        KMs Entrada
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        id="input-km"
+                                        placeholder=""
+                                        type="number"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                <Col lg="4">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-gasolina"
+                                    >
+                                        Gasolina de entrada
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        id="input-gasolina"
+                                        placeholder=""
+                                        type="number"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                </Row>
+                                <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                    <label
+                                        className="form-control-label"
+                                        htmlFor="input-aseguradora"
+                                    >
+                                        Aseguradora
+                                    </label>
+                                    <Input
+                                        className="form-control-alternative"
+                                        defaultValue=""
+                                        id="input-aseguradora"
+                                        placeholder=""
+                                        type="text"
+                                    />
+                                    </FormGroup>
+                                </Col>
+                                </Row>
+                            </div>
+                                
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row className="mt-3">
+                    <Col className="order-xl-1" xl="12">
+                        <Card className="bg-secondary shadow">
+                            <CardHeader className="bg-white border-0">
+                                <Row className="align-items-center">
+                                    <Col xs="8">
                                         <h3 className="mb-0">Listado de servicios</h3>
                                     </Col>
                                     <Col className="text-right" xs="4">

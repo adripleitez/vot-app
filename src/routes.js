@@ -43,35 +43,42 @@ var routes = [
   {
     path: "/vehiculos",
     name: "Vehículos",
-    icon: "ni ni-collection text-blue",
+    icon: "ni ni-bus-front-12 text-blue",
     component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
     path: "/servicios",
     name: "Servicios",
-    icon: "ni ni-planet text-blue",
+    icon: "ni ni-paper-diploma text-blue",
     component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
     path: "/productos",
     name: "Productos",
-    icon: "ni ni-bullet-list-67 text-blue",
+    icon: "ni ni-settings text-blue",
     component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
     path: "/clientes",
     name: "Clientes",
-    icon: "ni ni-key-25 text-blue",
+    icon: "ni ni-circle-08 text-blue",
+    component: OrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/proveedores",
+    name: "Proveedores",
+    icon: "ni ni-delivery-fast text-blue",
     component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
     path: "/facturas",
     name: "Facturas",
-    icon: "ni ni-circle-08 text-blue",
+    icon: "ni ni-credit-card text-blue",
     component: OrdenDeTrabajo,
     layout: "/admin"
   },
