@@ -20,15 +20,18 @@ import { db } from './../../firebase'
 import { collection, addDoc } from "firebase/firestore";
 
 const Profile = () => {
+
+    var curr = new Date();
+    curr.setDate(curr.getDate());
+    var date = curr.toISOString().substring(0,10);
+
     const defaultClient = {
-        dui: "",
+        clientid: "",
         name: "",
         lastname: "",
         tel: "",
         email: "",
-        type: "",
-        repName: "",
-        repLastname: "",
+        type: "Física",
     };
     const defaultVehicle = {
         numberplate: "",
@@ -41,27 +44,43 @@ const Profile = () => {
         vin: "",
     };
 
+    const defaultDiagnosis = {
+        workshopRemarks: "",
+        clientRemarks: "",
+        date: date,
+        kms: "",
+        gas: "",
+        insurance: ""
+    };
+
     const [client, setClient] = useState(defaultClient);
 
     const [vehicle, setVehicle] = useState(defaultVehicle);
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggle = () => setDropdownOpen((prevState) => !prevState);
+    const [diagnosis, setDiagnosis] = useState(defaultDiagnosis);
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
         setClient({ ...client, [name]: value })
+        console.log(name, value);
     };
 
     const handleVehicleChange = (e) => {
         const { name, value } = e.target;
-        setVehicle({ ...client, [name]: value })
+        setVehicle({ ...vehicle, [name]: value })
+        console.log(name, value);
+    };
+
+    const handleDiagnosisChange = (e) => {
+        const { name, value } = e.target;
+        setDiagnosis({ ...diagnosis, [name]: value })
         console.log(name, value);
     };
 
     //save client
-    const handleClient = async (e) => {
+    const handleClient =  async(e) => {
         e.preventDefault();
+        console.log(client);
         await addDoc(collection(db, 'Cliente'), client);
     };
 
@@ -69,12 +88,17 @@ const Profile = () => {
     const handleVehicle = async (e) => {
         e.preventDefault();
         console.log(vehicle);
-        await db.collection("Vehiculos").doc().set(client);
+        await addDoc(collection(db, 'Vehiculos'), vehicle);
     };
 
-    var curr = new Date();
-    curr.setDate(curr.getDate());
-    var date = curr.toISOString().substring(0,10);
+    //save diagnosis
+    const handleDiagnosis = async (e) => {
+        e.preventDefault();
+        console.log(diagnosis);
+        await addDoc(collection(db, 'Diagnostico'), diagnosis);
+    };
+
+    
 
     return (
         <>
@@ -93,7 +117,6 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#orden"
-                                            onClick={handleClient}
                                             size="sm"
                                         >
                                             Guardar
@@ -117,7 +140,6 @@ const Profile = () => {
                                                 placeholder="OT-000000"
                                                 id="input-id-orden"
                                                 type="text"
-                                                onChange={handleClientChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -135,7 +157,6 @@ const Profile = () => {
                                                 id="input-date"
                                                 defaultValue={date}
                                                 type="date"
-                                                onChange={handleClientChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -177,7 +198,7 @@ const Profile = () => {
                                                         DUI Persona / NIT Empresa
                                                     </label>
                                                     <Input
-                                                        name="dui"
+                                                        name="clientid"
                                                         className="form-control-alternative"
                                                         id="input-dui"
                                                         placeholder="Eg. 00000000-0"
@@ -250,7 +271,8 @@ const Profile = () => {
                                             
                                                 <FormGroup>
                                                     <Label for="select">Selecciona tipo de Cliente</Label>
-                                                    <Input type="select" name="select" id="select">
+                                                    <Input type="select" name="type" id="select"
+                                                            onChange={handleClientChange}>
                                                         <option>Física</option>
                                                         <option>Jurídica</option>
                                                     </Input>
@@ -435,7 +457,7 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#servicios"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={handleDiagnosis}
                                             size="sm"
                                         >
                                             Guardar
@@ -455,11 +477,13 @@ const Profile = () => {
                                         Observaciones del Taller
                                     </label>
                                     <Input
+                                        name = "workshopRemarks"
                                         className="form-control-alternative"
                                         defaultValue=""
                                         id="input-observaciontes-taller"
                                         placeholder=""
                                         type="text"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
@@ -474,11 +498,13 @@ const Profile = () => {
                                         Observaciones del Cliente
                                     </label>
                                     <Input
+                                        name="clientRemarks"
                                         className="form-control-alternative"
                                         defaultValue=""
                                         id="input-observaciontes-cliente"
                                         placeholder=""
                                         type="text"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
@@ -493,10 +519,12 @@ const Profile = () => {
                                         Fecha de Diagnóstico
                                     </label>
                                     <Input
+                                        name="date"
                                         className="form-control-alternative"
                                         id="fecha-diag"
-                                        placeholder="XX-XX-XXXX"
-                                        type="text"
+                                        defaultValue={date}
+                                        type="date"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
@@ -509,10 +537,12 @@ const Profile = () => {
                                         KMs Entrada
                                     </label>
                                     <Input
+                                        name="kms"
                                         className="form-control-alternative"
                                         id="input-km"
                                         placeholder=""
                                         type="number"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
@@ -525,10 +555,12 @@ const Profile = () => {
                                         Gasolina de entrada
                                     </label>
                                     <Input
+                                        name="gas"
                                         className="form-control-alternative"
                                         id="input-gasolina"
                                         placeholder=""
                                         type="number"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
@@ -543,11 +575,13 @@ const Profile = () => {
                                         Aseguradora
                                     </label>
                                     <Input
+                                        name="insurance"
                                         className="form-control-alternative"
                                         defaultValue=""
                                         id="input-aseguradora"
                                         placeholder=""
                                         type="text"
+                                        onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
                                 </Col>
