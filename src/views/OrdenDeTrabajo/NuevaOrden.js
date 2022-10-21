@@ -11,6 +11,7 @@ import {
     Row,
     Col,
     Badge,
+    Label
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
@@ -43,6 +44,9 @@ const Profile = () => {
     const [client, setClient] = useState(defaultClient);
 
     const [vehicle, setVehicle] = useState(defaultVehicle);
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const toggle = () => setDropdownOpen((prevState) => !prevState);
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
@@ -108,7 +112,7 @@ const Profile = () => {
                                                 ID
                                             </label>
                                             <Input
-                                                name="dui"
+                                                name="id"
                                                 className="form-control-alternative"
                                                 placeholder="OT-000000"
                                                 id="input-id-orden"
@@ -170,13 +174,13 @@ const Profile = () => {
                                                         className="form-control-label"
                                                         htmlFor="input-dui"
                                                     >
-                                                        DUI
+                                                        DUI Persona / NIT Empresa
                                                     </label>
                                                     <Input
                                                         name="dui"
                                                         className="form-control-alternative"
                                                         id="input-dui"
-                                                        placeholder="00000000-0"
+                                                        placeholder="Eg. 00000000-0"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -184,37 +188,19 @@ const Profile = () => {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col lg="6">
+                                            <Col lg="12">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
                                                         htmlFor="input-name"
                                                     >
-                                                        Nombres
+                                                        Nombre del cliente / empresa
                                                     </label>
                                                     <Input
                                                         name="name"
                                                         className="form-control-alternative"
                                                         id="input-name"
                                                         placeholder="Nombre"
-                                                        type="text"
-                                                        onChange={handleClientChange}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col lg="6">
-                                                <FormGroup>
-                                                    <label
-                                                        className="form-control-label"
-                                                        htmlFor="input-lastname"
-                                                    >
-                                                        Apellidos
-                                                    </label>
-                                                    <Input
-                                                        name="lastname"
-                                                        className="form-control-alternative"
-                                                        id="input-lastname"
-                                                        placeholder="Apellidos"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -256,6 +242,18 @@ const Profile = () => {
                                                         type="email"
                                                         onChange={handleClientChange}
                                                     />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="12">
+                                            
+                                                <FormGroup>
+                                                    <Label for="select">Selecciona tipo de Cliente</Label>
+                                                    <Input type="select" name="select" id="select">
+                                                        <option>Física</option>
+                                                        <option>Jurídica</option>
+                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
