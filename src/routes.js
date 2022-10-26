@@ -26,6 +26,9 @@ import OrdenDeTrabajo from "views/OrdenDeTrabajo/Principal";
 import NuevoServicio from "views/Servicios/NuevoServicio";
 import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
+import ListaServicio from "views/Servicios/ListaServicio";
+import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
+
 
 var routes = [
   {
@@ -60,14 +63,14 @@ var routes = [
     path: "/vehiculos",
     name: "Vehículos",
     icon: "ni ni-bus-front-12 text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaVehiculo,
     layout: "/admin"
   },
   {
     path: "/servicios",
     name: "Servicios",
     icon: "ni ni-paper-diploma text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaServicio,
     layout: "/admin"
   },
   {
