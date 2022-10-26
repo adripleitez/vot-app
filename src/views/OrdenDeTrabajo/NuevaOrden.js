@@ -189,7 +189,22 @@ const Profile = () => {
                                 <Form>
                                     <div className="pl-lg-4">
                                         <Row>
-                                            <Col lg="12">
+                                            <Col lg="6">
+                                                <FormGroup>
+                                                    <label
+                                                        htmlFor="select"
+                                                        className="form-control-label"
+                                                    >
+                                                        Selecciona tipo de Cliente
+                                                    </label>
+                                                    <Input type="select" name="type" id="select"
+                                                            onChange={handleClientChange}>
+                                                        <option>Física</option>
+                                                        <option>Jurídica</option>
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col lg="6">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -263,19 +278,6 @@ const Profile = () => {
                                                         type="email"
                                                         onChange={handleClientChange}
                                                     />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col lg="12">
-                                            
-                                                <FormGroup>
-                                                    <Label for="select">Selecciona tipo de Cliente</Label>
-                                                    <Input type="select" name="type" id="select"
-                                                            onChange={handleClientChange}>
-                                                        <option>Física</option>
-                                                        <option>Jurídica</option>
-                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -420,7 +422,7 @@ const Profile = () => {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col lg="12">
+                                            <Col lg="6">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -436,6 +438,25 @@ const Profile = () => {
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col lg="6">
+                                                <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-aseguradora"
+                                                >
+                                                    Aseguradora
+                                                </label>
+                                                <Input
+                                                    name="insurance"
+                                                    className="form-control-alternative"
+                                                    defaultValue=""
+                                                    id="input-aseguradora"
+                                                    placeholder=""
+                                                    type="text"
+                                                    onChange = {handleDiagnosisChange}
+                                                />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -560,27 +581,6 @@ const Profile = () => {
                                         id="input-gasolina"
                                         placeholder=""
                                         type="number"
-                                        onChange = {handleDiagnosisChange}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                </Row>
-                                <Row>
-                                <Col md="6">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-aseguradora"
-                                    >
-                                        Aseguradora
-                                    </label>
-                                    <Input
-                                        name="insurance"
-                                        className="form-control-alternative"
-                                        defaultValue=""
-                                        id="input-aseguradora"
-                                        placeholder=""
-                                        type="text"
                                         onChange = {handleDiagnosisChange}
                                     />
                                     </FormGroup>
