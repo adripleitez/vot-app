@@ -24,80 +24,33 @@ const Profile = () => {
     curr.setDate(curr.getDate());
     var date = curr.toISOString().substring(0,10);
 
-    const defaultClient = {
-        clientid: "",
-        name: "",
-        lastname: "",
-        tel: "",
-        email: "",
-        type: "Física",
-    };
-    const defaultVehicle = {
-        numberplate: "",
-        type: "",
-        motor: "",
-        year: "",
-        brand: "",
-        model: "",
-        color: "",
-        vin: "",
+    const defaultService = {
+        servicioid: "",
+        type: "Neumáticos",
+        description: "",
+        cost: "",
+        tax: "",
+        observations: "",
+        status: false
     };
 
-    const defaultDiagnosis = {
-        workshopRemarks: "",
-        clientRemarks: "",
-        date: date,
-        kms: "",
-        gas: "",
-        insurance: ""
-    };
 
-    const [client, setClient] = useState(defaultClient);
+    const [service, setService] = useState(defaultService);
 
-    const [vehicle, setVehicle] = useState(defaultVehicle);
-
-    const [diagnosis, setDiagnosis] = useState(defaultDiagnosis);
-
-    const handleClientChange = (e) => {
+    const handleServiceChange = (e) => {
         const { name, value } = e.target;
-        setClient({ ...client, [name]: value })
+        setService({ ...service, [name]: value })
         console.log(name, value);
     };
 
-    const handleVehicleChange = (e) => {
-        const { name, value } = e.target;
-        setVehicle({ ...vehicle, [name]: value })
-        console.log(name, value);
-    };
-
-    const handleDiagnosisChange = (e) => {
-        const { name, value } = e.target;
-        setDiagnosis({ ...diagnosis, [name]: value })
-        console.log(name, value);
-    };
 
     //save client
-    const handleClient =  async(e) => {
+    const handleService =  async(e) => {
         e.preventDefault();
-        console.log(client);
-        await addDoc(collection(db, 'Cliente'), client);
+        console.log(service);
+        await addDoc(collection(db, 'Servicio'), service);
     };
 
-    //save vehicle
-    const handleVehicle = async (e) => {
-        e.preventDefault();
-        console.log(vehicle);
-        await addDoc(collection(db, 'Vehiculos'), vehicle);
-    };
-
-    //save diagnosis
-    const handleDiagnosis = async (e) => {
-        e.preventDefault();
-        console.log(diagnosis);
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
-    };
-
-    
 
     return (
         <>
@@ -116,7 +69,7 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#cliente"
-                                            onClick={handleClient}
+                                            onClick={handleService}
                                             size="sm"
                                         >
                                             Guardar
@@ -141,7 +94,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-codigo"
                                                         type="text"
-                                                        onChange={handleClientChange}
+                                                        onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -154,7 +107,7 @@ const Profile = () => {
                                                         Sección
                                                     </label>
                                                     <Input type="select" name="type" id="select"
-                                                            onChange={handleClientChange}>
+                                                            onChange={handleServiceChange}>
                                                         <option>Neumáticos</option>
                                                         <option>Revisiones</option>
                                                         <option>Baterías / Arranques</option>
@@ -179,11 +132,11 @@ const Profile = () => {
                                                         Descripción
                                                     </label>
                                                     <Input
-                                                        name="name"
+                                                        name="description"
                                                         className="form-control-alternative"
                                                         id="input-descripcion"
                                                         type="text"
-                                                        onChange={handleClientChange}
+                                                        onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -198,12 +151,12 @@ const Profile = () => {
                                                         Costo
                                                     </label>
                                                     <Input
-                                                        name="costo"
+                                                        name="cost"
                                                         className="form-control-alternative"
                                                         id="input-costo"
                                                         placeholder="$0.00"
                                                         type="text"
-                                                        onChange={handleClientChange}
+                                                        onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -216,12 +169,12 @@ const Profile = () => {
                                                         Impuesto
                                                     </label>
                                                     <Input
-                                                        name="impuesto"
+                                                        name="tax"
                                                         className="form-control-alternative"
                                                         id="input-impuesto"
                                                         placeholder="%"
                                                         type="text"
-                                                        onChange={handleClientChange}
+                                                        onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -236,11 +189,11 @@ const Profile = () => {
                                                         Observaciones
                                                     </label>
                                                     <Input
-                                                        name="observaciones"
+                                                        name="observations"
                                                         className="form-control-alternative"
                                                         id="input-observaciones"
                                                         type="textarea"
-                                                        onChange={handleClientChange}
+                                                        onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
