@@ -14,15 +14,15 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 
 const Profile = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
-    var date = curr.toISOString().substring(0,10);
+    var date = curr.toISOString().substring(0, 10);
 
     const defaultService = {
         servicioid: "",
@@ -36,6 +36,7 @@ const Profile = () => {
 
 
     const [service, setService] = useState(defaultService);
+    const [servData, setServData] = useState([]);
 
     const handleServiceChange = (e) => {
         const { name, value } = e.target;
@@ -44,13 +45,28 @@ const Profile = () => {
     };
 
 
-    //save client
-    const handleService =  async(e) => {
+    //save service
+    const handleService = async (e) => {
         e.preventDefault();
         console.log(service);
         await addDoc(collection(db, 'Servicio'), service);
     };
 
+    //read service
+    const getServices = () => {
+        onSnapshot(query(collection(db, "Servicio")), (querySnapshot) => {
+            const services = [];
+            querySnapshot.forEach((doc) => {
+                services.push({ ...doc.data(), id: doc.id });
+            });
+            console.log(services);
+            setServData(services);
+        });
+    }
+
+    useEffect(() => {
+        getServices();
+    }, []);
 
     return (
         <>
@@ -107,7 +123,7 @@ const Profile = () => {
                                                         Sección
                                                     </label>
                                                     <Input type="select" name="type" id="select"
-                                                            onChange={handleServiceChange}>
+                                                        onChange={handleServiceChange}>
                                                         <option>Neumáticos</option>
                                                         <option>Revisiones</option>
                                                         <option>Baterías / Arranques</option>
@@ -233,7 +249,26 @@ const Profile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        {servData.map((s)=>{
+                                            return <tr key={s.id}>
+                                                    <th scope="row">{s.description}</th>
+                                                    <td>{s.cost}</td>
+                                                    <td>
+                                                        {s.status == false 
+                                                            ?   <Badge color="" className="badge-dot mr-4">
+                                                                <i className="bg-success" />
+                                                                        Pendiente
+                                                                </Badge>
+                                                            :   <Badge color="" className="badge-dot mr-4">
+                                                                    <i className="bg-warning" />
+                                                                        Realizado
+                                                                </Badge>
+                                                        }
+                                                    </td>
+                                                    <td>{s.type}</td>
+                                                </tr>
+                                        })}
+                                        {/* <tr>
                                             <th scope="row">Cambio de aceite</th>
                                             <td>$10 USD</td>
                                             <td>
@@ -280,7 +315,7 @@ const Profile = () => {
                                             </td>
 
                                             <td>Sección 1</td>
-                                        </tr>
+                                        </tr> */}
                                     </tbody>
                                 </Table>
                             </CardBody>
