@@ -128,6 +128,8 @@ const Profile = () => {
                                                         <option>Revisiones</option>
                                                         <option>Baterías / Arranques</option>
                                                         <option>Frenos</option>
+                                                        <option>Reparación Motor</option>
+                                                        <option>Reparación Caja</option>
                                                         <option>Amortiguadores</option>
                                                         <option>Accesorios de tienda y alfombrilla</option>
                                                         <option>Sonido y multimedia</option>
