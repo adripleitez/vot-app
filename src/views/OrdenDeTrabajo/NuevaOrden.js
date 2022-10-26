@@ -281,6 +281,26 @@ const Profile = () => {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
+                                        <Row>
+                                            <Col lg="12">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-name"
+                                                    >
+                                                        Nombre del representante
+                                                    </label>
+                                                    <Input
+                                                        name="name"
+                                                        className="form-control-alternative"
+                                                        id="input-name"
+                                                        placeholder="Nombre"
+                                                        type="text"
+                                                        onChange={handleClientChange}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
                                     </div>
                                 </Form>
                             </CardBody>
@@ -457,6 +477,25 @@ const Profile = () => {
                                                     type="text"
                                                     onChange = {handleDiagnosisChange}
                                                 />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="12">
+                                                <FormGroup>
+                                                    <label
+                                                        htmlFor="select-tipo-vehiculo"
+                                                        className="form-control-label"
+                                                    >
+                                                        Selecciona tipo de Cliente
+                                                    </label>
+                                                    <Input type="select" name="type" id="select-tipo-vehiculo"
+                                                            onChange={handleClientChange}>
+                                                        <option>Particular</option>
+                                                        <option>Autobus</option>
+                                                        <option>Motocicleta</option>
+                                                        <option>Camiones</option>
+                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
