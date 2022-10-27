@@ -22,13 +22,13 @@ const Profile = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
-    var date = curr.toISOString().substring(0, 10);
 
     const defaultService = {
         servicioid: "",
         type: "Neumáticos",
         description: "",
         cost: "",
+        commission: "",
         tax: "",
         observations: "",
         status: false
@@ -73,8 +73,8 @@ const Profile = () => {
             <Header />
             {/* Page content */}
             <Container className="mt--7" fluid>
-                <Row>
-                    <Col className="order-xl-1 mb-3" xl="6">
+                <Row className="px-4">
+                    <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -97,7 +97,7 @@ const Profile = () => {
                                 <Form>
                                     <div className="pl-lg-4">
                                         <Row>
-                                            <Col lg="6">
+                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -114,7 +114,7 @@ const Profile = () => {
                                                     />
                                                 </FormGroup>
                                             </Col>
-                                            <Col lg="6">
+                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         htmlFor="select"
@@ -137,9 +137,8 @@ const Profile = () => {
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col lg="12">
+
+                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -158,7 +157,7 @@ const Profile = () => {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col lg="6">
+                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -176,7 +175,7 @@ const Profile = () => {
                                                     />
                                                 </FormGroup>
                                             </Col>
-                                            <Col lg="6">
+                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
@@ -188,6 +187,24 @@ const Profile = () => {
                                                         name="tax"
                                                         className="form-control-alternative"
                                                         id="input-impuesto"
+                                                        placeholder="%"
+                                                        type="text"
+                                                        onChange={handleServiceChange}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col lg="4">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-commission"
+                                                    >
+                                                        Comisión
+                                                    </label>
+                                                    <Input
+                                                        name="commission"
+                                                        className="form-control-alternative"
+                                                        id="input-commission"
                                                         placeholder="%"
                                                         type="text"
                                                         onChange={handleServiceChange}
@@ -219,7 +236,9 @@ const Profile = () => {
                             </CardBody>
                         </Card>
                     </Col>
-                    <Col className="order-xl-1 mb-3" xl="6">
+                </Row>
+                <Row className="p-4">
+                    <Col className="order-xl-1 mb-3" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -249,73 +268,25 @@ const Profile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {servData.map((s)=>{
+                                        {servData.map((s) => {
                                             return <tr key={s.id}>
-                                                    <th scope="row">{s.description}</th>
-                                                    <td>{s.cost}</td>
-                                                    <td>
-                                                        {s.status == false 
-                                                            ?   <Badge color="" className="badge-dot mr-4">
-                                                                <i className="bg-success" />
-                                                                        Pendiente
-                                                                </Badge>
-                                                            :   <Badge color="" className="badge-dot mr-4">
-                                                                    <i className="bg-warning" />
-                                                                        Realizado
-                                                                </Badge>
-                                                        }
-                                                    </td>
-                                                    <td>{s.type}</td>
-                                                </tr>
+                                                <th scope="row">{s.description}</th>
+                                                <td>{s.cost}</td>
+                                                <td>
+                                                    {s.status === false
+                                                        ? <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-success" />
+                                                            Pendiente
+                                                        </Badge>
+                                                        : <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-warning" />
+                                                            Realizado
+                                                        </Badge>
+                                                    }
+                                                </td>
+                                                <td>{s.type}</td>
+                                            </tr>
                                         })}
-                                        {/* <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-success" />
-                                                    Realizado
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr> */}
                                     </tbody>
                                 </Table>
                             </CardBody>
