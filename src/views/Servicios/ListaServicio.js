@@ -43,6 +43,7 @@ import {
   
   const Tables = () => {
   const [servData, setServData] = useState([]);
+  const [search,setSearch]= useState("");
 
   const getServices = () => {
     onSnapshot(query(collection(db, "Servicio")), (querySnapshot) => {
@@ -54,6 +55,26 @@ import {
         setServData(services);
     });
   }
+  const searcher = (e) =>{
+    setSearch(e.target.value)
+    //captura los caracteres que se van typeando
+    console.log(e.target.value)
+
+  }
+
+  let results = [];
+  if(!search){
+    results=servData
+}
+else{
+
+    results=servData.filter((dato)=> dato.description.toLowerCase().includes(search.toLocaleLowerCase())||
+    dato.cost.toLowerCase().includes(search.toLocaleLowerCase()));
+    
+    /*results = clientData.filter((dato)=>
+    dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+    )*/
+}
 
   useEffect(() => {
     getServices();
@@ -70,6 +91,7 @@ import {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Servicios</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -83,7 +105,7 @@ import {
                     </tr>
                   </thead>
                   <tbody>
-                  {servData.map((s)=>{
+                  {results.map((s)=>{
                             return <tr key={s.id}>
                                     <th scope="row">{s.description}</th>
                                     <td>{s.cost}</td>

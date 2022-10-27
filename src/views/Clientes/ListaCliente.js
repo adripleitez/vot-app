@@ -43,6 +43,7 @@ import {
   
   const Tables = () => {
   const [clientData, setClientData] = useState([]);
+  const [search,setSearch]= useState("");
 
   const getClient = () => {
     onSnapshot(query(collection(db, "Cliente")), (querySnapshot) => {
@@ -54,6 +55,27 @@ import {
         setClientData(clients);
     });
   }
+  const searcher = (e) =>{
+    setSearch(e.target.value)
+    //captura los caracteres que se van typeando
+    console.log(e.target.value)
+
+  }
+
+  let results = [];
+  if(!search){
+    results=clientData
+}
+else{
+
+    results=clientData.filter((dato)=> dato.dui.toLowerCase().includes(search.toLocaleLowerCase())||
+    dato.name.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    dato.email.toLowerCase().includes(search.toLocaleLowerCase()));
+    
+    /*results = clientData.filter((dato)=>
+    dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+    )*/
+}
 
   useEffect(() => {
     getClient();
@@ -70,6 +92,7 @@ import {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Clientes</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -84,10 +107,10 @@ import {
                     </tr>
                   </thead>
                   <tbody>
-                     {clientData.map((s)=>{
+                     {results.map((s)=>{
                             return <tr key={s.id}>
-                                    <th scope="row">{s.DUI}{s.dui}</th>
-                                    <td>{s.name}{s.nombre}</td>
+                                    <th scope="row">{s.dui}</th>
+                                    <td>{s.name}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
@@ -100,9 +123,9 @@ import {
                                                                 </Badge>
                                                         }
                                                     </td> */}
-                                        <td>{s.apellido}{s.lastname}</td>
-                                        <td>{s.correo}</td>
-                                        <td>{s.telefono}{s.tel}</td>
+                                        <td>{s.lastname}</td>
+                                        <td>{s.email}</td>
+                                        <td>{s.tel}{s.tel}</td>
                                         <td>{s.type}</td>
                                         <td className="text-right">
                                             <UncontrolledDropdown>
