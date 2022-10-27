@@ -28,6 +28,8 @@ import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
 import ListaServicio from "views/Servicios/ListaServicio";
 import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
+import ListaCliente from "views/Clientes/ListaCliente";
+import ListaProveedor from "views/Proveedores/ListaProveedor";
 
 
 var routes = [
@@ -84,14 +86,14 @@ var routes = [
     path: "/clientes",
     name: "Clientes",
     icon: "ni ni-circle-08 text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaCliente,
     layout: "/admin"
   },
   {
     path: "/proveedores",
     name: "Proveedores",
     icon: "ni ni-delivery-fast text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaProveedor,
     layout: "/admin"
   },
   {
