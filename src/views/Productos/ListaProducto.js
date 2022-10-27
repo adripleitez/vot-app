@@ -42,17 +42,17 @@ import {
   import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
   
   const Tables = () => {
-  const [vehData, setVehData] = useState([]);
+  const [prodData, setProdData] = useState([]);
   const [search,setSearch]= useState("");
 
-  const getVehicle = () => {
-    onSnapshot(query(collection(db, "Vehiculos")), (querySnapshot) => {
-        const services = [];
+  const getClient = () => {
+    onSnapshot(query(collection(db, "Productos")), (querySnapshot) => {
+        const prods = [];
         querySnapshot.forEach((doc) => {
-            services.push({ ...doc.data(), id: doc.id });
+            prods.push({ ...doc.data(), id: doc.id });
         });
-        console.log(services);
-        setVehData(services);
+        console.log(prods);
+        setProdData(prods);
     });
   }
   const searcher = (e) =>{
@@ -64,13 +64,13 @@ import {
 
   let results = [];
   if(!search){
-    results=vehData
+    results=prodData
 }
 else{
 
-    results=vehData.filter((dato)=> dato.placa.toLowerCase().includes(search.toLocaleLowerCase())||
-    dato.marca.toLowerCase().includes(search.toLocaleLowerCase()) ||
-    dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()));
+    results=prodData.filter((dato)=> dato.seccion.toLowerCase().includes(search.toLocaleLowerCase())||
+    dato.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    dato.proveedor.toLowerCase().includes(search.toLocaleLowerCase()));
     
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -78,7 +78,7 @@ else{
 }
 
   useEffect(() => {
-    getVehicle();
+    getClient();
   }, []);
 
     return (
@@ -91,28 +91,25 @@ else{
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Vehiculos</h3>
+                  <h3 className="mb-0">Productos</h3>
                   <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                        <th scope="col">Placa</th>
-                        <th scope="col">Marca</th>
-                        <th scope="col">Modelo</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Año</th>
-                        <th scope="col">Chasis VIN</th>
-                        <th scope="col">Chasis Grabado</th>
-                        <th scope="col">Numero de Motor</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Proveedor</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Seccion</th>
+                        <th scope="col">Stock</th>
                         <th scope="col" />
                     </tr>
                   </thead>
                   <tbody>
                      {results.map((s)=>{
                             return <tr key={s.id}>
-                                    <th scope="row">{s.placa}</th>
-                                    <td>{s.marca}</td>
+                                    <th scope="row">{s.nombre}</th>
+                                    <td>{s.proveedor}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
@@ -125,12 +122,9 @@ else{
                                                                 </Badge>
                                                         }
                                                     </td> */}
-                                        <td>{s.modelo}</td>
-                                        <td>{s.color}</td>
-                                        <td>{s.año}</td>
-                                        <td>{s.chasis_VIN}</td>
-                                        <td>{s.chasis_grabado}</td>
-                                        <td>{s.numero_motor}</td>
+                                        <td>{s.costo_unitario}</td>
+                                        <td>{s.seccion}</td>
+                                        <td>{s.stock}</td>
                                         <td className="text-right">
                                             <UncontrolledDropdown>
                                                 <DropdownToggle

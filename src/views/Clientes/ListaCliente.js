@@ -125,7 +125,7 @@ else{
                                                     </td> */}
                                         <td>{s.lastname}</td>
                                         <td>{s.email}</td>
-                                        <td>{s.tel}{s.tel}</td>
+                                        <td>{s.tel}</td>
                                         <td>{s.type}</td>
                                         <td className="text-right">
                                             <UncontrolledDropdown>

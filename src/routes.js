@@ -31,7 +31,8 @@ import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
 import ListaCliente from "views/Clientes/ListaCliente";
 import ListaProveedor from "views/Proveedores/ListaProveedor";
 import ListaFactura from "views/Facturas/ListaFactura";
-
+import ListaProducto from "views/Productos/ListaProducto";
+import DasboardPage from "views/Dashboards/Principal";
 
 var routes = [
   {
@@ -80,7 +81,7 @@ var routes = [
     path: "/productos",
     name: "Productos",
     icon: "ni ni-settings text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaProducto,
     layout: "/admin"
   },
   {
@@ -94,7 +95,7 @@ var routes = [
     path: "/proveedores",
     name: "Proveedores",
     icon: "ni ni-delivery-fast text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaProveedor,
     layout: "/admin"
   },
   {
@@ -108,7 +109,7 @@ var routes = [
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-blue",
-    component: OrdenDeTrabajo,
+    component: DasboardPage,
     layout: "/admin"
   },
 ];

@@ -92,8 +92,9 @@ else{
           <Row>
             <div className="col">
               <Card className="shadow">
-                <CardHeader className="border-0">
+              <CardHeader className="border-0">
                   <h3 className="mb-0">Facturas</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input>
                 </CardHeader>
                 <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input> 
                 <Table className="align-items-center table-flush" responsive>
