@@ -92,7 +92,7 @@ else{
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Clientes</h3>
-                  <input value={search} onChange={searcher} type="text" placeholder="Buscar"></input>
+                  <input value={search} onChange={searcher} type="text" placeholder="Nombre, DUI o email"></input>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
