@@ -16,7 +16,7 @@ import {
 import Header from "components/Headers/HeaderGeneric.js";
 import {useHistory} from 'react-router-dom';
 import { useState } from "react";
-import { db } from './../../firebase'
+import { db } from '../../firebase'
 import { collection, addDoc } from "firebase/firestore";
 
 const Profile = () => {
@@ -102,7 +102,7 @@ const Profile = () => {
     };
 
     //open checks window
-    const handleChecks = () => history.push('/admin/revisiones');
+    const handleChecks = () => history.push('/revisiones');
 
     return (
         <>
@@ -677,91 +677,6 @@ const Profile = () => {
                                 </Row>
                             </div>
                                 
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row className="mt-3">
-                    <Col className="order-xl-1" xl="12">
-                        <Card className="bg-secondary shadow">
-                            <CardHeader className="bg-white border-0">
-                                <Row className="align-items-center">
-                                    <Col xs="8">
-                                        <h3 className="mb-0">Listado de servicios</h3>
-                                    </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#servicos"
-                                            onClick={(e) => e.preventDefault()}
-                                            size="sm"
-                                        >
-                                            Agregar
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </CardHeader>
-                            <CardBody>
-                                <Table className="align-items-center table-flush" responsive>
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th scope="col">Descripcion</th>
-                                            <th scope="col">Precio base</th>
-                                            <th scope="col">Estatus</th>
-                                            <th scope="col">Sección</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-success" />
-                                                    Realizado
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
                             </CardBody>
                         </Card>
                     </Col>

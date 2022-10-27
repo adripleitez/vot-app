@@ -128,6 +128,8 @@ const Profile = () => {
                                                         <option>Revisiones</option>
                                                         <option>Baterías / Arranques</option>
                                                         <option>Frenos</option>
+                                                        <option>Reparación Motor</option>
+                                                        <option>Reparación Caja</option>
                                                         <option>Amortiguadores</option>
                                                         <option>Accesorios de tienda y alfombrilla</option>
                                                         <option>Sonido y multimedia</option>
@@ -213,6 +215,38 @@ const Profile = () => {
                                             </Col>
                                         </Row>
                                         <Row>
+                                            <Col lg="6">
+                                                <FormGroup>
+                                                    <label
+                                                        htmlFor="select-type"
+                                                        className="form-control-label"
+                                                    >
+                                                        Tipo de Servicio
+                                                    </label>
+                                                    <Input type="select" name="type" id="select-type"
+                                                        onChange={handleServiceChange}>
+                                                        <option>Interno</option>
+                                                        <option>Externo</option>
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col lg="6">
+                                                <FormGroup>
+                                                    <label
+                                                        htmlFor="select-taller"
+                                                        className="form-control-label"
+                                                    >
+                                                        Taller
+                                                    </label>
+                                                    <Input type="select" name="type" id="select-taller"
+                                                        onChange={handleServiceChange}>
+                                                        <option>LA CHOLA</option>
+                                                        <option>123 TALLER</option>
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
                                             <Col lg="12">
                                                 <FormGroup>
                                                     <label
@@ -263,7 +297,6 @@ const Profile = () => {
                                         <tr>
                                             <th scope="col">Descripcion</th>
                                             <th scope="col">Precio base</th>
-                                            <th scope="col">Estatus</th>
                                             <th scope="col">Sección</th>
                                         </tr>
                                     </thead>

@@ -24,6 +24,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import OrdenDeTrabajo from "views/OrdenDeTrabajo/Principal";
 import NuevoServicio from "views/Servicios/NuevoServicio";
+import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
 
 var routes = [
@@ -32,6 +33,13 @@ var routes = [
     name: "Nueva orden",
     icon: "ni ni-single-02 text-white",
     component: NuevaOrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/revisiones",
+    name: "Revisiones",
+    icon: "ni ni-single-02 text-white",
+    component: Revisiones,
     layout: "/admin"
   },
   {
