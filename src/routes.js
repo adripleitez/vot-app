@@ -30,6 +30,7 @@ import ListaServicio from "views/Servicios/ListaServicio";
 import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
 import ListaCliente from "views/Clientes/ListaCliente";
 import ListaProveedor from "views/Proveedores/ListaProveedor";
+import ListaFactura from "views/Facturas/ListaFactura";
 
 
 var routes = [
@@ -93,14 +94,14 @@ var routes = [
     path: "/proveedores",
     name: "Proveedores",
     icon: "ni ni-delivery-fast text-blue",
-    component: ListaProveedor,
+    component: OrdenDeTrabajo,
     layout: "/admin"
   },
   {
     path: "/facturas",
     name: "Facturas",
     icon: "ni ni-credit-card text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaFactura,
     layout: "/admin"
   },
   {
