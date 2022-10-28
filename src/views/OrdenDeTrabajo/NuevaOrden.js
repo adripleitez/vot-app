@@ -18,6 +18,7 @@ import {useHistory} from 'react-router-dom';
 import { useState } from "react";
 import { db } from './../../firebase'
 import { collection, addDoc } from "firebase/firestore";
+import ModalComponent from '../../components/Modal/ModalComponent'
 
 const Profile = () => {
 
@@ -60,6 +61,8 @@ const Profile = () => {
 
     const [diagnosis, setDiagnosis] = useState(defaultDiagnosis);
 
+    const [modal, setModal] = useState(false);
+
     const history = useHistory();
 
     const handleClientChange = (e) => {
@@ -78,6 +81,11 @@ const Profile = () => {
         const { name, value } = e.target;
         setDiagnosis({ ...diagnosis, [name]: value })
         console.log(name, value);
+    };
+
+    const handleModal = (e) => {
+        e.preventDefault();
+        setModal(true);
     };
 
     //save client
@@ -693,13 +701,14 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#servicos"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={handleModal}
                                             size="sm"
                                         >
                                             Agregar
                                         </Button>
                                     </Col>
                                 </Row>
+                                <ModalComponent open={modal} close={setModal}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
