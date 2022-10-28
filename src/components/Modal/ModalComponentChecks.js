@@ -1,22 +1,16 @@
+import { React, useState } from 'react';
 import {
     Button,
+    Modal,
     Card,
-    CardHeader,
     CardBody,
     FormGroup,
     Input,
-    Container,
     Row,
     Col,
 } from "reactstrap";
-// core components
-import Header from "components/Headers/HeaderGeneric.js";
-import {useHistory} from 'react-router-dom';
-import { useState } from "react";
-import { db } from '../../firebase'
-import { collection, addDoc } from "firebase/firestore";
 
-const Revisiones = () => {
+const ModalComponentChecks = (props) => {
 
     const defaultChecks = {
         radioLlanta: "Si",
@@ -43,16 +37,11 @@ const Revisiones = () => {
 
     const [checks, setChecks] = useState(defaultChecks);
 
-    const history = useHistory();
-
     const handleChecksChange = (e) => {
         const { name, value } = e.target;
         setChecks({ ...checks, [name]: value })
         console.log(name, value);
     };
-
-    //open checks window
-    const handleBtnOrder = () => history.push('/revisiones');
 
     //save client
     const handleChecks =  async(e) => {
@@ -61,31 +50,30 @@ const Revisiones = () => {
         //await addDoc(collection(db, 'Revisiones'), checks);
     };
 
+    const handleClose = (e) => {
+        e.preventDefault();
+        props.close(false);
+    }
+
     return (
         <>
-            <Header />
-            {/* Page content */}
-            <Container className="mt--7" fluid>
-                <Row className="mb-3">
+            <Modal size="lg" className="modal-dialog-centered"
+                isOpen={props.open}>
+                <div className="modal-header">
+                    <button
+                        aria-label="Close"
+                        className="close"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={handleClose}
+                    >
+                        <span aria-hidden={true}>×</span>
+                    </button>
+                </div>
+                <div className="modal-body mt--4">
+                    <Row className="ml--2 mr--2">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
-                            <CardHeader className="bg-white border-0">
-                                <Row className="align-items-center">
-                                    <Col xs="8">
-                                        <h3 className="mb-0">Orden de trabajo Revisiones</h3>
-                                    </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#orden"
-                                            size="sm"
-                                            onClick={handleChecks}
-                                        >
-                                            Guardar
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </CardHeader>
                             <CardBody>
                                 <Row className="justify-content-left">
                                     <Col lg="4"><label className="form-control-label"> Llanta de Respuesto </label></Col>
@@ -190,10 +178,24 @@ const Revisiones = () => {
                             </CardBody>
                         </Card>
                     </Col>
-                </Row>
-            </Container>
+                    </Row>
+                </div>
+                <div className="modal-footer">
+                    <Button
+                        color="secondary"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={handleClose}
+                    >
+                        Cerrar
+                    </Button>
+                    <Button color="primary" type="button" onClick={handleChecks}>
+                        Guardar
+                    </Button>
+                </div>
+            </Modal>
         </>
     );
-};
+}
 
-export default Revisiones;
+export default ModalComponentChecks;

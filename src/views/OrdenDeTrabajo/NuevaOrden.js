@@ -14,11 +14,13 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
-import {useHistory} from 'react-router-dom';
-import { useState } from "react";
-import { db } from './../../firebase'
-import { collection, addDoc } from "firebase/firestore";
+//import {useHistory} from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { db } from '../../firebase'
+import { collection, addDoc, query, onSnapshot, orderBy, limit } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
+import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
+
 
 const Profile = () => {
 
@@ -63,24 +65,39 @@ const Profile = () => {
 
     const [modal, setModal] = useState(false);
 
-    const history = useHistory();
+    const [modalChecks, setModalChecks] = useState(false);
+
+    const [lastOrder, setLastOrder] = useState([]);
+
+    const lastDoc = () => {
+        onSnapshot(query(collection(db, "Orden_trabajo"), orderBy("timestamp", "desc"), limit(1)), (querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({ ...doc.data(), id: doc.id });
+            });
+            setLastOrder(docs[0].OT_id);
+        });
+    }
+
+    console.log(lastOrder);
+
+    useEffect(() => {
+        lastDoc();
+    }, []);
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
         setClient({ ...client, [name]: value })
-        console.log(name, value);
     };
 
     const handleVehicleChange = (e) => {
         const { name, value } = e.target;
         setVehicle({ ...vehicle, [name]: value })
-        console.log(name, value);
     };
 
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
         setDiagnosis({ ...diagnosis, [name]: value })
-        console.log(name, value);
     };
 
     const handleModal = (e) => {
@@ -88,29 +105,28 @@ const Profile = () => {
         setModal(true);
     };
 
+    const handleChecks = (e) => {
+        e.preventDefault();
+        setModalChecks(true);
+    };
+
     //save client
     const handleClient =  async(e) => {
         e.preventDefault();
-        console.log(client);
         await addDoc(collection(db, 'Cliente'), client);
     };
 
     //save vehicle
     const handleVehicle = async (e) => {
         e.preventDefault();
-        console.log(vehicle);
         await addDoc(collection(db, 'Vehiculos'), vehicle);
     };
 
     //save diagnosis
     const handleDiagnosis = async (e) => {
         e.preventDefault();
-        console.log(diagnosis);
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
-
-    //open checks window
-    const handleChecks = () => history.push('/admin/revisiones');
 
     return (
         <>
@@ -681,6 +697,7 @@ const Profile = () => {
                                         >
                                             Ver Revisiones
                                         </Button>
+                                        <ModalComponentChecks open={modalChecks} close={setModalChecks} idordenTrabajo={lastDoc}/>
                                     </Col>
                                 </Row>
                             </div>
