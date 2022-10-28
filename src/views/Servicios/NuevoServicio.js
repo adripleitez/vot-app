@@ -7,9 +7,13 @@ import {
     Form,
     Input,
     Container,
+    UncontrolledDropdown,
+    DropdownToggle,
     Table,
     Row,
     Col,
+    DropdownMenu,
+    DropdownItem,
     Badge
 } from "reactstrap";
 // core components
@@ -39,6 +43,7 @@ const Profile = () => {
 
     const [service, setService] = useState(defaultService);
     const [servData, setServData] = useState([]);
+    const [search,setSearch]= useState("");
 
     const handleServiceChange = (e) => {
         const { name, value } = e.target;
@@ -64,6 +69,27 @@ const Profile = () => {
             console.log(services);
             setServData(services);
         });
+    }
+
+    const searcher = (e) =>{
+        setSearch(e.target.value)
+        //captura los caracteres que se van typeando
+        console.log(e.target.value)
+    
+      }
+    
+      let results = [];
+      if(!search){
+        results=servData
+    }
+    else{
+    
+        results=servData.filter((dato)=> dato.descripcion.toLowerCase().includes(search.toLocaleLowerCase())||
+        dato.costo.toLowerCase().includes(search.toLocaleLowerCase()));
+        
+        /*results = clientData.filter((dato)=>
+        dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+        )*/
     }
 
     useEffect(() => {
@@ -280,50 +306,80 @@ const Profile = () => {
                                 <Row className="align-items-center">
                                     <Col xs="8">
                                         <h3 className="mb-0">Listado de servicios</h3>
-                                    </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#servicos"
-                                            onClick={(e) => e.preventDefault()}
-                                            size="sm"
-                                        >
-                                            Agregar
-                                        </Button>
+                                        <input value={search} onChange={searcher} type="text" placeholder="Costo o descripción"></input>
                                     </Col>
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                                <Table className="align-items-center table-flush" responsive>
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th scope="col">Descripcion</th>
-                                            <th scope="col">Precio base</th>
-                                            <th scope="col">Sección</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {servData.map((s) => {
-                                            return <tr key={s.id}>
-                                                <th scope="row">{s.descripcion}</th>
-                                                <td>{s.costo}</td>
-                                                {/* <td>
-                                                    {s.estatus === false
-                                                        ? <Badge color="" className="badge-dot mr-4">
-                                                            <i className="bg-success" />
-                                                            Pendiente
-                                                        </Badge>
-                                                        : <Badge color="" className="badge-dot mr-4">
-                                                            <i className="bg-warning" />
-                                                            Realizado
-                                                        </Badge>
-                                                    }
-                                                </td> */}
-                                                <td>{s.seccion}</td>
-                                            </tr>
-                                        })}
-                                    </tbody>
-                                </Table>
+                            <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Precio base</th>
+                        <th scope="col">Sección</th>
+                        <th scope="col">Observaciones</th>
+                        <th scope="col">Impuestos</th>
+                        <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {results.map((s)=>{
+                            return <tr key={s.id}>
+                                    <th scope="row">{s.descripcion}</th>
+                                    <td>{s.costo}</td>
+                                    {/* <td>
+                                                        {s.status == false 
+                                                            ?   <Badge color="" className="badge-dot mr-4">
+                                                                <i className="bg-success" />
+                                                                        Pendiente
+                                                                </Badge>
+                                                            :   <Badge color="" className="badge-dot mr-4">
+                                                                    <i className="bg-warning" />
+                                                                        Realizado
+                                                                </Badge>
+                                                        }
+                                                    </td> */}
+                                        <td>{s.seccion}</td>
+                                        <td>{s.observaciones}</td>
+                                        <td>{s.impuesto}</td>
+                                        <td className="text-right">
+                                            <UncontrolledDropdown>
+                                                <DropdownToggle
+                                                className="btn-icon-only text-light"
+                                                href="#pablo"
+                                                role="button"
+                                                size="sm"
+                                                color=""
+                                                onClick={(e) => e.preventDefault()}
+                                                >
+                                                <i className="fas fa-ellipsis-v" />
+                                                </DropdownToggle>
+                                                <DropdownMenu className="dropdown-menu-arrow" right>
+                                                <DropdownItem
+                                                    href="#pablo"
+                                                    onClick={(e) => e.preventDefault()}
+                                                >
+                                                    Action
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    href="#pablo"
+                                                    onClick={(e) => e.preventDefault()}
+                                                >
+                                                    Another action
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    href="#pablo"
+                                                    onClick={(e) => e.preventDefault()}
+                                                >
+                                                    Something else here
+                                                </DropdownItem>
+                                                </DropdownMenu>
+                                            </UncontrolledDropdown>
+                                        </td>
+                                    </tr>
+                            })}
+                  </tbody>
+                </Table>
                             </CardBody>
                         </Card>
                     </Col>
