@@ -43,20 +43,6 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/revisiones",
-    name: "Revisiones",
-    icon: "ni ni-single-02 text-white",
-    component: Revisiones,
-    layout: "/admin"
-  },
-  {
-    path: "/nuevo-servicio",
-    name: "Agregar Servicio",
-    icon: "ni ni-single-02 text-white",
-    component: NuevoServicio,
-    layout: "/admin"
-  },
-  {
     path: "/ordenes-de-trabajo",
     name: "Órdenes de Trabajo",
     icon: "ni ni-collection text-blue",
@@ -74,7 +60,7 @@ var routes = [
     path: "/servicios",
     name: "Servicios",
     icon: "ni ni-paper-diploma text-blue",
-    component: ListaServicio,
+    component: NuevoServicio,
     layout: "/admin"
   },
   {
