@@ -25,13 +25,15 @@ const Profile = () => {
 
     const defaultService = {
         servicioid: "",
-        type: "Neumáticos",
-        description: "",
-        cost: "",
-        commission: "",
-        tax: "",
-        observations: "",
-        status: false
+        seccion: "Neumáticos",
+        descripcion: "",
+        costo: "",
+        comision: "",
+        impuesto: "",
+        observaciones: "",
+        tipo: "",
+        taller: "",
+        estatus: false
     };
 
 
@@ -122,7 +124,7 @@ const Profile = () => {
                                                     >
                                                         Sección
                                                     </label>
-                                                    <Input type="select" name="type" id="select"
+                                                    <Input type="select" name="seccion" id="select"
                                                         onChange={handleServiceChange}>
                                                         <option>Neumáticos</option>
                                                         <option>Revisiones</option>
@@ -149,7 +151,7 @@ const Profile = () => {
                                                         Descripción
                                                     </label>
                                                     <Input
-                                                        name="description"
+                                                        name="descripcion"
                                                         className="form-control-alternative"
                                                         id="input-descripcion"
                                                         type="text"
@@ -167,7 +169,7 @@ const Profile = () => {
                                                     >
                                                         Tipo de Servicio
                                                     </label>
-                                                    <Input type="select" name="type" id="select-type"
+                                                    <Input type="select" name="tipo" id="select-type"
                                                         onChange={handleServiceChange}>
                                                         <option>Interno</option>
                                                         <option>Externo</option>
@@ -182,7 +184,7 @@ const Profile = () => {
                                                     >
                                                         Taller
                                                     </label>
-                                                    <Input type="select" name="type" id="select-taller"
+                                                    <Input type="select" name="taller" id="select-taller"
                                                         onChange={handleServiceChange}>
                                                         <option>LA CHOLA</option>
                                                         <option>123 TALLER</option>
@@ -200,7 +202,7 @@ const Profile = () => {
                                                         Costo
                                                     </label>
                                                     <Input
-                                                        name="cost"
+                                                        name="costo"
                                                         className="form-control-alternative"
                                                         id="input-costo"
                                                         placeholder="$0.00"
@@ -218,7 +220,7 @@ const Profile = () => {
                                                         Impuesto
                                                     </label>
                                                     <Input
-                                                        name="tax"
+                                                        name="impuesto"
                                                         className="form-control-alternative"
                                                         id="input-impuesto"
                                                         placeholder="%"
@@ -236,7 +238,7 @@ const Profile = () => {
                                                         Comisión
                                                     </label>
                                                     <Input
-                                                        name="commission"
+                                                        name="comision"
                                                         className="form-control-alternative"
                                                         id="input-commission"
                                                         placeholder="%"
@@ -256,7 +258,7 @@ const Profile = () => {
                                                         Observaciones
                                                     </label>
                                                     <Input
-                                                        name="observations"
+                                                        name="observaciones"
                                                         className="form-control-alternative"
                                                         id="input-observaciones"
                                                         type="textarea"
@@ -303,10 +305,10 @@ const Profile = () => {
                                     <tbody>
                                         {servData.map((s) => {
                                             return <tr key={s.id}>
-                                                <th scope="row">{s.description}</th>
-                                                <td>{s.cost}</td>
-                                                <td>
-                                                    {s.status === false
+                                                <th scope="row">{s.descripcion}</th>
+                                                <td>{s.costo}</td>
+                                                {/* <td>
+                                                    {s.estatus === false
                                                         ? <Badge color="" className="badge-dot mr-4">
                                                             <i className="bg-success" />
                                                             Pendiente
@@ -316,8 +318,8 @@ const Profile = () => {
                                                             Realizado
                                                         </Badge>
                                                     }
-                                                </td>
-                                                <td>{s.type}</td>
+                                                </td> */}
+                                                <td>{s.seccion}</td>
                                             </tr>
                                         })}
                                     </tbody>

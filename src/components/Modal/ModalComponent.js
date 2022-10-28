@@ -11,19 +11,21 @@ import {
     Col,
 } from "reactstrap";
 import { db } from './../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, query, onSnapshot } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
     const defaultService = {
         servicioid: "",
-        type: "Neumáticos",
-        description: "",
-        cost: "",
-        commission: "",
-        tax: "",
-        observations: "",
-        status: false
+        seccion: "Neumáticos",
+        descripcion: "",
+        costo: "",
+        comision: "",
+        impuesto: "",
+        observaciones: "",
+        tipo: "",
+        taller: "",
+        estatus: false
     };
 
 
@@ -54,8 +56,34 @@ const ModalComponent = (props) => {
         console.log(name, value);
     };
 
-    const handleTemplateChange = (e) => {
+    const handleService = async (e) => {
+        e.preventDefault();
+        console.log(service);
+        await addDoc(collection(db, 'ServicioRealizado'), service);
+        props.close(false);
+    };
+
+    const handleTemplateChange = async (e) => {
         console.log(e.target.value);
+        const docSnap = await getDoc(doc(db, "Servicio", e.target.value));
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+            const doc = docSnap.data();
+            setService({
+                servicioid: doc.servicioid,
+                seccion: doc.seccion,
+                descripcion: doc.descripcion,
+                costo: doc.costo,
+                comision: doc.comision,
+                impuesto: doc.impuesto,
+                observaciones: doc.observaciones,
+                tipo: doc.tipo,
+                taller: doc.taller,
+                estatus: false
+            });
+        } else {
+            console.log("No such document!");
+        }
     }
 
     useEffect(() => {
@@ -80,23 +108,6 @@ const ModalComponent = (props) => {
                 <div className="modal-body mt--4">
                     <Row className="ml--2 mr--2">
                         <Card className="bg-secondary shadow">
-                            {/* <CardHeader className="bg-white border-0">
-                            <Row className="align-items-center">
-                                <Col xs="8">
-                                    <h3 className="mb-0">Agregar Servicio</h3>
-                                </Col>
-                                <Col className="text-right" xs="4">
-                                    <Button
-                                        color="primary"
-                                        href="#cliente"
-                                        onClick={e=>e.preventDefault}
-                                        size="sm"
-                                    >
-                                        Guardar
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </CardHeader> */}
                             <CardBody>
                                 <Form>
                                     <div className="pl-lg-4">
@@ -111,8 +122,8 @@ const ModalComponent = (props) => {
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
-                                                        {servData.map((s)=>{
-                                                            return <option key={s.id} value={s.id}>{s.description}</option>
+                                                        {servData.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
                                                         })}
                                                     </Input>
                                                 </FormGroup>
@@ -144,7 +155,8 @@ const ModalComponent = (props) => {
                                                     >
                                                         Sección
                                                     </label>
-                                                    <Input type="select" name="type" id="select"
+                                                    <Input type="select" name="seccion" id="select"
+                                                        //value={service.seccion}
                                                         onChange={handleServiceChange}>
                                                         <option>Neumáticos</option>
                                                         <option>Revisiones</option>
@@ -170,10 +182,11 @@ const ModalComponent = (props) => {
                                                         Descripción
                                                     </label>
                                                     <Input
-                                                        name="description"
+                                                        name="descripcion"
                                                         className="form-control-alternative"
                                                         id="input-descripcion"
                                                         type="text"
+                                                        value={service.descripcion}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
@@ -188,7 +201,9 @@ const ModalComponent = (props) => {
                                                     >
                                                         Tipo de Servicio
                                                     </label>
-                                                    <Input type="select" name="type" id="select-type"
+                                                    <Input type="select" name="tipo"
+                                                        id="select-type"
+                                                        //value={service.tipo}
                                                         onChange={handleServiceChange}>
                                                         <option>Interno</option>
                                                         <option>Externo</option>
@@ -203,7 +218,8 @@ const ModalComponent = (props) => {
                                                     >
                                                         Taller
                                                     </label>
-                                                    <Input type="select" name="type" id="select-taller"
+                                                    <Input type="select" name="taller" id="select-taller"
+                                                    value={service.taller}
                                                         onChange={handleServiceChange}>
                                                         <option>LA CHOLA</option>
                                                         <option>123 TALLER</option>
@@ -221,11 +237,12 @@ const ModalComponent = (props) => {
                                                         Costo
                                                     </label>
                                                     <Input
-                                                        name="cost"
+                                                        name="costo"
                                                         className="form-control-alternative"
                                                         id="input-costo"
                                                         placeholder="$0.00"
                                                         type="text"
+                                                        value={service.costo}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
@@ -239,11 +256,12 @@ const ModalComponent = (props) => {
                                                         Impuesto
                                                     </label>
                                                     <Input
-                                                        name="tax"
+                                                        name="impuesto"
                                                         className="form-control-alternative"
                                                         id="input-impuesto"
                                                         placeholder="%"
                                                         type="text"
+                                                        value={service.impuesto}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
@@ -257,11 +275,12 @@ const ModalComponent = (props) => {
                                                         Comisión
                                                     </label>
                                                     <Input
-                                                        name="commission"
+                                                        name="comision"
                                                         className="form-control-alternative"
                                                         id="input-commission"
                                                         placeholder="%"
                                                         type="text"
+                                                        value={service.impuesto}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
@@ -277,10 +296,11 @@ const ModalComponent = (props) => {
                                                         Observaciones
                                                     </label>
                                                     <Input
-                                                        name="observations"
+                                                        name="observaciones"
                                                         className="form-control-alternative"
                                                         id="input-observaciones"
                                                         type="textarea"
+                                                        value={service.observaciones}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
@@ -297,12 +317,16 @@ const ModalComponent = (props) => {
                         color="secondary"
                         data-dismiss="modal"
                         type="button"
-                        onClick={() => this.toggleModal("exampleModal")}
+                        onClick={handleClose}
                     >
-                        Close
+                        Cancelar
                     </Button>
-                    <Button color="primary" type="button">
-                        Save changes
+                    <Button 
+                        color="primary" 
+                        type="button"
+                        onClick={handleService}
+                    >
+                        Aceptar
                     </Button>
                 </div>
             </Modal>
