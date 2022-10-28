@@ -26,6 +26,13 @@ import OrdenDeTrabajo from "views/OrdenDeTrabajo/Principal";
 import NuevoServicio from "views/Servicios/NuevoServicio";
 import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
+import ListaServicio from "views/Servicios/ListaServicio";
+import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
+import ListaCliente from "views/Clientes/ListaCliente";
+import ListaProveedor from "views/Proveedores/ListaProveedor";
+import ListaFactura from "views/Facturas/ListaFactura";
+import ListaProducto from "views/Productos/ListaProducto";
+import DasboardPage from "views/Dashboards/Principal";
 
 var routes = [
   {
@@ -60,49 +67,49 @@ var routes = [
     path: "/vehiculos",
     name: "Vehículos",
     icon: "ni ni-bus-front-12 text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaVehiculo,
     layout: "/admin"
   },
   {
     path: "/servicios",
     name: "Servicios",
     icon: "ni ni-paper-diploma text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaServicio,
     layout: "/admin"
   },
   {
     path: "/productos",
     name: "Productos",
     icon: "ni ni-settings text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaProducto,
     layout: "/admin"
   },
   {
     path: "/clientes",
     name: "Clientes",
     icon: "ni ni-circle-08 text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaCliente,
     layout: "/admin"
   },
   {
     path: "/proveedores",
     name: "Proveedores",
     icon: "ni ni-delivery-fast text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaProveedor,
     layout: "/admin"
   },
   {
     path: "/facturas",
     name: "Facturas",
     icon: "ni ni-credit-card text-blue",
-    component: OrdenDeTrabajo,
+    component: ListaFactura,
     layout: "/admin"
   },
   {
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-blue",
-    component: OrdenDeTrabajo,
+    component: DasboardPage,
     layout: "/admin"
   },
 ];

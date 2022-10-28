@@ -17,48 +17,44 @@
 */
 // reactstrap components
 import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip
-} from "reactstrap";
-// core components
-import Header from "components/Headers/HeaderGeneric.js";
-
-
-import { useState, useEffect } from "react";
-import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
-
-
-const Tables = () => {
-  const [otData, setotData] = useState([]);
+    Badge,
+    Card,
+    CardHeader,
+    CardFooter,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    Media,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
+    Progress,
+    Table,
+    Container,
+    Row,
+    UncontrolledTooltip
+  } from "reactstrap";
+  // core components
+  import Header from "components/Headers/HeaderGeneric.js";
+  import { useState, useEffect } from "react";
+  import { db } from '../../firebase'
+  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  
+  const Tables = () => {
+  const [prodData, setProdData] = useState([]);
   const [search,setSearch]= useState("");
 
-  const getOrder = () => {
-    onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
-        const workorders = [];
+  const getClient = () => {
+    onSnapshot(query(collection(db, "Productos")), (querySnapshot) => {
+        const prods = [];
         querySnapshot.forEach((doc) => {
-          workorders.push({ ...doc.data(), id: doc.id });
+            prods.push({ ...doc.data(), id: doc.id });
         });
-        console.log(workorders);
-        setotData(workorders);
+        console.log(prods);
+        setProdData(prods);
     });
   }
-
   const searcher = (e) =>{
     setSearch(e.target.value)
     //captura los caracteres que se van typeando
@@ -68,56 +64,52 @@ const Tables = () => {
 
   let results = [];
   if(!search){
-    results=otData
+    results=prodData
 }
-
 else{
 
-  results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase())||
-  dato.estado.toLowerCase().includes(search.toLocaleLowerCase()) ||
-  dato.empleado.toLowerCase().includes(search.toLocaleLowerCase()));
-  
-  /*results = clientData.filter((dato)=>
-  dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
-  )*/
+    results=prodData.filter((dato)=> dato.seccion.toLowerCase().includes(search.toLocaleLowerCase())||
+    dato.nombre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    dato.proveedor.toLowerCase().includes(search.toLocaleLowerCase()));
+    
+    /*results = clientData.filter((dato)=>
+    dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+    )*/
 }
 
-useEffect(() => {
-  getOrder();
-}, []);
+  useEffect(() => {
+    getClient();
+  }, []);
 
-
-  return (
-    <>
-      <Header />
-      {/* Page content */}
-      <Container className="mt--7" fluid>
-        {/* Table */}
-        <Row>
-          <div className="col">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <h3 className="mb-0">Órdenes de trabajo</h3>
-                <input value={search} onChange={searcher} type="text" placeholder="ID, estado , empleado"></input>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">No Orden</th>
-                    <th scope="col">Presupuesto</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Vehículo</th>
-                    <th scope="col">Fecha inicio</th>
-                    <th scope="col">Fecha cierre</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                {results.map((s)=>{
+    return (
+      <>
+        <Header />
+        {/* Page content */}
+        <Container className="mt--7" fluid>
+          {/* Table */}
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <h3 className="mb-0">Productos</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="Nombre, proveedor sección"></input>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Proveedor</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Seccion</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                     {results.map((s)=>{
                             return <tr key={s.id}>
-                                    <th scope="row">{s.OT_id}</th>
-                                    <td>{s.presupuesto}</td>
+                                    <th scope="row">{s.nombre}</th>
+                                    <td>{s.proveedor}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
@@ -130,14 +122,11 @@ useEffect(() => {
                                                                 </Badge>
                                                         }
                                                     </td> */}
-                                        <td>{s.estado}</td>
-                                        <td>{s.empleado}</td>
-                                        <td>{s.vehiculo}</td>
-                                        <td>{s.fecha_inicio}</td>
-                                        <td>{s.fecha_cierre}</td>
+                                        <td>{s.costo_unitario}</td>
+                                        <td>{s.seccion}</td>
+                                        <td>{s.stock}</td>
                                         <td className="text-right">
-                                      
-                                        <UncontrolledDropdown>
+                                            <UncontrolledDropdown>
                                                 <DropdownToggle
                                                 className="btn-icon-only text-light"
                                                 href="#pablo"

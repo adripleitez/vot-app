@@ -17,48 +17,44 @@
 */
 // reactstrap components
 import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip
-} from "reactstrap";
-// core components
-import Header from "components/Headers/HeaderGeneric.js";
-
-
-import { useState, useEffect } from "react";
-import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
-
-
-const Tables = () => {
-  const [otData, setotData] = useState([]);
+    Badge,
+    Card,
+    CardHeader,
+    CardFooter,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    Media,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
+    Progress,
+    Table,
+    Container,
+    Row,
+    UncontrolledTooltip
+  } from "reactstrap";
+  // core components
+  import Header from "components/Headers/HeaderGeneric.js";
+  import { useState, useEffect } from "react";
+  import { db } from '../../firebase'
+  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  
+  const Tables = () => {
+  const [servData, setServData] = useState([]);
   const [search,setSearch]= useState("");
 
-  const getOrder = () => {
-    onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
-        const workorders = [];
+  const getServices = () => {
+    onSnapshot(query(collection(db, "Servicio")), (querySnapshot) => {
+        const services = [];
         querySnapshot.forEach((doc) => {
-          workorders.push({ ...doc.data(), id: doc.id });
+            services.push({ ...doc.data(), id: doc.id });
         });
-        console.log(workorders);
-        setotData(workorders);
+        console.log(services);
+        setServData(services);
     });
   }
-
   const searcher = (e) =>{
     setSearch(e.target.value)
     //captura los caracteres que se van typeando
@@ -68,56 +64,51 @@ const Tables = () => {
 
   let results = [];
   if(!search){
-    results=otData
+    results=servData
 }
-
 else{
 
-  results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase())||
-  dato.estado.toLowerCase().includes(search.toLocaleLowerCase()) ||
-  dato.empleado.toLowerCase().includes(search.toLocaleLowerCase()));
-  
-  /*results = clientData.filter((dato)=>
-  dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
-  )*/
+    results=servData.filter((dato)=> dato.description.toLowerCase().includes(search.toLocaleLowerCase())||
+    dato.cost.toLowerCase().includes(search.toLocaleLowerCase()));
+    
+    /*results = clientData.filter((dato)=>
+    dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+    )*/
 }
 
-useEffect(() => {
-  getOrder();
-}, []);
+  useEffect(() => {
+    getServices();
+  }, []);
 
-
-  return (
-    <>
-      <Header />
-      {/* Page content */}
-      <Container className="mt--7" fluid>
-        {/* Table */}
-        <Row>
-          <div className="col">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <h3 className="mb-0">Órdenes de trabajo</h3>
-                <input value={search} onChange={searcher} type="text" placeholder="ID, estado , empleado"></input>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">No Orden</th>
-                    <th scope="col">Presupuesto</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Vehículo</th>
-                    <th scope="col">Fecha inicio</th>
-                    <th scope="col">Fecha cierre</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                {results.map((s)=>{
+    return (
+      <>
+        <Header />
+        {/* Page content */}
+        <Container className="mt--7" fluid>
+          {/* Table */}
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <h3 className="mb-0">Servicios</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="Costo o descripción"></input>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Precio base</th>
+                        <th scope="col">Sección</th>
+                        <th scope="col">Observaciones</th>
+                        <th scope="col">Impuestos</th>
+                        <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {results.map((s)=>{
                             return <tr key={s.id}>
-                                    <th scope="row">{s.OT_id}</th>
-                                    <td>{s.presupuesto}</td>
+                                    <th scope="row">{s.description}</th>
+                                    <td>{s.cost}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
@@ -130,14 +121,11 @@ useEffect(() => {
                                                                 </Badge>
                                                         }
                                                     </td> */}
-                                        <td>{s.estado}</td>
-                                        <td>{s.empleado}</td>
-                                        <td>{s.vehiculo}</td>
-                                        <td>{s.fecha_inicio}</td>
-                                        <td>{s.fecha_cierre}</td>
+                                        <td>{s.type}</td>
+                                        <td>{s.observations}</td>
+                                        <td>{s.tax}</td>
                                         <td className="text-right">
-                                      
-                                        <UncontrolledDropdown>
+                                            <UncontrolledDropdown>
                                                 <DropdownToggle
                                                 className="btn-icon-only text-light"
                                                 href="#pablo"
@@ -172,7 +160,7 @@ useEffect(() => {
                                         </td>
                                     </tr>
                             })}
-                  </tbody> 
+                  </tbody>
                 </Table>
                 <CardFooter className="py-4">
                   <nav aria-label="...">

@@ -17,45 +17,43 @@
 */
 // reactstrap components
 import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip
-} from "reactstrap";
-// core components
-import Header from "components/Headers/HeaderGeneric.js";
+    Badge,
+    Card,
+    CardHeader,
+    CardFooter,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    Media,
+    Pagination,
+    PaginationItem,
+    PaginationLink,
+    Progress,
+    Table,
+    Container,
+    Row,
+    UncontrolledTooltip
+  } from "reactstrap";
+  // core components
+  import Header from "components/Headers/HeaderGeneric.js";
+  import { useState, useEffect } from "react";
+  import { db } from '../../firebase'
+  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 
 
-import { useState, useEffect } from "react";
-import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
-
-
-const Tables = () => {
-  const [otData, setotData] = useState([]);
+  const Tables = () => {
+  const [clientData, setClientData] = useState([]);
   const [search,setSearch]= useState("");
 
-  const getOrder = () => {
-    onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
-        const workorders = [];
+  const getClient = () => {
+    onSnapshot(query(collection(db, "Facturas")), (querySnapshot) => {  //Aun no creado
+        const clients = [];
         querySnapshot.forEach((doc) => {
-          workorders.push({ ...doc.data(), id: doc.id });
+            clients.push({ ...doc.data(), id: doc.id });
         });
-        console.log(workorders);
-        setotData(workorders);
+        console.log(clients);
+        setClientData(clients);
     });
   }
 
@@ -68,56 +66,54 @@ const Tables = () => {
 
   let results = [];
   if(!search){
-    results=otData
+    results=clientData
 }
-
 else{
 
-  results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase())||
-  dato.estado.toLowerCase().includes(search.toLocaleLowerCase()) ||
-  dato.empleado.toLowerCase().includes(search.toLocaleLowerCase()));
-  
-  /*results = clientData.filter((dato)=>
-  dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
-  )*/
+    results=clientData.filter((dato)=> dato.nombre_cliente.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    dato.codigo_factura.toLowerCase().includes(search.toLocaleLowerCase()) ||
+    dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
+
+    /*results = clientData.filter((dato)=>
+    dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
+    )*/
 }
 
-useEffect(() => {
-  getOrder();
-}, []);
+  useEffect(() => {
+    getClient();
+  }, []);
 
-
-  return (
-    <>
-      <Header />
-      {/* Page content */}
-      <Container className="mt--7" fluid>
-        {/* Table */}
-        <Row>
-          <div className="col">
-            <Card className="shadow">
+    return (
+      <>
+        <Header />
+        {/* Page content */}
+        <Container className="mt--7" fluid>
+          {/* Table */}
+          <Row>
+            <div className="col">
+              <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Órdenes de trabajo</h3>
-                <input value={search} onChange={searcher} type="text" placeholder="ID, estado , empleado"></input>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">No Orden</th>
-                    <th scope="col">Presupuesto</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Vehículo</th>
-                    <th scope="col">Fecha inicio</th>
-                    <th scope="col">Fecha cierre</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                {results.map((s)=>{
+                  <h3 className="mb-0">Facturas</h3>
+                  <input value={search} onChange={searcher} type="text" placeholder="código, cliente o vehiculo"></input>
+                </CardHeader>
+                 
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Codigo Factura</th>
+                        <th scope="col">Fecha Factura</th>
+                        <th scope="col">ID Orden de Trabajo</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Vehiculo</th>
+                        <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                     {results.map((s)=>{
                             return <tr key={s.id}>
-                                    <th scope="row">{s.OT_id}</th>
-                                    <td>{s.presupuesto}</td>
+                                    <th scope="row">{s.codigo_factura}</th>
+                                    <td>{s.fecha_factura}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
@@ -130,14 +126,12 @@ useEffect(() => {
                                                                 </Badge>
                                                         }
                                                     </td> */}
-                                        <td>{s.estado}</td>
-                                        <td>{s.empleado}</td>
+                                        <td>{s.id_orden_de_trabajo}</td>
+                                        <td>{s.nombre_cliente}</td>
+                                        <td>{s.total}</td>
                                         <td>{s.vehiculo}</td>
-                                        <td>{s.fecha_inicio}</td>
-                                        <td>{s.fecha_cierre}</td>
                                         <td className="text-right">
-                                      
-                                        <UncontrolledDropdown>
+                                            <UncontrolledDropdown>
                                                 <DropdownToggle
                                                 className="btn-icon-only text-light"
                                                 href="#pablo"
