@@ -36,6 +36,17 @@ const Profile = () => {
         email: "",
         type: "Física",
     };
+
+    const defaultOrden = {
+        OT_id: "",
+        empleado: "",
+        estado: "",
+        fecha_cierre: "",
+        fecha_inicio: "",
+        presupuesto: "",
+        vehiculo_id: "",
+    };
+
     const defaultVehicle = {
         numberplate: "",
         type: "",
@@ -54,7 +65,7 @@ const Profile = () => {
         date: date,
         kms: "",
         gas: "",
-        insurance: ""
+        insurance: "",
     };
 
     const [client, setClient] = useState(defaultClient);
@@ -75,11 +86,10 @@ const Profile = () => {
             querySnapshot.forEach((doc) => {
                 docs.push({ ...doc.data(), id: doc.id });
             });
-            setLastOrder(docs[0].OT_id);
+            let id = docs[0].OT_id.split(/-0*/);
+            setLastOrder("OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'));
         });
     }
-
-    console.log(lastOrder);
 
     useEffect(() => {
         lastDoc();
@@ -167,6 +177,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 placeholder="OT-000000"
                                                 id="input-id-orden"
+                                                defaultValue = {lastOrder}
                                                 type="text"
                                             />
                                         </FormGroup>
