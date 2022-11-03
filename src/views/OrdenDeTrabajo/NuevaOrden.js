@@ -19,6 +19,7 @@ import { useState, useEffect } from "react";
 import { db } from '../../firebase'
 import { collection, addDoc, query, onSnapshot, orderBy, limit } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
+import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
 
 
@@ -74,7 +75,9 @@ const Profile = () => {
 
     const [diagnosis, setDiagnosis] = useState(defaultDiagnosis);
 
-    const [modal, setModal] = useState(false);
+    const [modalService, setModalService] = useState(false);
+
+    const [modalProducts, setModalProducts] = useState(false);
 
     const [modalChecks, setModalChecks] = useState(false);
 
@@ -110,9 +113,14 @@ const Profile = () => {
         setDiagnosis({ ...diagnosis, [name]: value })
     };
 
-    const handleModal = (e) => {
+    const handleModalService = (e) => {
         e.preventDefault();
-        setModal(true);
+        setModalService(true);
+    };
+
+    const handleModalProducts = (e) => {
+        e.preventDefault();
+        setModalProducts(true);
     };
 
     const handleChecks = (e) => {
@@ -729,14 +737,14 @@ const Profile = () => {
                                         <Button
                                             color="primary"
                                             href="#servicos"
-                                            onClick={handleModal}
+                                            onClick={handleModalService}
                                             size="sm"
                                         >
                                             Agregar
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modal} close={setModal}/>
+                                <ModalComponent open={modalService} close={setModalService}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -745,6 +753,92 @@ const Profile = () => {
                                             <th scope="col">Descripcion</th>
                                             <th scope="col">Precio base</th>
                                             <th scope="col">Estatus</th>
+                                            <th scope="col">Sección</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Cambio de aceite</th>
+                                            <td>$10 USD</td>
+                                            <td>
+                                                <Badge color="" className="badge-dot mr-4">
+                                                    <i className="bg-success" />
+                                                    Realizado
+                                                </Badge>
+                                            </td>
+
+                                            <td>Sección 1</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Cambio de aceite</th>
+                                            <td>$10 USD</td>
+                                            <td>
+                                                <Badge color="" className="badge-dot mr-4">
+                                                    <i className="bg-warning" />
+                                                    Pendiente
+                                                </Badge>
+                                            </td>
+
+                                            <td>Sección 1</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Cambio de aceite</th>
+                                            <td>$10 USD</td>
+                                            <td>
+                                                <Badge color="" className="badge-dot mr-4">
+                                                    <i className="bg-warning" />
+                                                    Pendiente
+                                                </Badge>
+                                            </td>
+
+                                            <td>Sección 1</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Cambio de aceite</th>
+                                            <td>$10 USD</td>
+                                            <td>
+                                                <Badge color="" className="badge-dot mr-4">
+                                                    <i className="bg-warning" />
+                                                    Pendiente
+                                                </Badge>
+                                            </td>
+
+                                            <td>Sección 1</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row className="mt-3">
+                    <Col className="order-xl-1" xl="12">
+                        <Card className="bg-secondary shadow">
+                            <CardHeader className="bg-white border-0">
+                                <Row className="align-items-center">
+                                    <Col xs="8">
+                                        <h3 className="mb-0">Listado de productos</h3>
+                                    </Col>
+                                    <Col className="text-right" xs="4">
+                                        <Button
+                                            color="primary"
+                                            href="#servicos"
+                                            onClick={handleModalProducts}
+                                            size="sm"
+                                        >
+                                            Agregar
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <ModalProducts open={modalProducts} close={setModalProducts}/>
+                            </CardHeader>
+                            <CardBody>
+                                <Table className="align-items-center table-flush" responsive>
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Costo unitario</th>
+                                            <th scope="col">Cantidad</th>
                                             <th scope="col">Sección</th>
                                         </tr>
                                     </thead>

@@ -10,39 +10,34 @@ import {
     Row,
     Col,
 } from "reactstrap";
-import { db } from './../../firebase'
+import { db } from '../../firebase'
 import { collection, addDoc, doc, getDoc, query, onSnapshot } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
-    const defaultService = {
-        servicioid: "",
-        seccion: "Neumáticos",
-        descripcion: "",
-        costo: "",
-        comision: "",
-        impuesto: "",
-        observaciones: "",
-        tipo: "",
-        taller: "",
-        OT_id: "",
-        estatus: false
+    const defaultProduct = {
+        id: "",
+        nombre: "",
+        seccion: "",
+        costo_unitario: "",
+        cantidad: "",
+        OT_id: ""
     };
 
 
-    const [service, setService] = useState(defaultService);
+    const [product, setProduct] = useState(defaultProduct);
 
-    const [servData, setServData] = useState([]);
+    const [prodData, setProdData] = useState([]);
 
-    //read service
-    const getServices = () => {
-        onSnapshot(query(collection(db, "Servicio")), (querySnapshot) => {
-            const services = [];
+    //read product
+    const getProducts = () => {
+        onSnapshot(query(collection(db, "Productos")), (querySnapshot) => {
+            const products = [];
             querySnapshot.forEach((doc) => {
-                services.push({ ...doc.data(), id: doc.id });
+                products.push({ ...doc.data(), id: doc.id });
             });
-            console.log(services);
-            setServData(services);
+            console.log(products);
+            setProdData(products);
         });
     }
 
@@ -51,36 +46,31 @@ const ModalComponent = (props) => {
         props.close(false);
     }
 
-    const handleServiceChange = (e) => {
+    const handleProductChange = (e) => {
         const { name, value } = e.target;
-        setService({ ...service, [name]: value })
+        setProduct({ ...product, [name]: value })
         console.log(name, value);
     };
 
-    const handleService = async (e) => {
+    const handleProduct = async (e) => {
         e.preventDefault();
-        console.log(service);
-        await addDoc(collection(db, 'ServicioRealizado'), service);
+        console.log(product);
+        await addDoc(collection(db, 'ProductosVendido'), product);
         props.close(false);
     };
 
     const handleTemplateChange = async (e) => {
         console.log(e.target.value);
-        const docSnap = await getDoc(doc(db, "Servicio", e.target.value));
+        const docSnap = await getDoc(doc(db, "Productos", e.target.value));
         if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
             const doc = docSnap.data();
-            setService({
-                servicioid: doc.servicioid,
+            setProduct({
+                id: doc.id,
+                nombre: doc.nombre,
                 seccion: doc.seccion,
-                descripcion: doc.descripcion,
-                costo: doc.costo,
-                comision: doc.comision,
-                impuesto: doc.impuesto,
-                observaciones: doc.observaciones,
-                tipo: doc.tipo,
-                taller: doc.taller,
-                estatus: false
+                costo_unitario: doc.costo_unitario,
+                cantidad: "",
             });
         } else {
             console.log("No such document!");
@@ -88,7 +78,7 @@ const ModalComponent = (props) => {
     }
 
     useEffect(() => {
-        getServices();
+        getProducts();
     }, []);
 
     return (
@@ -123,8 +113,8 @@ const ModalComponent = (props) => {
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
-                                                        {servData.map((s) => {
-                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
+                                                        {prodData.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.nombre}</option>
                                                         })}
                                                     </Input>
                                                 </FormGroup>
@@ -144,7 +134,7 @@ const ModalComponent = (props) => {
                                                         className="form-control-alternative"
                                                         id="input-codigo"
                                                         type="text"
-                                                        onChange={handleServiceChange}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -157,8 +147,8 @@ const ModalComponent = (props) => {
                                                         Sección
                                                     </label>
                                                     <Input type="select" name="seccion" id="select"
-                                                        //value={service.seccion}
-                                                        onChange={handleServiceChange}>
+                                                        //value={product.seccion}
+                                                        onChange={handleProductChange}>
                                                         <option>Neumáticos</option>
                                                         <option>Revisiones</option>
                                                         <option>Baterías / Arranques</option>
@@ -187,8 +177,8 @@ const ModalComponent = (props) => {
                                                         className="form-control-alternative"
                                                         id="input-descripcion"
                                                         type="text"
-                                                        value={service.descripcion}
-                                                        onChange={handleServiceChange}
+                                                        value={product.descripcion}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -204,8 +194,8 @@ const ModalComponent = (props) => {
                                                     </label>
                                                     <Input type="select" name="tipo"
                                                         id="select-type"
-                                                        //value={service.tipo}
-                                                        onChange={handleServiceChange}>
+                                                        //value={product.tipo}
+                                                        onChange={handleProductChange}>
                                                         <option>Interno</option>
                                                         <option>Externo</option>
                                                     </Input>
@@ -220,8 +210,8 @@ const ModalComponent = (props) => {
                                                         Taller
                                                     </label>
                                                     <Input type="select" name="taller" id="select-taller"
-                                                    value={service.taller}
-                                                        onChange={handleServiceChange}>
+                                                        value={product.taller}
+                                                        onChange={handleProductChange}>
                                                         <option>LA CHOLA</option>
                                                         <option>123 TALLER</option>
                                                     </Input>
@@ -243,8 +233,8 @@ const ModalComponent = (props) => {
                                                         id="input-costo"
                                                         placeholder="$0.00"
                                                         type="text"
-                                                        value={service.costo}
-                                                        onChange={handleServiceChange}
+                                                        value={product.costo}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -262,8 +252,8 @@ const ModalComponent = (props) => {
                                                         id="input-impuesto"
                                                         placeholder="%"
                                                         type="text"
-                                                        value={service.impuesto}
-                                                        onChange={handleServiceChange}
+                                                        value={product.impuesto}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -281,8 +271,8 @@ const ModalComponent = (props) => {
                                                         id="input-commission"
                                                         placeholder="%"
                                                         type="text"
-                                                        value={service.impuesto}
-                                                        onChange={handleServiceChange}
+                                                        value={product.impuesto}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -301,8 +291,8 @@ const ModalComponent = (props) => {
                                                         className="form-control-alternative"
                                                         id="input-observaciones"
                                                         type="textarea"
-                                                        value={service.observaciones}
-                                                        onChange={handleServiceChange}
+                                                        value={product.observaciones}
+                                                        onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -322,10 +312,10 @@ const ModalComponent = (props) => {
                     >
                         Cancelar
                     </Button>
-                    <Button 
-                        color="primary" 
+                    <Button
+                        color="primary"
                         type="button"
-                        onClick={handleService}
+                        onClick={handleProduct}
                     >
                         Aceptar
                     </Button>
