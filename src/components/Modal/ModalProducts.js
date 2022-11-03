@@ -34,7 +34,7 @@ const ModalComponent = (props) => {
         onSnapshot(query(collection(db, "Productos")), (querySnapshot) => {
             const products = [];
             querySnapshot.forEach((doc) => {
-                products.push({ ...doc.data(), id: doc.id });
+                products.push({ ...doc.data(), id_doc: doc.id });
             });
             console.log(products);
             setProdData(products);
@@ -109,12 +109,12 @@ const ModalComponent = (props) => {
                                                         className="form-control-label"
                                                         htmlFor="input-id-orden"
                                                     >
-                                                        Seleccionar Servicio
+                                                        Seleccionar Producto
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
                                                         {prodData.map((s) => {
-                                                            return <option key={s.id} value={s.id}>{s.nombre}</option>
+                                                            return <option key={s.id_doc} value={s.id}>{s.nombre}</option>
                                                         })}
                                                     </Input>
                                                 </FormGroup>
@@ -127,13 +127,14 @@ const ModalComponent = (props) => {
                                                         className="form-control-label"
                                                         htmlFor="input-codigo"
                                                     >
-                                                        Código de Servicio
+                                                        Código de Producto
                                                     </label>
                                                     <Input
-                                                        name="servicioid"
+                                                        name="id"
                                                         className="form-control-alternative"
                                                         id="input-codigo"
                                                         type="text"
+                                                        value={product.id}
                                                         onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
@@ -170,14 +171,14 @@ const ModalComponent = (props) => {
                                                         className="form-control-label"
                                                         htmlFor="input-descripcion"
                                                     >
-                                                        Descripción
+                                                        Nombre
                                                     </label>
                                                     <Input
-                                                        name="descripcion"
+                                                        name="nombre"
                                                         className="form-control-alternative"
                                                         id="input-descripcion"
                                                         type="text"
-                                                        value={product.descripcion}
+                                                        value={product.nombre}
                                                         onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
@@ -185,113 +186,37 @@ const ModalComponent = (props) => {
                                         </Row>
                                         <Row>
                                             <Col lg="6">
-                                                <FormGroup>
-                                                    <label
-                                                        htmlFor="select-type"
-                                                        className="form-control-label"
-                                                    >
-                                                        Tipo de Servicio
-                                                    </label>
-                                                    <Input type="select" name="tipo"
-                                                        id="select-type"
-                                                        //value={product.tipo}
-                                                        onChange={handleProductChange}>
-                                                        <option>Interno</option>
-                                                        <option>Externo</option>
-                                                    </Input>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col lg="6">
-                                                <FormGroup>
-                                                    <label
-                                                        htmlFor="select-taller"
-                                                        className="form-control-label"
-                                                    >
-                                                        Taller
-                                                    </label>
-                                                    <Input type="select" name="taller" id="select-taller"
-                                                        value={product.taller}
-                                                        onChange={handleProductChange}>
-                                                        <option>LA CHOLA</option>
-                                                        <option>123 TALLER</option>
-                                                    </Input>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col lg="4">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
                                                         htmlFor="input-costo"
                                                     >
-                                                        Costo
+                                                        Costo unitario
                                                     </label>
                                                     <Input
-                                                        name="costo"
+                                                        name="costo_unitario"
                                                         className="form-control-alternative"
                                                         id="input-costo"
                                                         placeholder="$0.00"
                                                         type="text"
-                                                        value={product.costo}
+                                                        value={product.costo_unitario}
                                                         onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
-                                            <Col lg="4">
+                                            <Col lg="6">
                                                 <FormGroup>
                                                     <label
                                                         className="form-control-label"
                                                         htmlFor="input-impuesto"
                                                     >
-                                                        Impuesto
+                                                        Cantidad
                                                     </label>
                                                     <Input
-                                                        name="impuesto"
+                                                        name="cantidad"
                                                         className="form-control-alternative"
                                                         id="input-impuesto"
-                                                        placeholder="%"
                                                         type="text"
-                                                        value={product.impuesto}
-                                                        onChange={handleProductChange}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col lg="4">
-                                                <FormGroup>
-                                                    <label
-                                                        className="form-control-label"
-                                                        htmlFor="input-commission"
-                                                    >
-                                                        Comisión
-                                                    </label>
-                                                    <Input
-                                                        name="comision"
-                                                        className="form-control-alternative"
-                                                        id="input-commission"
-                                                        placeholder="%"
-                                                        type="text"
-                                                        value={product.impuesto}
-                                                        onChange={handleProductChange}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col lg="12">
-                                                <FormGroup>
-                                                    <label
-                                                        className="form-control-label"
-                                                        htmlFor="input-observaciones"
-                                                    >
-                                                        Observaciones
-                                                    </label>
-                                                    <Input
-                                                        name="observaciones"
-                                                        className="form-control-alternative"
-                                                        id="input-observaciones"
-                                                        type="textarea"
-                                                        value={product.observaciones}
                                                         onChange={handleProductChange}
                                                     />
                                                 </FormGroup>
