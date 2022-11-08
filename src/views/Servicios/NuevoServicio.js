@@ -306,7 +306,7 @@ const Profile = () => {
                                 <Row className="align-items-center">
                                     <Col xs="8">
                                         <h3 className="mb-0">Listado de servicios</h3>
-                                        <input value={search} onChange={searcher} type="text" placeholder="Costo o descripción"></input>
+                                        <input value={search} onChange={searcher} type="text"></input>
                                     </Col>
                                 </Row>
                             </CardHeader>

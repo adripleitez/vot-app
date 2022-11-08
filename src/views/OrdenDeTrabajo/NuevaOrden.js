@@ -159,15 +159,6 @@ const Profile = () => {
                                     <Col xs="8">
                                         <h3 className="mb-0">Orden de trabajo</h3>
                                     </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#orden"
-                                            size="sm"
-                                        >
-                                            Guardar
-                                        </Button>
-                                    </Col>
                                 </Row>
                             </CardHeader>
                             <CardBody>
@@ -183,7 +174,6 @@ const Profile = () => {
                                             <Input
                                                 name="id"
                                                 className="form-control-alternative"
-                                                placeholder="OT-000000"
                                                 id="input-id-orden"
                                                 defaultValue = {lastOrder}
                                                 type="text"
@@ -236,21 +226,38 @@ const Profile = () => {
                                     <Col xs="8">
                                         <h3 className="mb-0">Datos del cliente</h3>
                                     </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#cliente"
-                                            onClick={handleClient}
-                                            size="sm"
-                                        >
-                                            Guardar
-                                        </Button>
-                                    </Col>
                                 </Row>
                             </CardHeader>
                             <CardBody>
                                 <Form>
                                     <div className="pl-lg-4">
+                                        <Row className="justify-content-left">
+                                            <Col lg="12">
+                                                <label className="form-control-label"> ¿Existe el Cliente? </label>
+                                                <Row className="justify-content-left mb-3">
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange=""/>{' '} No </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange=""/>{' '} Si </FormGroup></Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row className="justify-content-left">
+                                            <Col lg="12">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                    >
+                                                        Seleccionar Cliente
+                                                    </label>
+                                                    <Input type="select" name="type" id="select"
+                                                        // onChange={handleTemplateChange}
+                                                        disabled>
+                                                        {/* {servData.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
+                                                        })} */}
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
                                         <Row>
                                             <Col lg="6">
                                                 <FormGroup>
@@ -279,7 +286,6 @@ const Profile = () => {
                                                         name="clientid"
                                                         className="form-control-alternative"
                                                         id="input-dui"
-                                                        placeholder="Eg. 00000000-0"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -299,7 +305,6 @@ const Profile = () => {
                                                         name="name"
                                                         className="form-control-alternative"
                                                         id="input-name"
-                                                        placeholder="Nombre"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -319,7 +324,6 @@ const Profile = () => {
                                                         name="tel"
                                                         className="form-control-alternative"
                                                         id="input-tel"
-                                                        placeholder="2222-2222"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -337,7 +341,6 @@ const Profile = () => {
                                                         name="email"
                                                         className="form-control-alternative"
                                                         id="input-email"
-                                                        placeholder="example@gmail.com"
                                                         type="email"
                                                         onChange={handleClientChange}
                                                     />
@@ -357,7 +360,6 @@ const Profile = () => {
                                                         name="name"
                                                         className="form-control-alternative"
                                                         id="input-name"
-                                                        placeholder="Nombre"
                                                         type="text"
                                                         onChange={handleClientChange}
                                                     />
@@ -377,21 +379,38 @@ const Profile = () => {
                                     <Col xs="8">
                                         <h3 className="mb-0">Datos Vehiculo</h3>
                                     </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#vehiculo"
-                                            onClick={handleVehicle}
-                                            size="sm"
-                                        >
-                                            Guardar
-                                        </Button>
-                                    </Col>
                                 </Row>
                             </CardHeader>
                             <CardBody>
                                 <Form>
                                     <div className="pl-lg-4">
+                                        <Row className="justify-content-left">
+                                            <Col lg="12">
+                                                <label className="form-control-label"> ¿Existe el Cliente? </label>
+                                                <Row className="justify-content-left mb-3">
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange=""/>{' '} No </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange=""/>{' '} Si </FormGroup></Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row className="justify-content-left">
+                                            <Col lg="12">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                    >
+                                                        Seleccionar Vehiculo
+                                                    </label>
+                                                    <Input type="select" name="type" id="select" disabled
+                                                        // onChange={handleTemplateChange}
+                                                        >
+                                                        {/* {servData.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
+                                                        })} */}
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
                                         <Row>
                                             <Col lg="4">
                                                 <FormGroup>
@@ -405,7 +424,6 @@ const Profile = () => {
                                                         name="numberplate"
                                                         className="form-control-alternative"
                                                         id="input-number-plate"
-                                                        placeholder="000000"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -423,7 +441,6 @@ const Profile = () => {
                                                         name="motor"
                                                         className="form-control-alternative"
                                                         id="input-num-motor"
-                                                        placeholder="00000000000"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -441,7 +458,6 @@ const Profile = () => {
                                                         name="year"
                                                         className="form-control-alternative"
                                                         id="input-year"
-                                                        placeholder="2022"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -461,7 +477,6 @@ const Profile = () => {
                                                         name="brand"
                                                         className="form-control-alternative"
                                                         id="input-brand"
-                                                        placeholder="Toyota"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -479,7 +494,6 @@ const Profile = () => {
                                                         name="model"
                                                         className="form-control-alternative"
                                                         id="input-model"
-                                                        placeholder="Corolla"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -497,7 +511,6 @@ const Profile = () => {
                                                         name="color"
                                                         className="form-control-alternative"
                                                         id="input-color"
-                                                        placeholder="Azul"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -517,7 +530,6 @@ const Profile = () => {
                                                         name="vin"
                                                         className="form-control-alternative"
                                                         id="input-vin"
-                                                        placeholder="00000000000000000"
                                                         type="text"
                                                         onChange={handleVehicleChange}
                                                     />
@@ -536,7 +548,6 @@ const Profile = () => {
                                                     className="form-control-alternative"
                                                     defaultValue=""
                                                     id="input-aseguradora"
-                                                    placeholder=""
                                                     type="text"
                                                     onChange = {handleDiagnosisChange}
                                                 />
@@ -576,16 +587,6 @@ const Profile = () => {
                                     <Col xs="8">
                                         <h3 className="mb-0">Diagnóstico</h3>
                                     </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#servicios"
-                                            onClick={handleDiagnosis}
-                                            size="sm"
-                                        >
-                                            Guardar
-                                        </Button>
-                                    </Col>
                                 </Row>
                             </CardHeader>
                             <CardBody>
@@ -604,7 +605,6 @@ const Profile = () => {
                                             className="form-control-alternative"
                                             defaultValue=""
                                             id="input-observaciontes-taller"
-                                            placeholder=""
                                             type="text"
                                             onChange = {handleDiagnosisChange}
                                         />
@@ -625,7 +625,6 @@ const Profile = () => {
                                             className="form-control-alternative"
                                             defaultValue=""
                                             id="input-observaciontes-cliente"
-                                            placeholder=""
                                             type="text"
                                             onChange = {handleDiagnosisChange}
                                         />
@@ -663,7 +662,6 @@ const Profile = () => {
                                         name="kms"
                                         className="form-control-alternative"
                                         id="input-km"
-                                        placeholder=""
                                         type="number"
                                         onChange = {handleDiagnosisChange}
                                     />
@@ -681,7 +679,6 @@ const Profile = () => {
                                         name="gas"
                                         className="form-control-alternative"
                                         id="input-gasolina"
-                                        placeholder=""
                                         type="number"
                                         onChange = {handleDiagnosisChange}
                                     />
@@ -702,14 +699,13 @@ const Profile = () => {
                                             className="form-control-alternative"
                                             defaultValue=""
                                             id="input-recibido-por"
-                                            placeholder=""
                                             type="text"
                                         />
                                         </FormGroup>
                                     </Col>
                                     <Col className="text-right mt-4" xs="2">
                                         <Button
-                                            color="info"
+                                            color="primary"
                                             href="#revisiones"
                                             onClick={handleChecks}
                                             size="m"
