@@ -60,6 +60,17 @@ const Profile = () => {
         vin: "",
     };
 
+    const defaultDiagnosis = {
+        workshopRemarks: "",
+        workshopManager: "",
+        clientRemarks: "",
+        date: date,
+        kms: "",
+        gas: "",
+        insurance: "",
+        OT_id: ""
+    };
+
 
     const [client, setClient] = useState(defaultClient);
 
@@ -89,17 +100,6 @@ const Profile = () => {
     useEffect(() => {
         lastDoc();
     }, []);
-    
-    const defaultDiagnosis = {
-        workshopRemarks: "",
-        workshopManager: "",
-        clientRemarks: "",
-        date: date,
-        kms: "",
-        gas: "",
-        insurance: "",
-        OT_id: lastOrder
-    };
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +113,8 @@ const Profile = () => {
 
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
-        setDiagnosis({ ...diagnosis, [name]: value })
+        setDiagnosis({ ...diagnosis, [name]: value, OT_id: lastOrder })
+        console.log(diagnosis)
     };
 
     const handleModalService = (e) => {
