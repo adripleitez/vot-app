@@ -30,6 +30,7 @@ import {
   PaginationItem,
   PaginationLink,
   Progress,
+  Button,
   Table,
   Container,
   Row,
@@ -37,7 +38,9 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
+import {useHistory} from 'react-router-dom';
 
+import "@fortawesome/fontawesome-free";
 
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
@@ -47,6 +50,8 @@ import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
 const Tables = () => {
   const [otData, setotData] = useState([]);
   const [search,setSearch]= useState("");
+
+  const history = useHistory();
 
   const getOrder = () => {
     onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
@@ -65,6 +70,8 @@ const Tables = () => {
     console.log(e.target.value)
 
   }
+
+  const handleBtn = () => history.push('/admin/ordenes-de-trabajo/revisiones');
 
   let results = [];
   if(!search){
@@ -135,7 +142,8 @@ useEffect(() => {
                                         <td>{s.vehiculo}</td>
                                         <td>{s.fecha_inicio}</td>
                                         <td>{s.fecha_cierre}</td>
-                                        <td className="text-right">
+                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={handleBtn}> <i class="fas fa-eye text-primary"></i> </Button></td>
+                                        {/* <td className="text-right">
                                       
                                         <UncontrolledDropdown>
                                                 <DropdownToggle
@@ -169,7 +177,7 @@ useEffect(() => {
                                                 </DropdownItem>
                                                 </DropdownMenu>
                                             </UncontrolledDropdown>
-                                        </td>
+                                        </td> */}
                                     </tr>
                             })}
                   </tbody> 
