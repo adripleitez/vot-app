@@ -17,10 +17,12 @@ import Header from "components/Headers/HeaderGeneric.js";
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot, orderBy, limit } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
+import { useHistory } from 'react-router-dom';
+
 
 
 const Profile = () => {
@@ -46,7 +48,8 @@ const Profile = () => {
         fecha_inicio: "",
         presupuesto: "",
         vehiculo_id: "",
-        cliente_id: ""
+        cliente_id: "",
+        timestamp: serverTimestamp()
     };
 
     const defaultVehicle = {
@@ -71,6 +74,9 @@ const Profile = () => {
         OT_id: ""
     };
 
+    const history = useHistory();
+
+    const [order, setOrder] = useState(defaultOrder);
 
     const [client, setClient] = useState(defaultClient);
 
@@ -94,12 +100,19 @@ const Profile = () => {
             });
             let id = docs[0].OT_id.split(/-0*/);
             setLastOrder("OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'));
+            setOrder({...order, OT_id: "OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'), fecha_inicio: date})
+            setDiagnosis({ ...diagnosis, OT_id: "OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'), fecha_inicio: date})
         });
     }
 
     useEffect(() => {
         lastDoc();
     }, []);
+
+    const handleOrderChange = (e) => {
+        const { name, value } = e.target;
+        setOrder({ ...order, [name]: value })
+    };
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +126,7 @@ const Profile = () => {
 
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
-        setDiagnosis({ ...diagnosis, [name]: value, OT_id: lastOrder })
+        setDiagnosis({ ...diagnosis, [name]: value})
         console.log(diagnosis)
     };
 
@@ -150,10 +163,33 @@ const Profile = () => {
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
+    //save diagnosis
+    const handleOrder = async (e) => {
+        e.preventDefault();
+        await addDoc(collection(db, 'Orden_trabajo'), order);
+    };
+
+
      //save workshop
-     const handleWorkshop = async (e) => {
+    const handleWorkshop = async (e) => {
         e.preventDefault();
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
+    };
+
+    const saveOrdenTrabajo = async(e) => {
+        e.preventDefault();
+        console.log(vehicle);
+        console.log(client);
+        const OT = {
+            ...order,
+            vehiculo_id: vehicle.numberplate,
+            cliente_id: client.clientid
+        }
+
+        await addDoc(collection(db, 'Orden_trabajo'), OT);
+        await addDoc(collection(db, 'Diagnostico'), diagnosis);
+        //await addDoc(collection(db, 'Cliente'), client);
+        //await addDoc(collection(db, 'Vehiculos'), vehicle);
     };
 
     return (
@@ -186,8 +222,8 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-id-orden"
                                                 defaultValue = {lastOrder}
-
                                                 type="text"
+                                                onChange = {handleOrderChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -204,6 +240,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-date"
                                                 defaultValue={date}
+                                                onChange = {handleOrderChange}
                                                 type="date"
                                             />
                                         </FormGroup>
@@ -221,6 +258,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-encargado"
                                                 type="text"
+                                                onChange = {handleOrderChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -910,7 +948,7 @@ const Profile = () => {
                                 <Button
                                     color="primary"
                                     href="#guardarOrden"
-                                    onClick={handleChecks}
+                                    onClick={saveOrdenTrabajo}
                                     size="m"
                                 >
                                     Guardar Orden de Trabajo
