@@ -35,10 +35,10 @@ const Profile = () => {
         lastname: "",
         tel: "",
         email: "",
-        type: "Física",
+        type: "Física"
     };
 
-    const defaultOrden = {
+    const defaultOrder = {
         OT_id: "",
         empleado: "",
         estado: "",
@@ -46,6 +46,7 @@ const Profile = () => {
         fecha_inicio: "",
         presupuesto: "",
         vehiculo_id: "",
+        cliente_id: ""
     };
 
     const defaultVehicle = {
@@ -59,15 +60,6 @@ const Profile = () => {
         vin: "",
     };
 
-    const defaultDiagnosis = {
-        workshopRemarks: "",
-        workshopManager: "",
-        clientRemarks: "",
-        date: date,
-        kms: "",
-        gas: "",
-        insurance: "",
-    };
 
     const [client, setClient] = useState(defaultClient);
 
@@ -97,6 +89,17 @@ const Profile = () => {
     useEffect(() => {
         lastDoc();
     }, []);
+    
+    const defaultDiagnosis = {
+        workshopRemarks: "",
+        workshopManager: "",
+        clientRemarks: "",
+        date: date,
+        kms: "",
+        gas: "",
+        insurance: "",
+        OT_id: lastOrder
+    };
 
     const handleClientChange = (e) => {
         const { name, value } = e.target;
@@ -146,6 +149,12 @@ const Profile = () => {
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
+     //save workshop
+     const handleWorkshop = async (e) => {
+        e.preventDefault();
+        await addDoc(collection(db, 'Diagnostico'), diagnosis);
+    };
+
     return (
         <>
             <Header />
@@ -176,6 +185,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-id-orden"
                                                 defaultValue = {lastOrder}
+
                                                 type="text"
                                             />
                                         </FormGroup>
@@ -891,6 +901,22 @@ const Profile = () => {
                                 </Table>
                             </CardBody>
                         </Card>
+                        <Row className="justify-content-right mt-3">
+                            <Col lg="10" >
+                            
+                            </Col>
+                            <Col lg="2" >
+                                <Button
+                                    color="primary"
+                                    href="#guardarOrden"
+                                    onClick={handleChecks}
+                                    size="m"
+                                >
+                                    Guardar Orden de Trabajo
+                                </Button>
+                            </Col>
+                            
+                        </Row>
                     </Col>
                 </Row>
             </Container>
