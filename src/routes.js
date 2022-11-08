@@ -97,6 +97,6 @@ var routes = [
     icon: "ni ni-tv-2 text-blue",
     component: DasboardPage,
     layout: "/admin"
-  },
+  }
 ];
 export default routes;
