@@ -29,7 +29,7 @@ const Profile = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
-    var date = curr.toISOString().substring(0,10);
+    var date = curr.toISOString().substring(0, 10);
 
     const defaultClient = {
         clientid: "",
@@ -91,7 +91,7 @@ const Profile = () => {
     const [modalChecks, setModalChecks] = useState(false);
 
     const [lastOrder, setLastOrder] = useState([]);
-    
+
     const [services, setServices] = useState([]);
 
     const [products, setProducts] = useState([]);
@@ -103,9 +103,9 @@ const Profile = () => {
                 docs.push({ ...doc.data(), id: doc.id });
             });
             let id = docs[0].OT_id.split(/-0*/);
-            setLastOrder("OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'));
-            setOrder({...order, OT_id: "OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'), fecha_inicio: date})
-            setDiagnosis({ ...diagnosis, OT_id: "OT-"+ (parseInt(id[1])+1).toString().padStart(6, '0'), fecha_inicio: date})
+            setLastOrder("OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'));
+            setOrder({ ...order, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
+            setDiagnosis({ ...diagnosis, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
         });
     }
 
@@ -130,7 +130,7 @@ const Profile = () => {
 
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
-        setDiagnosis({ ...diagnosis, [name]: value})
+        setDiagnosis({ ...diagnosis, [name]: value })
         console.log(diagnosis)
     };
 
@@ -150,7 +150,7 @@ const Profile = () => {
     };
 
     //save client
-    const handleClient =  async(e) => {
+    const handleClient = async (e) => {
         e.preventDefault();
         await addDoc(collection(db, 'Cliente'), client);
     };
@@ -167,13 +167,13 @@ const Profile = () => {
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
-     //save workshop
+    //save workshop
     const handleWorkshop = async (e) => {
         e.preventDefault();
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
-    const saveOrdenTrabajo = async(e) => {
+    const saveOrdenTrabajo = async (e) => {
         e.preventDefault();
         console.log(services);
         console.log(products);
@@ -182,6 +182,17 @@ const Profile = () => {
             vehiculo_id: vehicle.numberplate,
             cliente_id: client.clientid
         }
+
+        //Guardando servicios
+        for (const service of services) {
+            await addDoc(collection(db, 'ServiciosRealizados'), service);
+        }
+
+        //Guardando productos
+        for (const product of products) {
+            await addDoc(collection(db, 'ProductosVendidos'), product);
+        }
+
 
         //await addDoc(collection(db, 'Orden_trabajo'), OT);
         //await addDoc(collection(db, 'Diagnostico'), diagnosis);
@@ -220,9 +231,9 @@ const Profile = () => {
                                                 name="id"
                                                 className="form-control-alternative"
                                                 id="input-id-orden"
-                                                defaultValue = {lastOrder}
+                                                defaultValue={lastOrder}
                                                 type="text"
-                                                onChange = {handleOrderChange}
+                                                onChange={handleOrderChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -239,7 +250,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-date"
                                                 defaultValue={date}
-                                                onChange = {handleOrderChange}
+                                                onChange={handleOrderChange}
                                                 type="date"
                                             />
                                         </FormGroup>
@@ -257,7 +268,7 @@ const Profile = () => {
                                                 className="form-control-alternative"
                                                 id="input-encargado"
                                                 type="text"
-                                                onChange = {handleOrderChange}
+                                                onChange={handleOrderChange}
                                             />
                                         </FormGroup>
                                     </Col>
@@ -283,8 +294,8 @@ const Profile = () => {
                                             <Col lg="12">
                                                 <label className="form-control-label"> ¿Existe el Cliente? </label>
                                                 <Row className="justify-content-left mb-3">
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange=""/>{' '} No </FormGroup></Col>
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange=""/>{' '} Si </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange="" />{' '} No </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange="" />{' '} Si </FormGroup></Col>
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -316,7 +327,7 @@ const Profile = () => {
                                                         Selecciona tipo de Cliente
                                                     </label>
                                                     <Input type="select" name="type" id="select"
-                                                            onChange={handleClientChange}>
+                                                        onChange={handleClientChange}>
                                                         <option>Física</option>
                                                         <option>Jurídica</option>
                                                     </Input>
@@ -436,8 +447,8 @@ const Profile = () => {
                                             <Col lg="12">
                                                 <label className="form-control-label"> ¿Existe el Cliente? </label>
                                                 <Row className="justify-content-left mb-3">
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange=""/>{' '} No </FormGroup></Col>
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange=""/>{' '} Si </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange="" />{' '} No </FormGroup></Col>
+                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange="" />{' '} Si </FormGroup></Col>
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -450,8 +461,8 @@ const Profile = () => {
                                                         Seleccionar Vehiculo
                                                     </label>
                                                     <Input type="select" name="type" id="select" disabled
-                                                        // onChange={handleTemplateChange}
-                                                        >
+                                                    // onChange={handleTemplateChange}
+                                                    >
                                                         {/* {servData.map((s) => {
                                                             return <option key={s.id} value={s.id}>{s.descripcion}</option>
                                                         })} */}
@@ -585,20 +596,20 @@ const Profile = () => {
                                             </Col>
                                             <Col lg="6">
                                                 <FormGroup>
-                                                <label
-                                                    className="form-control-label"
-                                                    htmlFor="input-aseguradora"
-                                                >
-                                                    Aseguradora
-                                                </label>
-                                                <Input
-                                                    name="insurance"
-                                                    className="form-control-alternative"
-                                                    defaultValue=""
-                                                    id="input-aseguradora"
-                                                    type="text"
-                                                    onChange = {handleDiagnosisChange}
-                                                />
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-aseguradora"
+                                                    >
+                                                        Aseguradora
+                                                    </label>
+                                                    <Input
+                                                        name="insurance"
+                                                        className="form-control-alternative"
+                                                        defaultValue=""
+                                                        id="input-aseguradora"
+                                                        type="text"
+                                                        onChange={handleDiagnosisChange}
+                                                    />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -612,7 +623,7 @@ const Profile = () => {
                                                         Selecciona tipo de Cliente
                                                     </label>
                                                     <Input type="select" name="type" id="select-tipo-vehiculo"
-                                                            onChange={handleClientChange}>
+                                                        onChange={handleClientChange}>
                                                         <option>Particular</option>
                                                         <option>Autobus</option>
                                                         <option>Motocicleta</option>
@@ -638,133 +649,133 @@ const Profile = () => {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                            <div className="pl-lg-4">
-                                <Row>
-                                    <Col md="12">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-observaciontes-taller"
-                                        >
-                                            Observaciones del Taller
-                                        </label>
-                                        <Input
-                                            name = "workshopRemarks"
-                                            className="form-control-alternative"
-                                            defaultValue=""
-                                            id="input-observaciontes-taller"
-                                            type="text"
-                                            onChange = {handleDiagnosisChange}
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="12">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-observaciontes-cliente"
-                                        >
-                                            Observaciones del Cliente
-                                        </label>
-                                        <Input
-                                            name="clientRemarks"
-                                            className="form-control-alternative"
-                                            defaultValue=""
-                                            id="input-observaciontes-cliente"
-                                            type="text"
-                                            onChange = {handleDiagnosisChange}
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-fecha-diag"
-                                    >
-                                        Fecha de Diagnóstico
-                                    </label>
-                                    <Input
-                                        name="date"
-                                        className="form-control-alternative"
-                                        id="fecha-diag"
-                                        defaultValue={date}
-                                        type="date"
-                                        onChange = {handleDiagnosisChange}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-km"
-                                    >
-                                        KMs Entrada
-                                    </label>
-                                    <Input
-                                        name="kms"
-                                        className="form-control-alternative"
-                                        id="input-km"
-                                        type="number"
-                                        onChange = {handleDiagnosisChange}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-gasolina"
-                                    >
-                                        Gasolina de entrada
-                                    </label>
-                                    <Input
-                                        name="gas"
-                                        className="form-control-alternative"
-                                        id="input-gasolina"
-                                        type="number"
-                                        onChange = {handleDiagnosisChange}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-recibido-por"
-                                        >
-                                            Recibido por
-                                        </label>
-                                        <Input
-                                            name="recbido-por"
-                                            className="form-control-alternative"
-                                            defaultValue=""
-                                            id="input-recibido-por"
-                                            type="text"
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col className="text-right mt-4" xs="2">
-                                        <Button
-                                            color="primary"
-                                            href="#revisiones"
-                                            onClick={handleChecks}
-                                            size="m"
-                                        >
-                                            Ver Revisiones
-                                        </Button>
-                                        <ModalComponentChecks open={modalChecks} close={setModalChecks} idordenTrabajo={lastDoc}/>
-                                    </Col>
-                                </Row>
-                            </div>
-                                
+                                <div className="pl-lg-4">
+                                    <Row>
+                                        <Col md="12">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-observaciontes-taller"
+                                                >
+                                                    Observaciones del Taller
+                                                </label>
+                                                <Input
+                                                    name="workshopRemarks"
+                                                    className="form-control-alternative"
+                                                    defaultValue=""
+                                                    id="input-observaciontes-taller"
+                                                    type="text"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md="12">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-observaciontes-cliente"
+                                                >
+                                                    Observaciones del Cliente
+                                                </label>
+                                                <Input
+                                                    name="clientRemarks"
+                                                    className="form-control-alternative"
+                                                    defaultValue=""
+                                                    id="input-observaciontes-cliente"
+                                                    type="text"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-fecha-diag"
+                                                >
+                                                    Fecha de Diagnóstico
+                                                </label>
+                                                <Input
+                                                    name="date"
+                                                    className="form-control-alternative"
+                                                    id="fecha-diag"
+                                                    defaultValue={date}
+                                                    type="date"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-km"
+                                                >
+                                                    KMs Entrada
+                                                </label>
+                                                <Input
+                                                    name="kms"
+                                                    className="form-control-alternative"
+                                                    id="input-km"
+                                                    type="number"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-gasolina"
+                                                >
+                                                    Gasolina de entrada
+                                                </label>
+                                                <Input
+                                                    name="gas"
+                                                    className="form-control-alternative"
+                                                    id="input-gasolina"
+                                                    type="number"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md="6">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-recibido-por"
+                                                >
+                                                    Recibido por
+                                                </label>
+                                                <Input
+                                                    name="recbido-por"
+                                                    className="form-control-alternative"
+                                                    defaultValue=""
+                                                    id="input-recibido-por"
+                                                    type="text"
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col className="text-right mt-4" xs="2">
+                                            <Button
+                                                color="primary"
+                                                href="#revisiones"
+                                                onClick={handleChecks}
+                                                size="m"
+                                            >
+                                                Ver Revisiones
+                                            </Button>
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} idordenTrabajo={lastDoc} />
+                                        </Col>
+                                    </Row>
+                                </div>
+
                             </CardBody>
                         </Card>
                     </Col>
@@ -788,67 +799,42 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={lastOrder}/>
+                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={lastOrder} />
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                         <tr>
                                             <th scope="col">Descripcion</th>
-                                            <th scope="col">Precio base</th>
-                                            <th scope="col">Estatus</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Estado</th>
                                             <th scope="col">Sección</th>
+                                            <th scope="col">Observaciones</th>
+                                            <th scope="col">Impuestos</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-success" />
-                                                    Realizado
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
+                                        {services.map((s, i) => {
+                                            return <tr key={i}>
+                                                <th scope="row">{s.descripcion}</th>
+                                                <td>{s.costo}</td>
+                                                <td>
+                                                    {s.estatus == false
+                                                        ? <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-success" />
+                                                            Pendiente
+                                                        </Badge>
+                                                        : <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-warning" />
+                                                            Realizado
+                                                        </Badge>
+                                                    }
+                                                </td>
+                                                <td>{s.seccion}</td>
+                                                <td>{s.observaciones}</td>
+                                                <td>{s.impuesto}</td>
+                                            </tr>
+                                        })}
                                     </tbody>
                                 </Table>
                             </CardBody>
@@ -874,7 +860,7 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={lastOrder}/>
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={lastOrder} />
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -941,7 +927,7 @@ const Profile = () => {
                         </Card>
                         <Row className="justify-content-right mt-3">
                             <Col lg="10" >
-                            
+
                             </Col>
                             <Col lg="2" >
                                 <Button
@@ -953,7 +939,7 @@ const Profile = () => {
                                     Guardar Orden de Trabajo
                                 </Button>
                             </Col>
-                            
+
                         </Row>
                     </Col>
                 </Row>
