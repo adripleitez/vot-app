@@ -25,7 +25,7 @@ const ModalComponent = (props) => {
         observaciones: "",
         tipo: "",
         taller: "",
-        OT_id: "",
+        OT_id: props.lastOrder,
         estatus: false
     };
 
@@ -41,7 +41,6 @@ const ModalComponent = (props) => {
             querySnapshot.forEach((doc) => {
                 services.push({ ...doc.data(), id: doc.id });
             });
-            console.log(services);
             setServData(services);
         });
     }
@@ -49,19 +48,19 @@ const ModalComponent = (props) => {
     const handleClose = (e) => {
         e.preventDefault();
         props.close(false);
+        setService(defaultService);
     }
 
     const handleServiceChange = (e) => {
         const { name, value } = e.target;
         setService({ ...service, [name]: value })
-        console.log(name, value);
     };
 
     const handleService = async (e) => {
         e.preventDefault();
-        console.log(service);
-        await addDoc(collection(db, 'ServicioRealizado'), service);
+        props.setServices([...props.services, service])
         props.close(false);
+        setService(defaultService);
     };
 
     const handleTemplateChange = async (e) => {
@@ -80,7 +79,8 @@ const ModalComponent = (props) => {
                 observaciones: doc.observaciones,
                 tipo: doc.tipo,
                 taller: doc.taller,
-                estatus: false
+                estatus: false,
+                OT_id: props.lastOrder,
             });
         } else {
             console.log("No such document!");

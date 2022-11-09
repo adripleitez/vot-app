@@ -21,7 +21,7 @@ const ModalComponent = (props) => {
         seccion: "",
         costo_unitario: "",
         cantidad: "",
-        OT_id: ""
+        OT_id: props.lastOrder
     };
 
 
@@ -36,7 +36,6 @@ const ModalComponent = (props) => {
             querySnapshot.forEach((doc) => {
                 products.push({ ...doc.data(), id_doc: doc.id });
             });
-            console.log(products);
             setProdData(products);
         });
     }
@@ -44,19 +43,20 @@ const ModalComponent = (props) => {
     const handleClose = (e) => {
         e.preventDefault();
         props.close(false);
+        setProduct(defaultProduct);
     }
 
     const handleProductChange = (e) => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value })
-        console.log(name, value);
+        console.log(product);
     };
 
     const handleProduct = async (e) => {
         e.preventDefault();
-        console.log(product);
-        await addDoc(collection(db, 'ProductosVendido'), product);
+        props.setProducts([...props.products, product])
         props.close(false);
+        setProduct(defaultProduct);
     };
 
     const handleTemplateChange = async (e) => {
@@ -71,6 +71,7 @@ const ModalComponent = (props) => {
                 seccion: doc.seccion,
                 costo_unitario: doc.costo_unitario,
                 cantidad: "",
+                OT_id: props.lastOrder
             });
         } else {
             console.log("No such document!");
@@ -114,7 +115,7 @@ const ModalComponent = (props) => {
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
                                                         {prodData.map((s) => {
-                                                            return <option key={s.id_doc} value={s.id}>{s.nombre}</option>
+                                                            return <option key={s.id_doc} value={s.id_doc}>{s.nombre}</option>
                                                         })}
                                                     </Input>
                                                 </FormGroup>

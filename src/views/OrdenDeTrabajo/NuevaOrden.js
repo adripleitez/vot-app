@@ -91,6 +91,10 @@ const Profile = () => {
     const [modalChecks, setModalChecks] = useState(false);
 
     const [lastOrder, setLastOrder] = useState([]);
+    
+    const [services, setServices] = useState([]);
+
+    const [products, setProducts] = useState([]);
 
     const lastDoc = () => {
         onSnapshot(query(collection(db, "Orden_trabajo"), orderBy("timestamp", "desc"), limit(1)), (querySnapshot) => {
@@ -163,13 +167,6 @@ const Profile = () => {
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
-    //save diagnosis
-    const handleOrder = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Orden_trabajo'), order);
-    };
-
-
      //save workshop
     const handleWorkshop = async (e) => {
         e.preventDefault();
@@ -178,18 +175,20 @@ const Profile = () => {
 
     const saveOrdenTrabajo = async(e) => {
         e.preventDefault();
-        console.log(vehicle);
-        console.log(client);
+        console.log(services);
+        console.log(products);
         const OT = {
             ...order,
             vehiculo_id: vehicle.numberplate,
             cliente_id: client.clientid
         }
 
-        await addDoc(collection(db, 'Orden_trabajo'), OT);
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
+        //await addDoc(collection(db, 'Orden_trabajo'), OT);
+        //await addDoc(collection(db, 'Diagnostico'), diagnosis);
+        //await addDoc(collection(db, 'ServicioRealizado'), service);
         //await addDoc(collection(db, 'Cliente'), client);
         //await addDoc(collection(db, 'Vehiculos'), vehicle);
+        //await addDoc(collection(db, 'ProductosVendido'), product);
     };
 
     return (
@@ -789,7 +788,7 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modalService} close={setModalService}/>
+                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={lastOrder}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -875,7 +874,7 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts}/>
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={lastOrder}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
