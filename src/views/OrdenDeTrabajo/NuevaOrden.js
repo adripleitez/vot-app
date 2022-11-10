@@ -21,7 +21,7 @@ import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp 
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 
 
 
@@ -74,7 +74,12 @@ const Profile = () => {
         OT_id: ""
     };
 
-    const history = useHistory();
+    const defaultFlags = {
+        radioExisteCliente: false,
+        radioExisteVehiculo: false
+    };
+
+    //const history = useHistory();
 
     const [order, setOrder] = useState(defaultOrder);
 
@@ -96,6 +101,8 @@ const Profile = () => {
 
     const [products, setProducts] = useState([]);
 
+    const [flags, setFlags] = useState(defaultFlags);
+
     const lastDoc = () => {
         onSnapshot(query(collection(db, "Orden_trabajo"), orderBy("timestamp", "desc"), limit(1)), (querySnapshot) => {
             const docs = [];
@@ -107,11 +114,11 @@ const Profile = () => {
             setOrder({ ...order, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
             setDiagnosis({ ...diagnosis, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
         });
-    }
+    };
 
     useEffect(() => {
         lastDoc();
-    }, []);
+    });
 
     const handleOrderChange = (e) => {
         const { name, value } = e.target;
@@ -134,6 +141,11 @@ const Profile = () => {
         console.log(diagnosis)
     };
 
+    const handleFlagsChange = (e) => {
+        const { name, value } = e.target;
+        setFlags({ ...flags, [name]: value === "No" ? false : true });
+    };
+
     const handleModalService = (e) => {
         e.preventDefault();
         setModalService(true);
@@ -147,30 +159,6 @@ const Profile = () => {
     const handleChecks = (e) => {
         e.preventDefault();
         setModalChecks(true);
-    };
-
-    //save client
-    const handleClient = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Cliente'), client);
-    };
-
-    //save vehicle
-    const handleVehicle = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Vehiculos'), vehicle);
-    };
-
-    //save diagnosis
-    const handleDiagnosis = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
-    };
-
-    //save workshop
-    const handleWorkshop = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
     };
 
     const saveOrdenTrabajo = async (e) => {
@@ -193,13 +181,10 @@ const Profile = () => {
             await addDoc(collection(db, 'ProductosVendidos'), product);
         }
 
-
-        //await addDoc(collection(db, 'Orden_trabajo'), OT);
-        //await addDoc(collection(db, 'Diagnostico'), diagnosis);
-        //await addDoc(collection(db, 'ServicioRealizado'), service);
-        //await addDoc(collection(db, 'Cliente'), client);
-        //await addDoc(collection(db, 'Vehiculos'), vehicle);
-        //await addDoc(collection(db, 'ProductosVendido'), product);
+        await addDoc(collection(db, 'Orden_trabajo'), OT);
+        await addDoc(collection(db, 'Diagnostico'), diagnosis);
+        await addDoc(collection(db, 'Cliente'), client);
+        await addDoc(collection(db, 'Vehiculos'), vehicle);
     };
 
     return (
@@ -292,10 +277,14 @@ const Profile = () => {
                                     <div className="pl-lg-4">
                                         <Row className="justify-content-left">
                                             <Col lg="12">
-                                                <label className="form-control-label"> ¿Existe el Cliente? </label>
+                                                <label className="form-control-label"> ¿Existe el cliente? </label>
                                                 <Row className="justify-content-left mb-3">
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange="" />{' '} No </FormGroup></Col>
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange="" />{' '} Si </FormGroup></Col>
+                                                    <Col lg="4">
+                                                        <FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="No" onChange={handleFlagsChange} />{' '} No </FormGroup>
+                                                    </Col>
+                                                    <Col lg="4">
+                                                        <FormGroup check><Input type="radio" name="radioExisteCliente" value="Si" onChange={handleFlagsChange} />{' '} Si </FormGroup>
+                                                    </Col>
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -309,7 +298,7 @@ const Profile = () => {
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         // onChange={handleTemplateChange}
-                                                        disabled>
+                                                        disabled={!flags.radioExisteCliente}>
                                                         {/* {servData.map((s) => {
                                                             return <option key={s.id} value={s.id}>{s.descripcion}</option>
                                                         })} */}
@@ -445,10 +434,14 @@ const Profile = () => {
                                     <div className="pl-lg-4">
                                         <Row className="justify-content-left">
                                             <Col lg="12">
-                                                <label className="form-control-label"> ¿Existe el Cliente? </label>
+                                                <label className="form-control-label"> ¿Existe el vehículo? </label>
                                                 <Row className="justify-content-left mb-3">
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" defaultChecked={true} value="Si" onChange="" />{' '} No </FormGroup></Col>
-                                                    <Col lg="4"><FormGroup check><Input type="radio" name="radioExisteCliente" value="No" onChange="" />{' '} Si </FormGroup></Col>
+                                                    <Col lg="4">
+                                                        <FormGroup check><Input type="radio" name="radioExisteVehiculo" defaultChecked={true} value="No" onChange={handleFlagsChange} />{' '} No </FormGroup>
+                                                    </Col>
+                                                    <Col lg="4">
+                                                        <FormGroup check><Input type="radio" name="radioExisteVehiculo" value="Si" onChange={handleFlagsChange} />{' '} Si </FormGroup>
+                                                    </Col>
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -460,7 +453,7 @@ const Profile = () => {
                                                     >
                                                         Seleccionar Vehiculo
                                                     </label>
-                                                    <Input type="select" name="type" id="select" disabled
+                                                    <Input type="select" name="type" id="select" disabled={!flags.radioExisteVehiculo}
                                                     // onChange={handleTemplateChange}
                                                     >
                                                         {/* {servData.map((s) => {
@@ -819,7 +812,7 @@ const Profile = () => {
                                                 <th scope="row">{s.descripcion}</th>
                                                 <td>{s.costo}</td>
                                                 <td>
-                                                    {s.estatus == false
+                                                    {s.estatus === false
                                                         ? <Badge color="" className="badge-dot mr-4">
                                                             <i className="bg-success" />
                                                             Pendiente
@@ -873,54 +866,26 @@ const Profile = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-success" />
-                                                    Realizado
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
+                                        {products.map((s, i) => {
+                                            return <tr key={i}>
+                                                <th scope="row">{s.nombre}</th>
+                                                <td>{s.costo_unitario}</td>
+                                                {/* <td>
+                                                        {s.status == false 
+                                                            ?   <Badge color="" className="badge-dot mr-4">
+                                                                <i className="bg-success" />
+                                                                        Pendiente
+                                                                </Badge>
+                                                            :   <Badge color="" className="badge-dot mr-4">
+                                                                    <i className="bg-warning" />
+                                                                        Realizado
+                                                                </Badge>
+                                                        }
+                                                    </td> */}
+                                                <td>{s.cantidad}</td>
+                                                <td>{s.seccion}</td>
+                                            </tr>
+                                        })}
                                     </tbody>
                                 </Table>
                             </CardBody>
