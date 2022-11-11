@@ -86,6 +86,10 @@ const Profile = () => {
 
     const [client, setClient] = useState(defaultClient);
 
+    const [selectClients, setSelectClients] = useState([]);
+    
+    const [selectVehicles, setSelectVehicles] = useState([]);
+
     const [vehicle, setVehicle] = useState(defaultVehicle);
 
     const [diagnosis, setDiagnosis] = useState(defaultDiagnosis);
@@ -117,8 +121,29 @@ const Profile = () => {
         });
     };
 
+    const getClients = () => {
+        onSnapshot(query(collection(db, "Cliente")), (querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({ ...doc.data(), id: doc.id });
+            });
+            setSelectClients(docs);
+        });
+    };
+
+    const getVehicles = () => {
+        onSnapshot(query(collection(db, "Vehiculos")), (querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({ ...doc.data(), id: doc.id });
+            });
+            setSelectVehicles(docs);
+        });
+    };
+
     useEffect(() => {
         lastDoc();
+        getVehicles();
     });
 
     const handleOrderChange = (e) => {
@@ -457,9 +482,9 @@ const Profile = () => {
                                                     <Input type="select" name="type" id="select" disabled={!flags.radioExisteVehiculo}
                                                     // onChange={handleTemplateChange}
                                                     >
-                                                        {/* {servData.map((s) => {
-                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
-                                                        })} */}
+                                                        {selectVehicles.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.placa} - {s.marca} - {s.modelo}</option>
+                                                        })}
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
