@@ -53,14 +53,15 @@ const Profile = () => {
     };
 
     const defaultVehicle = {
-        numberplate: "",
-        type: "",
-        motor: "",
-        year: "",
-        brand: "",
-        model: "",
+        placa: "",
+        tipo: "",
+        numero_motor: "",
+        año: "",
+        marca: "",
+        modelo: "",
         color: "",
-        vin: "",
+        Chasis_VIN: "",
+        aseguradora:""
     };
 
     const defaultDiagnosis = {
@@ -473,7 +474,7 @@ const Profile = () => {
                                                         Placa
                                                     </label>
                                                     <Input
-                                                        name="numberplate"
+                                                        name="placa"
                                                         className="form-control-alternative"
                                                         id="input-number-plate"
                                                         type="text"
@@ -490,7 +491,7 @@ const Profile = () => {
                                                         Numero Motor
                                                     </label>
                                                     <Input
-                                                        name="motor"
+                                                        name="numero_motor"
                                                         className="form-control-alternative"
                                                         id="input-num-motor"
                                                         type="text"
@@ -507,7 +508,7 @@ const Profile = () => {
                                                         Año
                                                     </label>
                                                     <Input
-                                                        name="year"
+                                                        name="año"
                                                         className="form-control-alternative"
                                                         id="input-year"
                                                         type="text"
@@ -526,7 +527,7 @@ const Profile = () => {
                                                         Marca
                                                     </label>
                                                     <Input
-                                                        name="brand"
+                                                        name="marca"
                                                         className="form-control-alternative"
                                                         id="input-brand"
                                                         type="text"
@@ -543,7 +544,7 @@ const Profile = () => {
                                                         Modelo
                                                     </label>
                                                     <Input
-                                                        name="model"
+                                                        name="modelo"
                                                         className="form-control-alternative"
                                                         id="input-model"
                                                         type="text"
@@ -579,7 +580,7 @@ const Profile = () => {
                                                         Chasis VIN
                                                     </label>
                                                     <Input
-                                                        name="vin"
+                                                        name="Chasis_VIN"
                                                         className="form-control-alternative"
                                                         id="input-vin"
                                                         type="text"
@@ -596,12 +597,12 @@ const Profile = () => {
                                                         Aseguradora
                                                     </label>
                                                     <Input
-                                                        name="insurance"
+                                                        name="aseguradora"
                                                         className="form-control-alternative"
                                                         defaultValue=""
                                                         id="input-aseguradora"
                                                         type="text"
-                                                        onChange={handleDiagnosisChange}
+                                                        onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -613,10 +614,10 @@ const Profile = () => {
                                                         htmlFor="select-tipo-vehiculo"
                                                         className="form-control-label"
                                                     >
-                                                        Selecciona tipo de Cliente
+                                                        Selecciona tipo de vehiculo
                                                     </label>
-                                                    <Input type="select" name="type" id="select-tipo-vehiculo"
-                                                        onChange={handleClientChange}>
+                                                    <Input type="select" name="tipo" id="select-tipo-vehiculo"
+                                                        onChange={handleVehicleChange}>
                                                         <option>Particular</option>
                                                         <option>Autobus</option>
                                                         <option>Motocicleta</option>
