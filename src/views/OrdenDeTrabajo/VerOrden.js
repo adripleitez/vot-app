@@ -14,8 +14,8 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
-//import {useHistory} from 'react-router-dom';
-import { useState, useEffect } from "react";
+import {useHistory} from 'react-router-dom';
+import { useState, useEffect, React } from "react";
 import { db } from '../../firebase'
 import { collection, addDoc, query, onSnapshot, orderBy, limit } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
@@ -23,7 +23,7 @@ import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
 
 
-const verOrden = () => {
+const VerOrden = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
@@ -925,4 +925,4 @@ const verOrden = () => {
     );
 };
 
-export default verOrden;
+export default VerOrden;
