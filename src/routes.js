@@ -28,10 +28,12 @@ import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
 import ListaServicio from "views/Servicios/ListaServicio";
 import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
+import NuevoVehiculo from "views/Vehiculos/NuevoVehiculo";
 import ListaCliente from "views/Clientes/ListaCliente";
 import ListaProveedor from "views/Proveedores/ListaProveedor";
 import ListaFactura from "views/Facturas/ListaFactura";
 import ListaProducto from "views/Productos/ListaProducto";
+import NuevoProducto from "views/Productos/NuevoProducto";
 import DasboardPage from "views/Dashboards/Principal";
 
 var routes = [
@@ -53,7 +55,7 @@ var routes = [
     path: "/vehiculos",
     name: "Vehículos",
     icon: "ni ni-bus-front-12 text-blue",
-    component: ListaVehiculo,
+    component: NuevoVehiculo,
     layout: "/admin"
   },
   {
@@ -67,7 +69,7 @@ var routes = [
     path: "/productos",
     name: "Productos",
     icon: "ni ni-settings text-blue",
-    component: ListaProducto,
+    component: NuevoProducto,
     layout: "/admin"
   },
   {
