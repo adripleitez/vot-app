@@ -35,6 +35,7 @@ import ListaFactura from "views/Facturas/ListaFactura";
 import ListaProducto from "views/Productos/ListaProducto";
 import NuevoProducto from "views/Productos/NuevoProducto";
 import DasboardPage from "views/Dashboards/Principal";
+import verOrden from "views/OrdenDeTrabajo/VerOrden";
 
 var routes = [
   {
@@ -42,6 +43,13 @@ var routes = [
     name: "Nueva orden",
     icon: "ni ni-single-02 text-white",
     component: NuevaOrdenDeTrabajo,
+    layout: "/admin"
+  },
+  {
+    path: "/ordenes-de-trabajo/orden/:id",
+    name: "Orden",
+    icon: "ni ni-single-02 text-white",
+    component: verOrden,
     layout: "/admin"
   },
   {

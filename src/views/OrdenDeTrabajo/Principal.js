@@ -43,8 +43,11 @@ import {useHistory} from 'react-router-dom';
 import "@fortawesome/fontawesome-free";
 
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import { db } from '../../firebase'
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+
 
 
 const Tables = () => {
@@ -52,6 +55,7 @@ const Tables = () => {
   const [search,setSearch]= useState("");
 
   const history = useHistory();
+  const params = useParams();
 
   const getOrder = () => {
     onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
@@ -71,12 +75,15 @@ const Tables = () => {
 
   }
 
-  const handleBtn = () => history.push('/admin/ordenes-de-trabajo/revisiones');
+  const handleBtn = (id, e) => {
+    e.preventDefault()
+    history.push('/admin/ordenes-de-trabajo/orden/'+ id);
+  }
 
   let results = [];
   if(!search){
     results=otData
-}
+  }
 
 else{
 
@@ -142,7 +149,7 @@ useEffect(() => {
                                         <td>{s.vehiculo}</td>
                                         <td>{s.fecha_inicio}</td>
                                         <td>{s.fecha_cierre}</td>
-                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={handleBtn}> <i class="fas fa-eye text-primary"></i> </Button></td>
+                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={e => handleBtn(s.OT_id, e)}> <i class="fas fa-eye text-primary"></i> </Button></td>
                                         {/* <td className="text-right">
                                       
                                         <UncontrolledDropdown>

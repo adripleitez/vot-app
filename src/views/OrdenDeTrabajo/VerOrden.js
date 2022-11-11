@@ -14,8 +14,8 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
-//import {useHistory} from 'react-router-dom';
-import { useState, useEffect } from "react";
+import {useHistory} from 'react-router-dom';
+import { useState, useEffect, React } from "react";
 import { db } from '../../firebase'
 import { collection, addDoc, query, onSnapshot, orderBy, limit } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'

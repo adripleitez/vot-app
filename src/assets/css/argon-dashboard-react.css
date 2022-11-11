@@ -21538,3 +21538,6 @@ button:focus,
 }
 
 /*# sourceMappingURL=argon-dashboard-react.css.map */
+#sidenav-main > div > div > ul > li:nth-child(2) > a{
+  display: none!important;
+}
