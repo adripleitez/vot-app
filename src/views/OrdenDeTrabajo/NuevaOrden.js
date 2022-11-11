@@ -17,7 +17,7 @@ import Header from "components/Headers/HeaderGeneric.js";
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp, getDoc, doc } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
@@ -62,7 +62,7 @@ const Profile = () => {
         modelo: "",
         color: "",
         Chasis_VIN: "",
-        aseguradora:""
+        aseguradora: ""
     };
 
     const defaultDiagnosis = {
@@ -88,7 +88,7 @@ const Profile = () => {
     const [client, setClient] = useState(defaultClient);
 
     const [selectClients, setSelectClients] = useState([]);
-    
+
     const [selectVehicles, setSelectVehicles] = useState([]);
 
     const [vehicle, setVehicle] = useState(defaultVehicle);
@@ -142,6 +142,48 @@ const Profile = () => {
         });
     };
 
+    const selectVehicleChange = async (e) => {
+        if (e.target.value !== "default") {
+            const docSnap = await getDoc(doc(db, "Vehiculos", e.target.value));
+            if (docSnap.exists()) {
+                const doc = docSnap.data();
+                setVehicle({
+                    placa: doc.placa,
+                    tipo: doc.tipo,
+                    numero_motor: doc.numero_motor,
+                    año: doc.año,
+                    marca: doc.marca,
+                    modelo: doc.modelo,
+                    color: doc.color,
+                    Chasis_VIN: doc.Chasis_VIN,
+                    aseguradora: doc.aseguradora
+                });
+            } else {
+                console.log("No such document!");
+            }
+        }
+    };
+
+    const selectClientChange = async (e) => {
+        if (e.target.value !== "default") {
+            const docSnap = await getDoc(doc(db, "Cliente", e.target.value));
+            if (docSnap.exists()) {
+                const doc = docSnap.data();
+                setClient({
+                    dui: doc.dui,
+                    name: doc.name,
+                    lastname: doc.lastname,
+                    tel: doc.tel,
+                    email: doc.email,
+                    type: doc.type,
+                    repName: doc.repName
+                });
+            } else {
+                console.log("No such document!");
+            }
+        }
+    };
+
     useEffect(() => {
         lastDoc();
         getVehicles();
@@ -172,6 +214,13 @@ const Profile = () => {
     const handleFlagsChange = (e) => {
         const { name, value } = e.target;
         setFlags({ ...flags, [name]: value === "No" ? false : true });
+        if (name === "radioExisteCliente") {
+            if (value === "No")
+                setClient(defaultClient);
+        } else {
+            if (value === "No")
+                setVehicle(defaultVehicle);
+        }
     };
 
     const handleModalService = (e) => {
@@ -325,8 +374,9 @@ const Profile = () => {
                                                         Seleccionar Cliente
                                                     </label>
                                                     <Input type="select" name="type" id="select"
-                                                        // onChange={handleTemplateChange}
+                                                        onChange={selectClientChange}
                                                         disabled={!flags.radioExisteCliente}>
+                                                        <option hidden value="default" selected={!flags.radioExisteCliente}>Selecciona un cliente</option>
                                                         {selectClients.map((s) => {
                                                             return <option key={s.id} value={s.id}>{s.dui} - {s.name}</option>
                                                         })}
@@ -344,6 +394,7 @@ const Profile = () => {
                                                         Selecciona tipo de Cliente
                                                     </label>
                                                     <Input type="select" name="type" id="select"
+                                                        value={client.type}
                                                         onChange={handleClientChange}>
                                                         <option>Física</option>
                                                         <option>Jurídica</option>
@@ -363,6 +414,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-dui"
                                                         type="text"
+                                                        value={client.dui}
                                                         onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
@@ -382,6 +434,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-name"
                                                         type="text"
+                                                        value={client.name}
                                                         onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
@@ -401,6 +454,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-tel"
                                                         type="text"
+                                                        value={client.tel}
                                                         onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
@@ -418,6 +472,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-email"
                                                         type="email"
+                                                        value={client.email}
                                                         onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
@@ -437,6 +492,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-name"
                                                         type="text"
+                                                        value={client.repName}
                                                         onChange={handleClientChange}
                                                     />
                                                 </FormGroup>
@@ -482,8 +538,9 @@ const Profile = () => {
                                                         Seleccionar Vehiculo
                                                     </label>
                                                     <Input type="select" name="type" id="select" disabled={!flags.radioExisteVehiculo}
-                                                    // onChange={handleTemplateChange}
+                                                        onChange={selectVehicleChange}
                                                     >
+                                                        <option hidden value="default" selected={!flags.radioExisteVehiculo}>Selecciona un vehiculo</option>
                                                         {selectVehicles.map((s) => {
                                                             return <option key={s.id} value={s.id}>{s.placa} - {s.marca} - {s.modelo}</option>
                                                         })}
@@ -505,6 +562,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-number-plate"
                                                         type="text"
+                                                        value={vehicle.placa}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -522,6 +580,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-num-motor"
                                                         type="text"
+                                                        value={vehicle.numero_motor}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -539,6 +598,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-year"
                                                         type="text"
+                                                        value={vehicle.año}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -558,6 +618,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-brand"
                                                         type="text"
+                                                        value={vehicle.marca}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -575,6 +636,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-model"
                                                         type="text"
+                                                        value={vehicle.modelo}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -592,6 +654,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-color"
                                                         type="text"
+                                                        value={vehicle.color}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -611,6 +674,7 @@ const Profile = () => {
                                                         className="form-control-alternative"
                                                         id="input-vin"
                                                         type="text"
+                                                        value={vehicle.Chasis_VIN}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -629,6 +693,7 @@ const Profile = () => {
                                                         defaultValue=""
                                                         id="input-aseguradora"
                                                         type="text"
+                                                        value={vehicle.aseguradora}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>
@@ -644,6 +709,7 @@ const Profile = () => {
                                                         Selecciona tipo de vehiculo
                                                     </label>
                                                     <Input type="select" name="tipo" id="select-tipo-vehiculo"
+                                                        value={vehicle.tipo}
                                                         onChange={handleVehicleChange}>
                                                         <option>Particular</option>
                                                         <option>Autobus</option>
