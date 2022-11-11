@@ -32,12 +32,13 @@ const Profile = () => {
     var date = curr.toISOString().substring(0, 10);
 
     const defaultClient = {
-        clientid: "",
+        dui: "",
         name: "",
         lastname: "",
         tel: "",
         email: "",
-        type: "Física"
+        type: "Física",
+        repName: ""
     };
 
     const defaultOrder = {
@@ -144,6 +145,7 @@ const Profile = () => {
     useEffect(() => {
         lastDoc();
         getVehicles();
+        getClients();
     });
 
     const handleOrderChange = (e) => {
@@ -194,7 +196,7 @@ const Profile = () => {
         const OT = {
             ...order,
             vehiculo_id: vehicle.numberplate,
-            cliente_id: client.clientid
+            cliente_id: client.dui
         }
 
         //Guardando servicios
@@ -325,9 +327,9 @@ const Profile = () => {
                                                     <Input type="select" name="type" id="select"
                                                         // onChange={handleTemplateChange}
                                                         disabled={!flags.radioExisteCliente}>
-                                                        {/* {servData.map((s) => {
-                                                            return <option key={s.id} value={s.id}>{s.descripcion}</option>
-                                                        })} */}
+                                                        {selectClients.map((s) => {
+                                                            return <option key={s.id} value={s.id}>{s.dui} - {s.name}</option>
+                                                        })}
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
@@ -357,7 +359,7 @@ const Profile = () => {
                                                         DUI Persona / NIT Empresa
                                                     </label>
                                                     <Input
-                                                        name="clientid"
+                                                        name="dui"
                                                         className="form-control-alternative"
                                                         id="input-dui"
                                                         type="text"
@@ -431,7 +433,7 @@ const Profile = () => {
                                                         Nombre del representante
                                                     </label>
                                                     <Input
-                                                        name="name"
+                                                        name="repName"
                                                         className="form-control-alternative"
                                                         id="input-name"
                                                         type="text"
