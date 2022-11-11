@@ -23,7 +23,7 @@ import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
 
 
-const verOrden = () => {
+const VerOrden = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
@@ -925,4 +925,4 @@ const verOrden = () => {
     );
 };
 
-export default verOrden;
+export default VerOrden;
