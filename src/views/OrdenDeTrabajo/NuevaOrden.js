@@ -17,7 +17,7 @@ import Header from "components/Headers/HeaderGeneric.js";
 //import {useHistory} from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp, getDoc, doc, updateDoc } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
@@ -78,7 +78,9 @@ const Profile = () => {
 
     const defaultFlags = {
         radioExisteCliente: false,
-        radioExisteVehiculo: false
+        radioExisteVehiculo: false,
+        selectedClient: "",
+        selectedVehicle: ""
     };
 
     //const history = useHistory();
@@ -158,6 +160,7 @@ const Profile = () => {
                     Chasis_VIN: doc.Chasis_VIN,
                     aseguradora: doc.aseguradora
                 });
+                setFlags({selectedVehicle: e.target.value})
             } else {
                 console.log("No such document!");
             }
@@ -178,6 +181,7 @@ const Profile = () => {
                     type: doc.type,
                     repName: doc.repName
                 });
+                setFlags({selectedClient: e.target.value})
             } else {
                 console.log("No such document!");
             }
@@ -215,11 +219,15 @@ const Profile = () => {
         const { name, value } = e.target;
         setFlags({ ...flags, [name]: value === "No" ? false : true });
         if (name === "radioExisteCliente") {
-            if (value === "No")
+            if (value === "No"){
                 setClient(defaultClient);
+                setFlags({selectedClient: ""});
+            }
         } else {
-            if (value === "No")
+            if (value === "No"){
                 setVehicle(defaultVehicle);
+                setFlags({selectedVehicle: ""});
+            }
         }
     };
 
@@ -260,8 +268,17 @@ const Profile = () => {
 
         await addDoc(collection(db, 'Orden_trabajo'), OT);
         await addDoc(collection(db, 'Diagnostico'), diagnosis);
-        await addDoc(collection(db, 'Cliente'), client);
-        await addDoc(collection(db, 'Vehiculos'), vehicle);
+
+        if(flags.selectedClient === ""){
+            await addDoc(collection(db, 'Cliente'), client);
+        }else{
+            await updateDoc(doc(db, 'Cliente', flags.selectedClient), client)
+        }
+        if(flags.selectedVehicle === ""){
+            await addDoc(collection(db, 'Vehiculos'), vehicle);
+        }else{
+            await updateDoc(doc(db, 'Vehiculos', flags.selectedVehicle), vehicle)
+        }
     };
 
     return (
