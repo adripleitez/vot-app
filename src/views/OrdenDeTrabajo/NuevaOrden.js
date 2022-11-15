@@ -84,6 +84,31 @@ const Profile = () => {
         selectedVehicle: ""
     };
 
+    const defaultChecks = {
+        radioLlanta: "Si",
+        radioMica: "Si",
+        radiollave: "Si",
+        radioherramienta: "Si",
+        radioTriangulo: "Si",
+        radioAntena: "Si",
+        radioInterior: "Si",
+        radioExterior: "Si",
+        radioRuedas: "Si",
+        radioAdornos: "Si",
+        radioBrazos: "Si",
+        radioExtinguidor: "Si",
+        radioLoderas: "Si",
+        radioRespaldo: "Si",
+        radioTarjeta: "Si",
+        radioCasetera: "Si",
+        radioCricos: "Si",
+        radioLuces: "Si",
+        radioAire: "Si",
+        radioBateria: "Si",
+        OT_id: ""
+    };
+
+
     //const history = useHistory();
 
     const [order, setOrder] = useState(defaultOrder);
@@ -93,6 +118,8 @@ const Profile = () => {
     const [selectClients, setSelectClients] = useState([]);
 
     const [selectVehicles, setSelectVehicles] = useState([]);
+
+    const [checks, setChecks] = useState(defaultChecks);
 
     const [vehicle, setVehicle] = useState(defaultVehicle);
 
@@ -112,10 +139,16 @@ const Profile = () => {
 
     const [visible, setVisible] = useState(false);
 
+    const [error, setError] = useState(false);
+
     const [flags, setFlags] = useState(defaultFlags);
 
     const onDismiss = () => {
         setVisible(false);
+    }
+
+    const onDismiss2 = () => {
+        setError(false);
     }
 
     const lastDoc = () => {
@@ -127,7 +160,8 @@ const Profile = () => {
             let id = docs[0].OT_id.split(/-0*/);
             setLastOrder("OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'));
             setOrder({ ...order, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
-            setDiagnosis({ ...diagnosis, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0'), fecha_inicio: date })
+            setDiagnosis({ ...diagnosis, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0') });
+            setChecks({ ...checks, OT_id: "OT-" + (parseInt(id[1]) + 1).toString().padStart(6, '0') });
         });
     };
 
@@ -167,7 +201,7 @@ const Profile = () => {
                     Chasis_VIN: doc.Chasis_VIN,
                     aseguradora: doc.aseguradora
                 });
-                setFlags({selectedVehicle: e.target.value})
+                setFlags({ selectedVehicle: e.target.value })
             } else {
                 console.log("No such document!");
             }
@@ -188,7 +222,7 @@ const Profile = () => {
                     type: doc.type,
                     repName: doc.repName
                 });
-                setFlags({selectedClient: e.target.value})
+                setFlags({ selectedClient: e.target.value })
             } else {
                 console.log("No such document!");
             }
@@ -226,14 +260,14 @@ const Profile = () => {
         const { name, value } = e.target;
         setFlags({ ...flags, [name]: value === "No" ? false : true });
         if (name === "radioExisteCliente") {
-            if (value === "No"){
+            if (value === "No") {
                 setClient(defaultClient);
-                setFlags({selectedClient: ""});
+                setFlags({ selectedClient: "" });
             }
         } else {
-            if (value === "No"){
+            if (value === "No") {
                 setVehicle(defaultVehicle);
-                setFlags({selectedVehicle: ""});
+                setFlags({ selectedVehicle: "" });
             }
         }
     };
@@ -263,31 +297,38 @@ const Profile = () => {
             cliente_id: client.dui
         }
 
-        //Guardando servicios
-        for (const service of services) {
-            await addDoc(collection(db, 'ServiciosRealizados'), service);
+        try {
+            //Guardando servicios
+            for (const service of services) {
+                await addDoc(collection(db, 'ServiciosRealizados'), service);
+            }
+
+            //Guardando productos
+            for (const product of products) {
+                await addDoc(collection(db, 'ProductosVendidos'), product);
+            }
+
+            if (flags.selectedClient === "") {
+                await addDoc(collection(db, 'Cliente'), client);
+            } else {
+                await updateDoc(doc(db, 'Cliente', flags.selectedClient), client)
+            }
+            if (flags.selectedVehicle === "") {
+                await addDoc(collection(db, 'Vehiculos'), vehicle);
+            } else {
+                await updateDoc(doc(db, 'Vehiculos', flags.selectedVehicle), vehicle)
+            }
+
+            await addDoc(collection(db, 'Orden_trabajo'), OT);
+            await addDoc(collection(db, 'Diagnostico'), diagnosis);
+            await addDoc(collection(db, 'Revisiones'), checks);
+
+            setVisible(true);
+
+        } catch (error) {
+            setError(true);
         }
 
-        //Guardando productos
-        for (const product of products) {
-            await addDoc(collection(db, 'ProductosVendidos'), product);
-        }
-
-        await addDoc(collection(db, 'Orden_trabajo'), OT);
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
-
-        if(flags.selectedClient === ""){
-            await addDoc(collection(db, 'Cliente'), client);
-        }else{
-            await updateDoc(doc(db, 'Cliente', flags.selectedClient), client)
-        }
-        if(flags.selectedVehicle === ""){
-            await addDoc(collection(db, 'Vehiculos'), vehicle);
-        }else{
-            await updateDoc(doc(db, 'Vehiculos', flags.selectedVehicle), vehicle)
-        }
-
-        setVisible(true);
     };
 
     return (
@@ -295,9 +336,12 @@ const Profile = () => {
             <Header />
             {/* Page content */}
             <Container className="mt--7" fluid>
-            <Alert color="success" isOpen={visible} toggle={onDismiss} fade={false}>
-                Orden creada exitosamente <i className="ni ni-check-bold" />
-            </Alert>
+                <Alert color="success" isOpen={visible} toggle={onDismiss} fade={false}>
+                    Orden creada exitosamente <i className="ni ni-check-bold" />
+                </Alert>
+                <Alert color="danger" isOpen={error} toggle={onDismiss2} fade={false}>
+                    Orden no creada <i className="ni ni-check-bold" />
+                </Alert>
                 <Row className="mb-3">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
@@ -887,7 +931,7 @@ const Profile = () => {
                                             >
                                                 Ver Revisiones
                                             </Button>
-                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} idordenTrabajo={lastDoc} />
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={lastOrder} />
                                         </Col>
                                     </Row>
                                 </div>
