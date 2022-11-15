@@ -40,10 +40,21 @@ import {
   import { useState, useEffect } from "react";
   import { db } from '../../firebase'
   import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import Dropdown from 'react-dropdown';
+  import 'react-dropdown/style.css';
+
   
   const Tables = () => {
   const [clientData, setClientData] = useState([]);
   const [search,setSearch]= useState("");
+  const [filter,setFilter]= useState("Dui");
+
+  const options = [
+    'Dui', 'Nombres', 'Apellidos', 'Email', 'Telefono', 'Tipo de Cliente'
+  ];
+  const defaultOption = options[0];
+  var dFilter = 'Dui';
+
 
   const getClient = () => {
     onSnapshot(query(collection(db, "Cliente")), (querySnapshot) => {
@@ -56,21 +67,27 @@ import {
     });
   }
   const searcher = (e) =>{
-    setSearch(e.target.value)
+    setSearch(e.target.value);
     //captura los caracteres que se van typeando
-    console.log(e.target.value)
-
   }
+
+  const selectAction = (e) => {
+    setFilter(e.value);
+    }
 
   let results = [];
   if(!search){
     results=clientData
 }
 else{
+    if(filter === 'Dui') results=clientData.filter((dato)=> dato.dui.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter === 'Nombres') results=clientData.filter((dato)=> dato.name.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter === 'Email') results=clientData.filter((dato)=> dato.email.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter === 'Apellidos') results=clientData.filter((dato)=> dato.lastname.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter === 'Telefono') results=clientData.filter((dato)=> dato.tel.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter === 'Tipo de Cliente') results=clientData.filter((dato)=> dato.type.toLowerCase().includes(search.toLocaleLowerCase()));
 
-    results=clientData.filter((dato)=> dato.dui.toLowerCase().includes(search.toLocaleLowerCase())||
-    dato.name.toLowerCase().includes(search.toLocaleLowerCase()) ||
-    dato.email.toLowerCase().includes(search.toLocaleLowerCase()));
+    
     
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -92,7 +109,10 @@ else{
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Clientes</h3>
-                  <input value={search} onChange={searcher} type="text" placeholder="Nombre, DUI o email"></input>
+                  <div class="d-flex">
+                  <input class="d-inline-block" value={search} onChange={searcher} type="text" placeholder="Nombre, DUI o email"></input>
+                  <Dropdown id= "drpdwn" class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" />
+                  </div>                
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -107,6 +127,7 @@ else{
                     </tr>
                   </thead>
                   <tbody>
+
                      {results.map((s)=>{
                             return <tr key={s.id}>
                                     <th scope="row">{s.dui}</th>
