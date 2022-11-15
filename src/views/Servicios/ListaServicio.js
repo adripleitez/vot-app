@@ -35,7 +35,7 @@ import {
   import Header from "components/Headers/HeaderGeneric.js";
   import { useState, useEffect } from "react";
   import { db } from '../../firebase'
-  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import { collection, query, onSnapshot } from "firebase/firestore";
   
   const Tables = () => {
   const [servData, setServData] = useState([]);
