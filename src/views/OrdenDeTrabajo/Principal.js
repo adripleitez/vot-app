@@ -89,7 +89,7 @@ else{
 
   results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase())||
   dato.estado.toLowerCase().includes(search.toLocaleLowerCase()) ||
-  dato.empleado.toLowerCase().includes(search.toLocaleLowerCase()));
+  dato.encargado.toLowerCase().includes(search.toLocaleLowerCase()));
   
   /*results = clientData.filter((dato)=>
   dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -120,7 +120,7 @@ useEffect(() => {
                     <th scope="col">No Orden</th>
                     <th scope="col">Presupuesto</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Empleado</th>
+                    <th scope="col">Encargado</th>
                     <th scope="col">Vehículo</th>
                     <th scope="col">Fecha inicio</th>
                     <th scope="col">Fecha cierre</th>
@@ -145,11 +145,11 @@ useEffect(() => {
                                                         }
                                                     </td> */}
                                         <td>{s.estado}</td>
-                                        <td>{s.empleado}</td>
-                                        <td>{s.vehiculo}</td>
+                                        <td>{s.encargado}</td>
+                                        <td>{s.vehiculo_id}</td>
                                         <td>{s.fecha_inicio}</td>
                                         <td>{s.fecha_cierre}</td>
-                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={e => handleBtn(s.OT_id, e)}> <i class="fas fa-eye text-primary"></i> </Button></td>
+                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={e => handleBtn(s.OT_id, e)}> <i className="fas fa-eye text-primary"></i> </Button></td>
                                         {/* <td className="text-right">
                                       
                                         <UncontrolledDropdown>
