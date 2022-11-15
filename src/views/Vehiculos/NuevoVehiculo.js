@@ -145,11 +145,13 @@ const Tables = () => {
                             Color
                           </label>
                           <Input
-                            type="select"
+                            type="text"
                             name="color"
                             id="select"
+                            list="color"
                             onChange={handleVehicleChange}
-                          >
+                          />
+                        <datalist id="color">
                             <option>Rojo</option>
                             <option>Azul</option>
                             <option>Morado</option>
@@ -161,8 +163,8 @@ const Tables = () => {
                             <option>Dorado</option>
                             <option>Plateado</option>
                             <option>Café</option>
-                            <option>Otro</option>
-                          </Input>
+                        </datalist>
+
                         </FormGroup>
                       </Col>
 

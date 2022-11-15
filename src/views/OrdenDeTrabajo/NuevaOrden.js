@@ -723,13 +723,26 @@ const Profile = () => {
                                                         Color
                                                     </label>
                                                     <Input
-                                                        name="color"
-                                                        className="form-control-alternative"
-                                                        id="input-color"
                                                         type="text"
-                                                        value={vehicle.color}
+                                                        name="color"
+                                                        id="select"
+                                                        list="color"
                                                         onChange={handleVehicleChange}
                                                     />
+                                                        <datalist id="color">
+                                                            <option>Rojo</option>
+                                                            <option>Azul</option>
+                                                            <option>Morado</option>
+                                                            <option>Amarillo</option>
+                                                            <option>Naranja</option>
+                                                            <option>Negro</option>
+                                                            <option>Blanco</option>
+                                                            <option>Verde</option>
+                                                            <option>Dorado</option>
+                                                            <option>Plateado</option>
+                                                            <option>Café</option>
+                                                        </datalist>
+
                                                 </FormGroup>
                                             </Col>
                                         </Row>
