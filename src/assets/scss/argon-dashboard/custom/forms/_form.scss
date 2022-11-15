@@ -6,7 +6,7 @@
 // Labels
 
 .form-control-label {
-    color: $gray-700;
+    color: #6780bd;
     font-size: $font-size-sm;
     font-weight: $font-weight-bold;
 }
@@ -16,6 +16,7 @@
 
 .form-control {
     font-size: $input-btn-font-size;
+    color: #6c6c6c;
 
     &:focus {
         &::placeholder {
@@ -67,7 +68,8 @@ textarea[resize="horizontal"] {
     transition: box-shadow .15s ease;
 
     &:focus {
-        box-shadow: $input-focus-alternative-box-shadow;
+        //box-shadow: $input-focus-alternative-box-shadow;
+        box-shadow: 0 1px 5px rgb(94 114 228 / 40%), 0 1px 3px rgb(0 20 255 / 50%);
     }
 }
 

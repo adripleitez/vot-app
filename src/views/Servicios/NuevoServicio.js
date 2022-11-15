@@ -355,22 +355,14 @@ const Profile = () => {
                                                 </DropdownToggle>
                                                 <DropdownMenu className="dropdown-menu-arrow" right>
                                                 <DropdownItem
-                                                    href="#pablo"
                                                     onClick={(e) => e.preventDefault()}
                                                 >
-                                                    Action
+                                                    Editar
                                                 </DropdownItem>
                                                 <DropdownItem
-                                                    href="#pablo"
                                                     onClick={(e) => e.preventDefault()}
                                                 >
-                                                    Another action
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    href="#pablo"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    Something else here
+                                                    Eliminar
                                                 </DropdownItem>
                                                 </DropdownMenu>
                                             </UncontrolledDropdown>

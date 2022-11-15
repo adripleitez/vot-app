@@ -48,6 +48,7 @@ const ModalComponentChecks = (props) => {
         e.preventDefault();
         console.log(checks);
         //await addDoc(collection(db, 'Revisiones'), checks);
+        props.close(false);
     };
 
     const handleClose = (e) => {

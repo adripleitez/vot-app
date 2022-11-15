@@ -10,7 +10,8 @@ import {
     Table,
     Row,
     Col,
-    Badge
+    Badge,
+    Alert
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
@@ -43,8 +44,8 @@ const Profile = () => {
 
     const defaultOrder = {
         OT_id: "",
-        empleado: "",
-        estado: "",
+        encargado: "",
+        estado: true,
         fecha_cierre: "",
         fecha_inicio: "",
         presupuesto: "",
@@ -109,7 +110,13 @@ const Profile = () => {
 
     const [products, setProducts] = useState([]);
 
+    const [visible, setVisible] = useState(false);
+
     const [flags, setFlags] = useState(defaultFlags);
+
+    const onDismiss = () => {
+        setVisible(false);
+    }
 
     const lastDoc = () => {
         onSnapshot(query(collection(db, "Orden_trabajo"), orderBy("timestamp", "desc"), limit(1)), (querySnapshot) => {
@@ -252,7 +259,7 @@ const Profile = () => {
         console.log(products);
         const OT = {
             ...order,
-            vehiculo_id: vehicle.numberplate,
+            vehiculo_id: vehicle.placa,
             cliente_id: client.dui
         }
 
@@ -279,6 +286,8 @@ const Profile = () => {
         }else{
             await updateDoc(doc(db, 'Vehiculos', flags.selectedVehicle), vehicle)
         }
+
+        setVisible(true);
     };
 
     return (
@@ -286,6 +295,9 @@ const Profile = () => {
             <Header />
             {/* Page content */}
             <Container className="mt--7" fluid>
+            <Alert color="success" isOpen={visible} toggle={onDismiss} fade={false}>
+                Orden creada exitosamente <i className="ni ni-check-bold" />
+            </Alert>
                 <Row className="mb-3">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
