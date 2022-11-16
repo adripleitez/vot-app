@@ -40,11 +40,20 @@ import {
   import { useState, useEffect } from "react";
   import { db } from '../../firebase'
   import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import Dropdown from 'react-dropdown';
+  import '../dropdown.css';
 
 
   const Tables = () => {
   const [clientData, setClientData] = useState([]);
   const [search,setSearch]= useState("");
+  const [filter,setFilter]= useState("Codigo Factura");
+
+  const options = [
+    'Codigo Factura', 'Fecha Factura', 'ID Orden de Trabajo', 'Cliente', 'Total', 'Vehiculo'
+  ];
+  const defaultOption = options[0];
+  var dFilter = 'Codigo Factura';
 
   const getClient = () => {
     onSnapshot(query(collection(db, "Facturas")), (querySnapshot) => {  //Aun no creado
@@ -64,15 +73,22 @@ import {
 
   }
 
+  const selectAction = (e) => {
+    setFilter(e.value);
+    }
+
   let results = [];
   if(!search){
     results=clientData
 }
 else{
 
-    results=clientData.filter((dato)=> dato.nombre_cliente.toLowerCase().includes(search.toLocaleLowerCase()) ||
-    dato.codigo_factura.toLowerCase().includes(search.toLocaleLowerCase()) ||
-    dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
+  if(filter === 'Codigo Factura') results=clientData.filter((dato)=> dato.codigo_factura.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Factura') results=clientData.filter((dato)=> dato.fecha_factura.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='ID Orden de Trabajo') results=clientData.filter((dato)=> dato.id_orden_de_trabajo.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Cliente') results=clientData.filter((dato)=> dato.nombre_cliente.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Total') results=clientData.filter((dato)=> dato.total.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Vehiculo') results=clientData.filter((dato)=> dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -94,8 +110,12 @@ else{
               <Card className="shadow">
               <CardHeader className="border-0">
                   <h3 className="mb-0">Facturas</h3>
-                  <input value={search} onChange={searcher} type="text" placeholder="código, cliente o vehiculo"></input>
-                </CardHeader>
+                  <div class="d-flex">
+                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                    <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
+                  </div>                   
+                  </CardHeader>
                  
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">

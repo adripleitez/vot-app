@@ -36,10 +36,20 @@ import {
   import { useState, useEffect } from "react";
   import { db } from '../../firebase'
   import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import Dropdown from 'react-dropdown';
+  import '../dropdown.css';
   
   const Tables = () => {
   const [vehData, setVehData] = useState([]);
   const [search,setSearch]= useState("");
+  const [filter,setFilter]= useState("Placa");
+
+  const options = [
+    'Placa', 'Marca', 'Modelo', 'Color', 'Año', 'Chasis VIN', 'Chasis Grabado', 'Numero de Motor'
+  ];
+  const defaultOption = options[0];
+  var dFilter = 'Placa';
+
 
   const getVehicle = () => {
     onSnapshot(query(collection(db, "Vehiculos")), (querySnapshot) => {
@@ -58,15 +68,25 @@ import {
 
   }
 
+  const selectAction = (e) => {
+    setFilter(e.value);
+    }
+
   let results = [];
   if(!search){
     results=vehData
 }
 else{
+    if(filter === 'Placa') results=vehData.filter((dato)=> dato.placa.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Marca') results=vehData.filter((dato)=> dato.marca.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Modelo') results=vehData.filter((dato)=> dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Color') results=vehData.filter((dato)=> dato.color.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Año') results=vehData.filter((dato)=> dato.año.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Chasis VIN') results=vehData.filter((dato)=> dato.Chasis_VIN.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Chasis Grabado') results=vehData.filter((dato)=> dato.chasis_grabado.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Numero de Motor') results=vehData.filter((dato)=> dato.numero_motor.toLowerCase().includes(search.toLocaleLowerCase()));
 
-    results=vehData.filter((dato)=> dato.placa.toLowerCase().includes(search.toLocaleLowerCase())||
-    dato.marca.toLowerCase().includes(search.toLocaleLowerCase()) ||
-    dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()));
+
     
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -88,7 +108,11 @@ else{
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Vehiculos</h3>
-                  <input value={search} onChange={searcher} type="text" placeholder="Placa, Modelo o marca"></input>
+                  <div class="d-flex">
+                  <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                  <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                  <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
+                  </div>                
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">

@@ -24,6 +24,8 @@ import Header from "components/Headers/HeaderGeneric.js";
 import { useState, useEffect } from "react";
 import { db } from "../../firebase";
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import Dropdown from 'react-dropdown';
+import '../dropdown.css';
 
 const Profile = () => {
   var curr = new Date();
@@ -39,6 +41,14 @@ const Profile = () => {
   const [proveedor, setProv] = useState(defaultProduct);
   const [provData, setProvData] = useState([]);
   const [search, setSearch] = useState("");
+  const [filter,setFilter]= useState("Nombre");
+
+  const options = [
+    'Nombre', 'ID', 'Direccion', 'Contacto'
+  ];
+  const defaultOption = options[0];
+  var dFilter = 'Nombre';
+
 
   const handleProvChanges = (e) => {
     const { name, value } = e.target;
@@ -71,15 +81,19 @@ const Profile = () => {
     console.log(e.target.value);
   };
 
+  const selectAction = (e) => {
+    setFilter(e.value);
+    }
+
+
   let results = [];
   if (!search) {
     results = provData;
   } else {
-    results = provData.filter(
-      (dato) =>
-        dato.descripcion.toLowerCase().includes(search.toLocaleLowerCase()) ||
-        dato.costo.toLowerCase().includes(search.toLocaleLowerCase())
-    );
+    if(filter === 'Nombre') results=provData.filter((dato)=> dato.nombre.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Direccion') results=provData.filter((dato)=> dato.direccion.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='ID') results=provData.filter((dato)=> dato.id_prov.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Contacto') results=provData.filter((dato)=> dato.contacto.toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
       dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -204,12 +218,11 @@ const Profile = () => {
                 <Row className="align-items-center">
                   <Col xs="8">
                     <h3 className="mb-0">Listado de proveedores</h3>
-                    <input
-                      value={search}
-                      onChange={searcher}
-                      type="text"
-                      placeholder="Nombre, proveedor, sección"
-                    ></input>
+                    <div class="d-flex">
+                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                    <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
+                    </div>    
                   </Col>
                 </Row>
               </CardHeader>

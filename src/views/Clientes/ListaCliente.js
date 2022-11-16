@@ -41,7 +41,7 @@ import {
   import { db } from '../../firebase'
   import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
   import Dropdown from 'react-dropdown';
-  import 'react-dropdown/style.css';
+  import '../dropdown.css';
 
   
   const Tables = () => {
@@ -110,8 +110,9 @@ else{
                 <CardHeader className="border-0">
                   <h3 className="mb-0">Clientes</h3>
                   <div class="d-flex">
-                  <input class="d-inline-block" value={search} onChange={searcher} type="text" placeholder="Nombre, DUI o email"></input>
-                  <Dropdown id= "drpdwn" class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" />
+                  <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                  <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                  <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                   </div>                
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>

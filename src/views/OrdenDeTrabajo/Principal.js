@@ -47,12 +47,21 @@ import { useParams } from "react-router-dom";
 
 import { db } from '../../firebase'
 import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import Dropdown from 'react-dropdown';
+import '../dropdown.css';
 
 
 
 const Tables = () => {
   const [otData, setotData] = useState([]);
   const [search,setSearch]= useState("");
+  const [filter,setFilter]= useState("No Orden");
+
+  const options = [
+    'No Orden', 'Presupuesto', 'Estado', 'Encargado', 'Vehiculo', 'Fecha Inicio', 'Fecha Cierre'
+  ];
+  const defaultOption = options[0];
+  var dFilter = 'No Orden';
 
   const history = useHistory();
   const params = useParams();
@@ -75,6 +84,10 @@ const Tables = () => {
 
   }
 
+  const selectAction = (e) => {
+    setFilter(e.value);
+    }
+
   const handleBtn = (id, e) => {
     e.preventDefault()
     history.push('/admin/ordenes-de-trabajo/orden/'+ id);
@@ -87,9 +100,13 @@ const Tables = () => {
 
 else{
 
-  results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase())||
-  dato.estado.toLowerCase().includes(search.toLocaleLowerCase()) ||
-  dato.encargado.toLowerCase().includes(search.toLocaleLowerCase()));
+  if(filter === 'No Orden') results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Presupuesto') results=otData.filter((dato)=> dato.presupuesto.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Estado') results=otData.filter((dato)=> dato.estado.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Encargado') results=otData.filter((dato)=> dato.encargado.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Inicio') results=otData.filter((dato)=> dato.fecha_inicio.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Vehiculo') results=otData.filter((dato)=> dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Cierre') results=otData.filter((dato)=> dato.fecha_cierre.toLowerCase().includes(search.toLocaleLowerCase()));
   
   /*results = clientData.filter((dato)=>
   dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -112,8 +129,12 @@ useEffect(() => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <h3 className="mb-0">Órdenes de trabajo</h3>
-                <input value={search} onChange={searcher} type="text" placeholder="ID, estado , empleado"></input>
-              </CardHeader>
+                <div class="d-flex">
+                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                    <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
+                </div> 
+               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
