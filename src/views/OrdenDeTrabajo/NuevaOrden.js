@@ -45,7 +45,7 @@ const Profile = () => {
     const defaultOrder = {
         OT_id: "",
         encargado: "",
-        estado: true,
+        estado: "ACTIVA",
         fecha_cierre: "",
         fecha_inicio: "",
         presupuesto: "",
@@ -73,7 +73,6 @@ const Profile = () => {
         date: date,
         kms: "",
         gas: "",
-        insurance: "",
         OT_id: ""
     };
 
@@ -927,11 +926,12 @@ const Profile = () => {
                                                     Recibido por
                                                 </label>
                                                 <Input
-                                                    name="recbido-por"
+                                                    name="workshopManager"
                                                     className="form-control-alternative"
                                                     defaultValue=""
                                                     id="input-recibido-por"
                                                     type="text"
+                                                    onChange={handleDiagnosisChange}
                                                 />
                                             </FormGroup>
                                         </Col>

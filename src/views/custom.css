@@ -1,0 +1,11 @@
+.form-control-custom{
+    color: slategrey;
+}
+
+.form-control-custom-active{
+    color: #42dd80;
+}
+
+.form-control-custom-cancel{
+    color: #fb5a5a;
+}

@@ -86,10 +86,10 @@ const Profile = () => {
   if (!search) {
     results = prodData;
   } else {
-    if(filter === 'Nombre') results=prodData.filter((dato)=> dato.nombre.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Proveedor') results=prodData.filter((dato)=> dato.proveedor.toLowerCase().includes(search.toLocaleLowerCase()));
+    if(filter === 'Nombre') results=prodData.filter((dato)=> dato.nombre.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Proveedor') results=prodData.filter((dato)=> dato.proveedor.toString().toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter==='Costo') results=prodData.filter((dato)=> dato.costo_unitario.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Seccion') results=prodData.filter((dato)=> dato.seccion.toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Seccion') results=prodData.filter((dato)=> dato.seccion.toString().toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter==='Stock') results=prodData.filter((dato)=> dato.stock.toString().toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>

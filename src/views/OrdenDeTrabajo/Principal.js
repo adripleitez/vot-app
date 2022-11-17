@@ -35,10 +35,9 @@ import {useHistory} from 'react-router-dom';
 import "@fortawesome/fontawesome-free";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import Dropdown from 'react-dropdown';
 import '../dropdown.css';
 
@@ -53,10 +52,8 @@ const Tables = () => {
     'No Orden', 'Presupuesto', 'Estado', 'Encargado', 'Vehiculo', 'Fecha Inicio', 'Fecha Cierre'
   ];
   const defaultOption = options[0];
-  var dFilter = 'No Orden';
 
   const history = useHistory();
-  const params = useParams();
 
   const getOrder = () => {
     onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
@@ -92,13 +89,13 @@ const Tables = () => {
 
 else{
 
-  if(filter === 'No Orden') results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Presupuesto') results=otData.filter((dato)=> dato.presupuesto.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Estado') results=otData.filter((dato)=> dato.estado.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Encargado') results=otData.filter((dato)=> dato.encargado.toLowerCase().includes(search.toLocaleLowerCase()));
+  if(filter === 'No Orden') results=otData.filter((dato)=> dato.OT_id.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Presupuesto') results=otData.filter((dato)=> dato.presupuesto.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Estado') results=otData.filter((dato)=> dato.estado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Encargado') results=otData.filter((dato)=> dato.encargado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
   else if(filter==='Fecha Inicio') results=otData.filter((dato)=> dato.fecha_inicio.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Vehiculo') results=otData.filter((dato)=> dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Fecha Cierre') results=otData.filter((dato)=> dato.fecha_cierre.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Vehiculo') results=otData.filter((dato)=> dato.vehiculo_id.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Cierre') results=otData.filter((dato)=> dato.fecha_cierre.toString().toLowerCase().includes(search.toLocaleLowerCase()));
   
   /*results = clientData.filter((dato)=>
   dato.correo.toLowerCase().includes(search.toLocaleLowerCase())

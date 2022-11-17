@@ -96,11 +96,11 @@ const Profile = () => {
     }
     else{
     
-        if(filter === 'Descripcion') results=servData.filter((dato)=> dato.descripcion.toLowerCase().includes(search.toLocaleLowerCase()));
-        else if(filter==='Precio Base') results=servData.filter((dato)=> dato.costo.toLowerCase().includes(search.toLocaleLowerCase()));
-        else if(filter==='Seccion') results=servData.filter((dato)=> dato.seccion.toLowerCase().includes(search.toLocaleLowerCase()));
-        else if(filter==='Observaciones') results=servData.filter((dato)=> dato.observaciones.toLowerCase().includes(search.toLocaleLowerCase()));
-        else if(filter==='Impuestos') results=servData.filter((dato)=> dato.impuesto.toLowerCase().includes(search.toLocaleLowerCase()));
+        if(filter === 'Descripcion') results=servData.filter((dato)=> dato.descripcion.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+        else if(filter==='Precio Base') results=servData.filter((dato)=> dato.costo.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+        else if(filter==='Seccion') results=servData.filter((dato)=> dato.seccion.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+        else if(filter==='Observaciones') results=servData.filter((dato)=> dato.observaciones.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+        else if(filter==='Impuestos') results=servData.filter((dato)=> dato.impuesto.toString().toLowerCase().includes(search.toLocaleLowerCase()));
         
         /*results = clientData.filter((dato)=>
         dato.correo.toLowerCase().includes(search.toLocaleLowerCase())

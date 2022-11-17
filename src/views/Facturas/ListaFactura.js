@@ -83,12 +83,12 @@ import {
 }
 else{
 
-  if(filter === 'Codigo Factura') results=clientData.filter((dato)=> dato.codigo_factura.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Fecha Factura') results=clientData.filter((dato)=> dato.fecha_factura.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='ID Orden de Trabajo') results=clientData.filter((dato)=> dato.id_orden_de_trabajo.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Cliente') results=clientData.filter((dato)=> dato.nombre_cliente.toLowerCase().includes(search.toLocaleLowerCase()));
+  if(filter === 'Codigo Factura') results=clientData.filter((dato)=> dato.codigo_factura.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Factura') results=clientData.filter((dato)=> dato.fecha_factura.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='ID Orden de Trabajo') results=clientData.filter((dato)=> dato.id_orden_de_trabajo.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Cliente') results=clientData.filter((dato)=> dato.nombre_cliente.toString().toLowerCase().includes(search.toLocaleLowerCase()));
   else if(filter==='Total') results=clientData.filter((dato)=> dato.total.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Vehiculo') results=clientData.filter((dato)=> dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Vehiculo') results=clientData.filter((dato)=> dato.vehiculo.toString().toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
