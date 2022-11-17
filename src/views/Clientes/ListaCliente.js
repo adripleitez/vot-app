@@ -17,7 +17,6 @@
 */
 // reactstrap components
 import {
-    Badge,
     Card,
     CardHeader,
     CardFooter,
@@ -25,21 +24,18 @@ import {
     DropdownItem,
     UncontrolledDropdown,
     DropdownToggle,
-    Media,
     Pagination,
     PaginationItem,
     PaginationLink,
-    Progress,
     Table,
     Container,
-    Row,
-    UncontrolledTooltip
+    Row
   } from "reactstrap";
   // core components
   import Header from "components/Headers/HeaderGeneric.js";
   import { useState, useEffect } from "react";
   import { db } from '../../firebase'
-  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import { collection, query, onSnapshot } from "firebase/firestore";
   import Dropdown from 'react-dropdown';
   import '../dropdown.css';
 
@@ -53,7 +49,7 @@ import {
     'Dui', 'Nombres', 'Apellidos', 'Email', 'Telefono', 'Tipo de Cliente'
   ];
   const defaultOption = options[0];
-  var dFilter = 'Dui';
+  //var dFilter = 'Dui';
 
 
   const getClient = () => {

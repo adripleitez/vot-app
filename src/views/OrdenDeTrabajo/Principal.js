@@ -17,24 +17,16 @@
 */
 // reactstrap components
 import {
-  Badge,
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
   Pagination,
   PaginationItem,
   PaginationLink,
-  Progress,
-  Button,
   Table,
+  Button,
   Container,
-  Row,
-  UncontrolledTooltip
+  Row
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";

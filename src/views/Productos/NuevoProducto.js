@@ -13,11 +13,7 @@ import {
   Row,
   Col,
   DropdownMenu,
-  DropdownItem,
-  CardFooter,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
+  DropdownItem
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";

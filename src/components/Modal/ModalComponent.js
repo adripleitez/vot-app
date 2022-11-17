@@ -11,7 +11,7 @@ import {
     Col,
 } from "reactstrap";
 import { db } from './../../firebase'
-import { collection, addDoc, doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, query, onSnapshot } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
