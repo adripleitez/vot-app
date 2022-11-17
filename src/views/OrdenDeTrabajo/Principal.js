@@ -89,13 +89,13 @@ const Tables = () => {
 
 else{
 
-  if(filter === 'No Orden') results=otData.filter((dato)=> dato.OT_id.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Presupuesto') results=otData.filter((dato)=> dato.presupuesto.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Estado') results=otData.filter((dato)=> dato.estado.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Encargado') results=otData.filter((dato)=> dato.encargado.toLowerCase().includes(search.toLocaleLowerCase()));
+  if(filter === 'No Orden') results=otData.filter((dato)=> dato.OT_id.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Presupuesto') results=otData.filter((dato)=> dato.presupuesto.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Estado') results=otData.filter((dato)=> dato.estado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Encargado') results=otData.filter((dato)=> dato.encargado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
   else if(filter==='Fecha Inicio') results=otData.filter((dato)=> dato.fecha_inicio.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Vehiculo') results=otData.filter((dato)=> dato.vehiculo.toLowerCase().includes(search.toLocaleLowerCase()));
-  else if(filter==='Fecha Cierre') results=otData.filter((dato)=> dato.fecha_cierre.toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Vehiculo') results=otData.filter((dato)=> dato.vehiculo_id.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+  else if(filter==='Fecha Cierre') results=otData.filter((dato)=> dato.fecha_cierre.toString().toLowerCase().includes(search.toLocaleLowerCase()));
   
   /*results = clientData.filter((dato)=>
   dato.correo.toLowerCase().includes(search.toLocaleLowerCase())

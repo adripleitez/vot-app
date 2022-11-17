@@ -83,14 +83,14 @@ const Tables = () => {
   if (!search) {
     results = vehData;
   } else {
-    if(filter === 'Placa') results=vehData.filter((dato)=> dato.placa.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Marca') results=vehData.filter((dato)=> dato.marca.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Modelo') results=vehData.filter((dato)=> dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Color') results=vehData.filter((dato)=> dato.color.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Año') results=vehData.filter((dato)=> dato.año.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Chasis VIN') results=vehData.filter((dato)=> dato.Chasis_VIN.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Chasis Grabado') results=vehData.filter((dato)=> dato.chasis_grabado.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Numero de Motor') results=vehData.filter((dato)=> dato.numero_motor.toLowerCase().includes(search.toLocaleLowerCase()));
+    if(filter === 'Placa') results=vehData.filter((dato)=> dato.placa.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Marca') results=vehData.filter((dato)=> dato.marca.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Modelo') results=vehData.filter((dato)=> dato.modelo.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Color') results=vehData.filter((dato)=> dato.color.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Año') results=vehData.filter((dato)=> dato.año.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Chasis VIN') results=vehData.filter((dato)=> dato.Chasis_VIN.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Chasis Grabado') results=vehData.filter((dato)=> dato.chasis_grabado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Numero de Motor') results=vehData.filter((dato)=> dato.numero_motor.toString().toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())

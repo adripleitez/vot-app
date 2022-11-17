@@ -84,10 +84,10 @@ const Profile = () => {
   if (!search) {
     results = provData;
   } else {
-    if(filter === 'Nombre') results=provData.filter((dato)=> dato.nombre.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Direccion') results=provData.filter((dato)=> dato.direccion.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='ID') results=provData.filter((dato)=> dato.id_prov.toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Contacto') results=provData.filter((dato)=> dato.contacto.toLowerCase().includes(search.toLocaleLowerCase()));
+    if(filter === 'Nombre') results=provData.filter((dato)=> dato.nombre.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Direccion') results=provData.filter((dato)=> dato.direccion.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='ID') results=provData.filter((dato)=> dato.id_prov.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='Contacto') results=provData.filter((dato)=> dato.contacto.toString().toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
       dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
