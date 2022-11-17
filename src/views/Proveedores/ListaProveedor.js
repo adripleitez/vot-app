@@ -43,8 +43,6 @@ const Profile = () => {
     'Nombre', 'ID', 'Direccion', 'Contacto'
   ];
   const defaultOption = options[0];
-  var dFilter = 'Nombre';
-
 
   const handleProvChanges = (e) => {
     const { name, value } = e.target;

@@ -35,10 +35,9 @@ import {useHistory} from 'react-router-dom';
 import "@fortawesome/fontawesome-free";
 
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import Dropdown from 'react-dropdown';
 import '../dropdown.css';
 
@@ -53,10 +52,8 @@ const Tables = () => {
     'No Orden', 'Presupuesto', 'Estado', 'Encargado', 'Vehiculo', 'Fecha Inicio', 'Fecha Cierre'
   ];
   const defaultOption = options[0];
-  var dFilter = 'No Orden';
 
   const history = useHistory();
-  const params = useParams();
 
   const getOrder = () => {
     onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
