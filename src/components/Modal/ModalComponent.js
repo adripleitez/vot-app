@@ -11,7 +11,7 @@ import {
     Col,
 } from "reactstrap";
 import { db } from './../../firebase'
-import { collection, doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, query, onSnapshot, addDoc } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
@@ -58,7 +58,11 @@ const ModalComponent = (props) => {
 
     const handleService = async (e) => {
         e.preventDefault();
-        props.setServices([...props.services, service])
+        if(props.isNew){
+            props.setServices([...props.services, service])
+        }else{
+            await addDoc(collection(db, 'ServiciosRealizados'), service);
+        }
         props.close(false);
         setService(defaultService);
     };

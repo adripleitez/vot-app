@@ -970,7 +970,7 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={lastOrder} />
+                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={lastOrder} isNew={true}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -1031,7 +1031,7 @@ const Profile = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={lastOrder} />
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={lastOrder} isNew={true}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>

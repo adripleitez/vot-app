@@ -11,7 +11,7 @@ import {
     Col,
 } from "reactstrap";
 import { db } from '../../firebase'
-import { collection, doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, query, onSnapshot, addDoc } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
@@ -54,7 +54,11 @@ const ModalComponent = (props) => {
 
     const handleProduct = async (e) => {
         e.preventDefault();
-        props.setProducts([...props.products, product])
+        if(props.isNew){
+            props.setProducts([...props.products, product])
+        }else{
+            await addDoc(collection(db, 'ProductosVendidos'), product);
+        }
         props.close(false);
         setProduct(defaultProduct);
     };

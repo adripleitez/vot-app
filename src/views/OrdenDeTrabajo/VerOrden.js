@@ -28,15 +28,11 @@ const VerOrden = () => {
 
     var curr = new Date();
     curr.setDate(curr.getDate());
-    var date = curr.toISOString().substring(0,10);
+    var date = curr.toISOString().substring(0, 10);
 
     let params = useParams()
 
-    useEffect(() => {
-        getDocuments();
-      },[]);
-
-      const defaultClient = {
+    const defaultClient = {
         dui: "",
         name: "",
         lastname: "",
@@ -162,16 +158,16 @@ const VerOrden = () => {
                     cliente_id: doc.cliente_id,
                     timestamp: doc.timestamp
                 });
-              });
+            });
 
-            if (orderState === "FINALIZADA"){
+            if (orderState === "FINALIZADA") {
                 document.getElementById("state").classList.add("form-control-custom-cancel");
                 document.getElementById("state").classList.remove("form-control-custom-active");
-            }else if (orderState === "ACTIVA"){
+            } else if (orderState === "ACTIVA") {
                 document.getElementById("state").classList.add("form-control-custom-active");
                 document.getElementById("state").classList.remove("form-control-custom-cancel");
             }
-            
+
             const q1 = query(collection(db, "Cliente"), where("dui", "==", clientId), limit(1));
             const docSnap1 = await getDocs(q1);
             docSnap1.forEach((d) => {
@@ -185,7 +181,7 @@ const VerOrden = () => {
                     type: doc.type,
                     repName: doc.repName
                 });
-              });
+            });
 
             const q2 = query(collection(db, "Vehiculos"), where("placa", "==", vehicleId), limit(1));
             const docSnap2 = await getDocs(q2);
@@ -202,7 +198,7 @@ const VerOrden = () => {
                     Chasis_VIN: doc.Chasis_VIN,
                     aseguradora: doc.aseguradora
                 });
-              });
+            });
 
             const q3 = query(collection(db, "Diagnostico"), where("OT_id", "==", params.id), limit(1));
             const docSnap3 = await getDocs(q3);
@@ -219,19 +215,30 @@ const VerOrden = () => {
                 });
             });
 
+
+
+        }
+    };
+
+    const getServices = async () => {
+        if (params.id) {
             const q4 = query(collection(db, "ServiciosRealizados"), where("OT_id", "==", params.id));
             const docSnap4 = await getDocs(q4);
             const s = [];
             docSnap4.forEach((doc) => {
-                s.push({ ...doc.data(), id: doc.id });
+                s.push({ ...doc.data(), doc_id: doc.id });
                 setServices(s);
             });
+        }
+    };
 
+    const getProducts = async () => {
+        if (params.id) {
             const q5 = query(collection(db, "ProductosVendidos"), where("OT_id", "==", params.id));
             const docSnap5 = await getDocs(q5);
             const p = [];
             docSnap5.forEach((doc) => {
-                p.push({ ...doc.data(), id: doc.id });
+                p.push({ ...doc.data(), doc_id: doc.id });
                 setProducts(p);
             });
         }
@@ -258,6 +265,18 @@ const VerOrden = () => {
         // setModalChecks(true);
         console.log(products);
     };
+
+    useEffect(() => {
+        getDocuments();
+    });
+
+    useEffect(() => {
+        getProducts();
+    });
+
+    useEffect(() => {
+        getServices();
+    });
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
         order.estado = estadoOrden;
@@ -561,13 +580,13 @@ const VerOrden = () => {
                                             </Col>
                                             <Col lg="6">
                                                 <FormGroup>
-                                                <label
-                                                    className="form-control-label"
-                                                    htmlFor="input-aseguradora"
-                                                >
-                                                    Aseguradora
-                                                </label>
-                                                <h2 className="form-control-custom"> {vehicle.aseguradora} </h2>
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-aseguradora"
+                                                    >
+                                                        Aseguradora
+                                                    </label>
+                                                    <h2 className="form-control-custom"> {vehicle.aseguradora} </h2>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -601,122 +620,122 @@ const VerOrden = () => {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                            <div className="pl-lg-4">
-                                <Row>
-                                    <Col md="12">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-observaciontes-taller"
-                                        >
-                                            Observaciones del Taller
-                                        </label>
-                                        <Input
-                                            name = "workshopRemarks"
-                                            className="form-control-alternative"
-                                            defaultValue={diagnosis.workshopRemarks}
-                                            id="input-observaciontes-taller"
-                                            type="text"
-                                            onChange = {handleDiagnosisChange}
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="12">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-observaciontes-cliente"
-                                        >
-                                            Observaciones del Cliente
-                                        </label>
-                                        <Input
-                                            name="clientRemarks"
-                                            className="form-control-alternative"
-                                            defaultValue={diagnosis.clientRemarks}
-                                            id="input-observaciontes-cliente"
-                                            type="text"
-                                            onChange = {handleDiagnosisChange}
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-fecha-diag"
-                                    >
-                                        Fecha de Diagnóstico
-                                    </label>
-                                    <Input
-                                        name="date"
-                                        className="form-control-alternative"
-                                        id="fecha-diag"
-                                        defaultValue={diagnosis.date}
-                                        type="date"
-                                        onChange = {handleDiagnosisChange}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-km"
-                                    >
-                                        KMs Entrada
-                                    </label>
-                                    <Input
-                                        name="kms"
-                                        className="form-control-alternative"
-                                        id="input-km"
-                                        type="number"
-                                        onChange = {handleDiagnosisChange}
-                                        defaultValue={diagnosis.kms}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                <Col lg="4">
-                                    <FormGroup>
-                                    <label
-                                        className="form-control-label"
-                                        htmlFor="input-gasolina"
-                                    >
-                                        Gasolina de entrada
-                                    </label>
-                                    <Input
-                                        name="gas"
-                                        className="form-control-alternative"
-                                        id="input-gasolina"
-                                        type="number"
-                                        onChange = {handleDiagnosisChange}
-                                        defaultValue={diagnosis.gas}
-                                    />
-                                    </FormGroup>
-                                </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-recibido-por"
-                                        >
-                                            Recibido por
-                                        </label>
-                                        <Input
-                                            name="workshopManagerr"
-                                            className="form-control-alternative"
-                                            id="input-recibido-por"
-                                            type="text"
-                                            defaultValue={diagnosis.workshopManager}
-                                        />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col className="text-right mt-4" xs="2">
+                                <div className="pl-lg-4">
+                                    <Row>
+                                        <Col md="12">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-observaciontes-taller"
+                                                >
+                                                    Observaciones del Taller
+                                                </label>
+                                                <Input
+                                                    name="workshopRemarks"
+                                                    className="form-control-alternative"
+                                                    defaultValue={diagnosis.workshopRemarks}
+                                                    id="input-observaciontes-taller"
+                                                    type="text"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md="12">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-observaciontes-cliente"
+                                                >
+                                                    Observaciones del Cliente
+                                                </label>
+                                                <Input
+                                                    name="clientRemarks"
+                                                    className="form-control-alternative"
+                                                    defaultValue={diagnosis.clientRemarks}
+                                                    id="input-observaciontes-cliente"
+                                                    type="text"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-fecha-diag"
+                                                >
+                                                    Fecha de Diagnóstico
+                                                </label>
+                                                <Input
+                                                    name="date"
+                                                    className="form-control-alternative"
+                                                    id="fecha-diag"
+                                                    defaultValue={diagnosis.date}
+                                                    type="date"
+                                                    onChange={handleDiagnosisChange}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-km"
+                                                >
+                                                    KMs Entrada
+                                                </label>
+                                                <Input
+                                                    name="kms"
+                                                    className="form-control-alternative"
+                                                    id="input-km"
+                                                    type="number"
+                                                    onChange={handleDiagnosisChange}
+                                                    defaultValue={diagnosis.kms}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col lg="4">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-gasolina"
+                                                >
+                                                    Gasolina de entrada
+                                                </label>
+                                                <Input
+                                                    name="gas"
+                                                    className="form-control-alternative"
+                                                    id="input-gasolina"
+                                                    type="number"
+                                                    onChange={handleDiagnosisChange}
+                                                    defaultValue={diagnosis.gas}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md="6">
+                                            <FormGroup>
+                                                <label
+                                                    className="form-control-label"
+                                                    htmlFor="input-recibido-por"
+                                                >
+                                                    Recibido por
+                                                </label>
+                                                <Input
+                                                    name="workshopManagerr"
+                                                    className="form-control-alternative"
+                                                    id="input-recibido-por"
+                                                    type="text"
+                                                    defaultValue={diagnosis.workshopManager}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col className="text-right mt-4" xs="2">
                                             <Button
                                                 color="primary"
                                                 href="#revisiones"
@@ -726,10 +745,10 @@ const VerOrden = () => {
                                                 Ver Revisiones
                                             </Button>
                                             <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id} />
-                                    </Col>
-                                </Row>
-                            </div>
-                                
+                                        </Col>
+                                    </Row>
+                                </div>
+
                             </CardBody>
                         </Card>
                     </Col>
@@ -753,10 +772,10 @@ const VerOrden = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modalService} close={setModalService}/>
+                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={order.OT_id} isNew={false} />
                             </CardHeader>
                             <CardBody>
-                            <Table className="align-items-center table-flush" responsive>
+                                <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                         <tr>
                                             <th scope="col">Descripcion</th>
@@ -769,7 +788,7 @@ const VerOrden = () => {
                                     </thead>
                                     <tbody>
                                         {services.map((s, i) => {
-                                            return <tr key={i}>
+                                            return <tr key={i} value={s.doc_id}>
                                                 <th scope="row">{s.descripcion}</th>
                                                 <td>{s.costo}</td>
                                                 <td>
@@ -814,7 +833,7 @@ const VerOrden = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={order.OT_id} />
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={order.OT_id} isNew={false} />
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -827,54 +846,14 @@ const VerOrden = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-success" />
-                                                    Realizado
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Cambio de aceite</th>
-                                            <td>$10 USD</td>
-                                            <td>
-                                                <Badge color="" className="badge-dot mr-4">
-                                                    <i className="bg-warning" />
-                                                    Pendiente
-                                                </Badge>
-                                            </td>
-
-                                            <td>Sección 1</td>
-                                        </tr>
+                                        {products.map((s, i) => {
+                                            return <tr key={i} value={s.doc_id}>
+                                                <th scope="row">{s.nombre}</th>
+                                                <td>{s.costo_unitario}</td>
+                                                <td>{s.cantidad}</td>
+                                                <td>{s.seccion}</td>
+                                            </tr>
+                                        })}
                                     </tbody>
                                 </Table>
                             </CardBody>
@@ -885,7 +864,7 @@ const VerOrden = () => {
                                     color="warning"
                                     href="#AnularOrden"
                                     className="btn-anular"
-                                    onClick={e => {saveOrdenTrabajo(e,"ANULADA")}}
+                                    onClick={e => { saveOrdenTrabajo(e, "ANULADA") }}
                                     size="m"
                                 >
                                     Anular Orden de Trabajo
@@ -894,24 +873,24 @@ const VerOrden = () => {
                                 <Button
                                     color="primary"
                                     href="#finalizarOrden"
-                                    onClick={e => {saveOrdenTrabajo(e,"FINALIZADA")}}
+                                    onClick={e => { saveOrdenTrabajo(e, "FINALIZADA") }}
                                     size="m"
                                 >
                                     Finalizar Orden de Trabajo
                                 </Button>
-                            
+
                             </Col>
                             <Col lg="2" >
                                 <Button
                                     color="primary"
                                     href="#guardarOrden"
-                                    onClick={e => {saveOrdenTrabajo(e,"ACTIVA")}}
+                                    onClick={e => { saveOrdenTrabajo(e, "ACTIVA") }}
                                     size="m"
                                 >
                                     Guardar Orden de Trabajo
                                 </Button>
                             </Col>
-                            
+
                         </Row>
                     </Col>
                 </Row>
