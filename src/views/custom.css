@@ -9,3 +9,32 @@
 .form-control-custom-cancel{
     color: #fb5a5a;
 }
+
+.btn-anular, .btn-secondary{
+    color: #fb5a5a;
+    background-color: transparent;
+    border-color: #fb5a5a;
+}
+
+.btn-anular, .btn-secondary:hover{
+    color: #fff;
+    background-color: #fb5a5a;
+    border-color: #fb5a5a;
+}
+
+.btn-primary{
+    color: #5e72e4!important;
+    background-color: transparent!important;
+    border-color: #5e72e4!important;
+}
+
+.btn-primary:hover{
+    color: #fff!important;
+    background-color: #5e72e4!important;
+    border-color: #5e72e4!important;
+}
+
+.fontAwesome {   
+    font-family: Roboto, 'Font Awesome 5 Free', sans-serif;
+}
+

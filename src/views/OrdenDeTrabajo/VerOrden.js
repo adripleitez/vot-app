@@ -10,14 +10,14 @@ import {
     Table,
     Row,
     Col,
-    Badge
+    Badge,
+    Alert
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
-import {useHistory} from 'react-router-dom';
 import { useState, useEffect, React } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp, getDoc, doc, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, limit, serverTimestamp, getDoc, doc, where, getDocs } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
@@ -36,7 +36,7 @@ const VerOrden = () => {
         getDocuments();
       },[]);
 
-    const defaultClient = {
+      const defaultClient = {
         dui: "",
         name: "",
         lastname: "",
@@ -47,10 +47,9 @@ const VerOrden = () => {
     };
 
     const defaultOrder = {
-        id:"",
         OT_id: "",
         encargado: "",
-        estado: "",
+        estado: "ACTIVA",
         fecha_cierre: "",
         fecha_inicio: "",
         presupuesto: "",
@@ -81,9 +80,35 @@ const VerOrden = () => {
         OT_id: ""
     };
 
+    const defaultChecks = {
+        radioLlanta: "Si",
+        radioMica: "Si",
+        radiollave: "Si",
+        radioherramienta: "Si",
+        radioTriangulo: "Si",
+        radioAntena: "Si",
+        radioInterior: "Si",
+        radioExterior: "Si",
+        radioRuedas: "Si",
+        radioAdornos: "Si",
+        radioBrazos: "Si",
+        radioExtinguidor: "Si",
+        radioLoderas: "Si",
+        radioRespaldo: "Si",
+        radioTarjeta: "Si",
+        radioCasetera: "Si",
+        radioCricos: "Si",
+        radioLuces: "Si",
+        radioAire: "Si",
+        radioBateria: "Si",
+        OT_id: ""
+    };
+
     const [order, setOrder] = useState(defaultOrder);
 
     const [client, setClient] = useState(defaultClient);
+
+    const [checks, setChecks] = useState(defaultChecks);
 
     const [vehicle, setVehicle] = useState(defaultVehicle);
 
@@ -91,11 +116,25 @@ const VerOrden = () => {
 
     const [services, setServices] = useState([]);
 
+    const [products, setProducts] = useState([]);
+
     const [modalService, setModalService] = useState(false);
 
     const [modalProducts, setModalProducts] = useState(false);
 
+    const [visible, setVisible] = useState(false);
+
+    const [error, setError] = useState(false);
+
     const [modalChecks, setModalChecks] = useState(false);
+
+    const onDismiss = () => {
+        setVisible(false);
+    }
+
+    const onDismiss2 = () => {
+        setError(false);
+    }
 
     const getDocuments = async (e) => {
         let clientId;
@@ -125,10 +164,10 @@ const VerOrden = () => {
                 });
               });
 
-            if (orderState !== "ACTIVA"){
+            if (orderState === "FINALIZADA"){
                 document.getElementById("state").classList.add("form-control-custom-cancel");
                 document.getElementById("state").classList.remove("form-control-custom-active");
-            }else{
+            }else if (orderState === "ACTIVA"){
                 document.getElementById("state").classList.add("form-control-custom-active");
                 document.getElementById("state").classList.remove("form-control-custom-cancel");
             }
@@ -165,34 +204,42 @@ const VerOrden = () => {
                 });
               });
 
-              const q3 = query(collection(db, "Diagnostico"), where("OT_id", "==", params.id), limit(1));
-              const docSnap3 = await getDocs(q3);
-              docSnap3.forEach((d) => {
-                  const doc = d.data();
-                  setDiagnosis({
-                      workshopManager: doc.workshopManager,
-                      workshopRemarks: doc.workshopRemarks,
-                      numero_motor: doc.numero_motor,
-                      clientRemarks: doc.clientRemarks,
-                      date: doc.date,
-                      kms: doc.kms,
-                      gas: doc.gas
-                  });
+            const q3 = query(collection(db, "Diagnostico"), where("OT_id", "==", params.id), limit(1));
+            const docSnap3 = await getDocs(q3);
+            docSnap3.forEach((d) => {
+                const doc = d.data();
+                setDiagnosis({
+                    workshopManager: doc.workshopManager,
+                    workshopRemarks: doc.workshopRemarks,
+                    numero_motor: doc.numero_motor,
+                    clientRemarks: doc.clientRemarks,
+                    date: doc.date,
+                    kms: doc.kms,
+                    gas: doc.gas
                 });
+            });
 
-                const q4 = query(collection(db, "ServiciosRealizados"), where("OT_id", "==", params.id));
-                const docSnap4 = await getDocs(q4);
-                const s = [];
-                docSnap4.forEach((doc) => {
-                    s.push({ ...doc.data(), id: doc.id });
-                    setServices(s);
-                });
+            const q4 = query(collection(db, "ServiciosRealizados"), where("OT_id", "==", params.id));
+            const docSnap4 = await getDocs(q4);
+            const s = [];
+            docSnap4.forEach((doc) => {
+                s.push({ ...doc.data(), id: doc.id });
+                setServices(s);
+            });
+
+            const q5 = query(collection(db, "ProductosVendidos"), where("OT_id", "==", params.id));
+            const docSnap5 = await getDocs(q5);
+            const p = [];
+            docSnap5.forEach((doc) => {
+                p.push({ ...doc.data(), id: doc.id });
+                setProducts(p);
+            });
         }
     };
 
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
-        //setDiagnosis({ ...diagnosis, [name]: value, OT_id: lastOrder })
+        setDiagnosis({ ...diagnosis, [name]: value })
         console.log(diagnosis)
     };
 
@@ -208,38 +255,56 @@ const VerOrden = () => {
 
     const handleChecks = (e) => {
         e.preventDefault();
-        setModalChecks(true);
+        // setModalChecks(true);
+        console.log(products);
     };
 
-    //save client
-    const handleClient =  async(e) => {
+    const saveOrdenTrabajo = async (e, estadoOrden) => {
+        order.estado = estadoOrden;
         e.preventDefault();
-        await addDoc(collection(db, 'Cliente'), client);
+        console.log(services);
+        console.log(products);
+        const OT = {
+            ...order,
+            vehiculo_id: vehicle.placa,
+            cliente_id: client.dui
+        }
+
+        try {
+            //Guardando servicios
+            for (const service of services) {
+                await addDoc(collection(db, 'ServiciosRealizados'), service);
+            }
+
+            //Guardando productos
+            for (const product of products) {
+                await addDoc(collection(db, 'ProductosVendidos'), product);
+            }
+
+            await addDoc(collection(db, 'Orden_trabajo'), OT);
+            await addDoc(collection(db, 'Diagnostico'), diagnosis);
+            //await addDoc(collection(db, 'Revisiones'), checks);
+
+            setVisible(true);
+
+        } catch (error) {
+            setError(true);
+        }
+
     };
 
-    //save vehicle
-    const handleVehicle = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Vehiculos'), vehicle);
-    };
-
-    //save diagnosis
-    const handleDiagnosis = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
-    };
-
-     //save workshop
-     const handleWorkshop = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, 'Diagnostico'), diagnosis);
-    };
 
     return (
         <>
             <Header />
             {/* Page content */}
             <Container className="mt--7" fluid>
+                <Alert color="success" isOpen={visible} toggle={onDismiss} fade={false}>
+                    Orden creada exitosamente <i className="ni ni-check-bold" />
+                </Alert>
+                <Alert color="danger" isOpen={error} toggle={onDismiss2} fade={false}>
+                    Orden no creada <i className="ni ni-check-bold" />
+                </Alert>
                 <Row className="mb-3">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
@@ -651,17 +716,17 @@ const VerOrden = () => {
                                         />
                                         </FormGroup>
                                     </Col>
-                                    {/* <Col className="text-right mt-4" xs="2">
-                                        <Button
-                                            color="primary"
-                                            href="#revisiones"
-                                            onClick={handleChecks}
-                                            size="m"
-                                        >
-                                            Ver Revisiones
-                                        </Button>
-                                        <ModalComponentChecks open={modalChecks} close={setModalChecks} idordenTrabajo={lastDoc}/>
-                                    </Col> */}
+                                    <Col className="text-right mt-4" xs="2">
+                                            <Button
+                                                color="primary"
+                                                href="#revisiones"
+                                                onClick={handleChecks}
+                                                size="m"
+                                            >
+                                                Ver Revisiones
+                                            </Button>
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id} />
+                                    </Col>
                                 </Row>
                             </div>
                                 
@@ -749,7 +814,7 @@ const VerOrden = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts}/>
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={order.OT_id} />
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -816,13 +881,31 @@ const VerOrden = () => {
                         </Card>
                         <Row className="justify-content-right mt-3">
                             <Col lg="10" >
+                                <Button
+                                    color="warning"
+                                    href="#AnularOrden"
+                                    className="btn-anular"
+                                    onClick={e => {saveOrdenTrabajo(e,"ANULADA")}}
+                                    size="m"
+                                >
+                                    Anular Orden de Trabajo
+                                </Button>
+
+                                <Button
+                                    color="primary"
+                                    href="#finalizarOrden"
+                                    onClick={e => {saveOrdenTrabajo(e,"FINALIZADA")}}
+                                    size="m"
+                                >
+                                    Finalizar Orden de Trabajo
+                                </Button>
                             
                             </Col>
                             <Col lg="2" >
                                 <Button
                                     color="primary"
                                     href="#guardarOrden"
-                                    onClick={handleChecks}
+                                    onClick={e => {saveOrdenTrabajo(e,"ACTIVA")}}
                                     size="m"
                                 >
                                     Guardar Orden de Trabajo

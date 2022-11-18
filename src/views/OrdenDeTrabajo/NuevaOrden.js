@@ -24,8 +24,6 @@ import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
 //import { useHistory } from 'react-router-dom';
 
-
-
 const Profile = () => {
 
     var curr = new Date();
