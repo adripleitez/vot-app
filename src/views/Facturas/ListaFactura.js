@@ -16,6 +16,7 @@
 
 */
 // reactstrap components
+
 import {
     Badge,
     Card,
@@ -33,21 +34,41 @@ import {
     Table,
     Container,
     Row,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    Col,
+    FormGroup,
+    Input,
+    CardBody
   } from "reactstrap";
   // core components
   import Header from "components/Headers/HeaderGeneric.js";
-  import { useState, useEffect } from "react";
+  import { React, useState, useEffect ,ref} from 'react';
   import { db } from '../../firebase'
-  import { collection, addDoc, query, onSnapshot } from "firebase/firestore";
+  import { collection, doc, getDocs, query, onSnapshot,where } from "firebase/firestore";
   import Dropdown from 'react-dropdown';
   import '../dropdown.css';
+import { async } from "@firebase/util";
+import { event } from "jquery";
+
+
 
 
   const Tables = () => {
+
+     //Para agregar el dropdown de Servicios
+  const [servData, setServData] = useState([]);
+  //Para agregar el dropdown de productos
+  const [prodData, setProdData] = useState([]);
+// Para jalar la orden de trabajo al dropdown
+const [otData, setotData] = useState([]);
+
   const [clientData, setClientData] = useState([]);
   const [search,setSearch]= useState("");
   const [filter,setFilter]= useState("Codigo Factura");
+  
+  
+
+
 
   const options = [
     'Codigo Factura', 'Fecha Factura', 'ID Orden de Trabajo', 'Cliente', 'Total', 'Vehiculo'
@@ -55,8 +76,53 @@ import {
   const defaultOption = options[0];
   var dFilter = 'Codigo Factura';
 
-  const getClient = () => {
-    onSnapshot(query(collection(db, "Facturas")), (querySnapshot) => {  //Aun no creado
+//Para capturar el evento ( id) 
+const handleChanges = async (event) =>{console.log(event.target.value)
+//setSelectedOption(event.target.value)
+await getServicesByFilter(event.target.value)
+await getProductByFilter(event.target.value )
+
+};
+
+
+
+
+
+  //read service
+  const getServices = () => {
+    onSnapshot(query(collection(db, "ServiciosRealizados")), (querySnapshot) => {
+        const services = [];
+        querySnapshot.forEach((doc) => {
+            services.push({ ...doc.data(), id: doc.id });
+        });
+        setServData(services);
+    });
+}
+
+  //read products
+  const getProducts = async () => {
+    await onSnapshot(query(collection(db, "ProductosVendidos")), (querySnapshot) => {
+        const products = [];
+        querySnapshot.forEach((doc) => {
+            products.push({ ...doc.data(), id: doc.id });
+        });
+        setProdData(products);
+    });
+}
+// read Orders
+const getOrder = async () => {
+  await onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
+  
+      const workorders = [];
+      querySnapshot.forEach((doc) => {
+        workorders.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(workorders);
+      setotData(workorders);
+  });
+}
+  const getClient = async () => {
+    await onSnapshot(query(collection(db, "Facturas")), (querySnapshot) => {  //Aun no creado
         const clients = [];
         querySnapshot.forEach((doc) => {
             clients.push({ ...doc.data(), id: doc.id });
@@ -66,6 +132,48 @@ import {
     });
   }
 
+  // Para hallar los servicios filtrados por la OT_id
+  const getServicesByFilter = async (id)=>{
+    try {
+      let servicesFiltered = [];
+      const q = query(
+        collection(db,"ServiciosRealizados"),
+        where("OT_id" , "==",id)
+      );
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((element)=>{
+        let ServiceFiltered = {id: element.id, ...element.data()};
+        servicesFiltered = [ ...servicesFiltered, ServiceFiltered]
+      });
+      setServData(servicesFiltered);
+      console.log(servicesFiltered);
+      
+    } catch (error) {
+     console.log(error);
+    }
+  }
+
+  // Para hallar los productos filtrados por la OT_id
+  const getProductByFilter = async (id)=>{
+    try {
+      let productsFiltered = [];
+      const q = query(
+        collection(db,"ProductosVendidos"),
+        where("OT_id" , "==",id)
+      );
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((element)=>{
+        let ProductsFiltered = {id: element.id, ...element.data()};
+        productsFiltered = [ ...productsFiltered, ProductsFiltered]
+      });
+      setProdData(productsFiltered);
+      console.log(productsFiltered);
+      
+    } catch (error) {
+     console.log(error);
+    }
+  }
+  
   const searcher = (e) =>{
     setSearch(e.target.value)
     //captura los caracteres que se van typeando
@@ -95,10 +203,19 @@ else{
     )*/
 }
 
-  useEffect(() => {
-    getClient();
-  }, []);
+useEffect(() => {
+  (async () => {
+    await getClient();
+     await getOrder();
+  })();
 
+}, []);
+
+/*
+  useEffect( () => {
+     
+  }, []);
+*/
     return (
       <>
         <Header />
@@ -107,16 +224,136 @@ else{
           {/* Table */}
           <Row>
             <div className="col">
+            
               <Card className="shadow">
               <CardHeader className="border-0">
                   <h3 className="mb-0">Facturas</h3>
-                  <div class="d-flex">
-                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
-                    <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
+                  <div className="d-flex">
+                    <input className="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <p className="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                     <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                   </div>                   
                   </CardHeader>
-                 
+                  
+                  <Row className="justify-content-left">
+                                            <Col lg="12">
+                                                <FormGroup>
+                                                    <label
+                                                        className="form-control-label"
+                                                        htmlFor="input-id-orden"
+                                                    >
+                                                        Seleccionar Orden de trabajo
+                                                    </label>
+                                                    <Input type="select" name="type" id="select"
+                                                        onChange={async (evt) => {await handleChanges (evt) }}
+                                                        
+                                                        >
+                                                          <option> seleccione la orden</option>
+                                                        {otData.map((s) => {
+                                                            return <option key={s.OT_id} value={s.OT_id}>{s.OT_id}</option>
+                                                        })}
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        
+                                        <CardBody>
+                                        <h3 className="mb-0">Listado de servicios Vendidos</h3>
+                                <Table className="align-items-center table-flush" responsive>
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">Descripcion</th>
+                                            <th scope="col">Precio</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Sección</th>
+                                            <th scope="col">Observaciones</th>
+                                            <th scope="col">Impuestos</th>
+                                            <th scope="col">Aplicable</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {servData.map((s, i) => {
+                                            return <tr key={i}>
+                                                <th scope="row">{s.descripcion}</th>
+                                                <td>{s.costo}</td>
+                                                <td>
+                                                    {s.estatus === false
+                                                        ? <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-success" />
+                                                            Pendiente
+                                                        </Badge>
+                                                        : <Badge color="" className="badge-dot mr-4">
+                                                            <i className="bg-warning" />
+                                                            Realizado
+                                                        </Badge>
+                                                    }
+                                                </td>
+                                                <td>{s.seccion}</td>
+                                                <td>{s.observaciones}</td>
+                                                <td>{s.impuesto}</td>
+                                                <td> <button> Agregar </button></td>
+                                            </tr>
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </CardBody>
+                            <CardBody>
+                              <h3> Lista de Productos Vendidos</h3>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Cantidad</th>
+                      <th scope="col">Costo</th>
+                      <th scope="col">Seccion</th>
+                      <th scope="col">Aplicable</th>
+                      
+                      <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {prodData.map((s) => {
+                      return (
+                        <tr key={s.OT_id}>
+                          <th scope="row">{s.nombre}</th>
+                          <td>{s.cantidad}</td>
+                          <td>{s.costo_unitario}</td>
+                          <td>{s.seccion}</td>
+                          <td><button>Agregar</button></td>
+                          <td className="text-right">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
+                                role="button"
+                                size="sm"
+                                color=""
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
+                              >
+                                <DropdownItem
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Editar
+                                </DropdownItem>
+                                <DropdownItem
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Eliminar
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </CardBody>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
