@@ -5,12 +5,7 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Table,
-    Button,
-    Input,
-    FormGroup,
     CardTitle,
-    Form
 } from "reactstrap";
 // core components
 import Header from "components/Headers/HeaderGeneric.js";
@@ -18,7 +13,7 @@ import Header from "components/Headers/HeaderGeneric.js";
 
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot, getCountFromServer, where } from "firebase/firestore";
 import classnames from "classnames";
 import Chart from "chart.js";
 import { Line, Bar } from "react-chartjs-2"
@@ -31,7 +26,9 @@ import {
 
 const Tables = () => {
     const [otData, setotData] = useState([]);
-    const [search, setSearch] = useState("");
+    const [activeOrders, setActiveOrders] = useState([]);
+    const [selledProducts, setSelledProducts] = useState([]);
+    const [performedServices, setPerformedServices] = useState([]);
     const [chartExample1Data, setChartExample1Data] = useState("data1");
 
     const getOrder = () => {
@@ -40,9 +37,29 @@ const Tables = () => {
             querySnapshot.forEach((doc) => {
                 workorders.push({ ...doc.data(), id: doc.id });
             });
-            console.log(workorders);
             setotData(workorders);
         });
+    }
+
+    const getSelledProducts = async () => {
+        const coll = collection(db, "ProductosVendidos");
+        const query_ = query(coll);
+        const snapshot = await getCountFromServer(query_);
+        setSelledProducts(snapshot.data().count);
+    }
+
+    const getPerformedServices = async () => {
+        const coll = collection(db, "ServiciosRealizados");
+        const query_ = query(coll);
+        const snapshot = await getCountFromServer(query_);
+        setPerformedServices(snapshot.data().count);
+    }
+
+    const getActiveOrders = async () => {
+        const coll = collection(db, "Orden_trabajo");
+        const query_ = query(coll, where('estado', '==', 'ACTIVA'));
+        const snapshot = await getCountFromServer(query_);
+        setActiveOrders(snapshot.data().count);
     }
 
 
@@ -52,8 +69,19 @@ const Tables = () => {
 
     useEffect(() => {
         getOrder();
-    }, []);
+    });
 
+    useEffect(() => {
+        getActiveOrders();
+    });
+
+    useEffect(() => {
+        getSelledProducts();
+    });
+
+    useEffect(() => {
+        getPerformedServices();
+    });
 
     return (
         <>
@@ -79,7 +107,7 @@ const Tables = () => {
                                                 Activas
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                350,897
+                                                {activeOrders}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
@@ -109,7 +137,7 @@ const Tables = () => {
                                                 Realizados
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                350,897
+                                                {performedServices}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
@@ -139,7 +167,7 @@ const Tables = () => {
                                                 Vendidos
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                350,897
+                                                {selledProducts}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
@@ -163,7 +191,7 @@ const Tables = () => {
                                                 Ingresos
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                350,897
+                                                20,000
                                             </span>
                                         </div>
                                         <Col className="col-auto">
