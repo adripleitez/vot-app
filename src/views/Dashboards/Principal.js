@@ -31,57 +31,48 @@ const Tables = () => {
     const [performedServices, setPerformedServices] = useState([]);
     const [chartExample1Data, setChartExample1Data] = useState("data1");
 
-    // const getOrder = () => {
-    //     onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
-    //         const workorders = [];
-    //         querySnapshot.forEach((doc) => {
-    //             workorders.push({ ...doc.data(), id: doc.id });
-    //         });
-    //         setotData(workorders);
-    //     });
-    // }
+    const getOrder = () => {
+        onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
+            const workorders = [];
+            querySnapshot.forEach((doc) => {
+                workorders.push({ ...doc.data(), id: doc.id });
+            });
+            setotData(workorders);
+        });
+    }
 
-    // const getSelledProducts = async () => {
-    //     const coll = collection(db, "ProductosVendidos");
-    //     const query_ = query(coll);
-    //     const snapshot = await getCountFromServer(query_);
-    //     setSelledProducts(snapshot.data().count);
-    // }
+    const getSelledProducts = async () => {
+        const coll = collection(db, "ProductosVendidos");
+        const query_ = query(coll);
+        const snapshot = await getCountFromServer(query_);
+        setSelledProducts(snapshot.data().count);
+    }
 
-    // const getPerformedServices = async () => {
-    //     const coll = collection(db, "ServiciosRealizados");
-    //     const query_ = query(coll);
-    //     const snapshot = await getCountFromServer(query_);
-    //     setPerformedServices(snapshot.data().count);
-    // }
+    const getPerformedServices = async () => {
+        const coll = collection(db, "ServiciosRealizados");
+        const query_ = query(coll);
+        const snapshot = await getCountFromServer(query_);
+        setPerformedServices(snapshot.data().count);
+    }
 
-    // const getActiveOrders = async () => {
-    //     const coll = collection(db, "Orden_trabajo");
-    //     const query_ = query(coll, where('estado', '==', 'ACTIVA'));
-    //     const snapshot = await getCountFromServer(query_);
-    //     setActiveOrders(snapshot.data().count);
-    // }
+    const getActiveOrders = async () => {
+        const coll = collection(db, "Orden_trabajo");
+        const query_ = query(coll, where('estado', '==', 'ACTIVA'));
+        const snapshot = await getCountFromServer(query_);
+        setActiveOrders(snapshot.data().count);
+    }
 
 
     if (window.Chart) {
         parseOptions(Chart, chartOptions());
     }
 
-    // useEffect(() => {
-    //     getOrder();
-    // });
-
-    // useEffect(() => {
-    //     getActiveOrders();
-    // });
-
-    // useEffect(() => {
-    //     getSelledProducts();
-    // });
-
-    // useEffect(() => {
-    //     getPerformedServices();
-    // });
+    useEffect(() => {
+        getOrder();
+        getActiveOrders();
+        getSelledProducts();
+        getPerformedServices();
+    }, []);
 
     return (
         <>
@@ -107,7 +98,7 @@ const Tables = () => {
                                                 Activas
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                {/* {activeOrders} */}
+                                                {activeOrders}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
@@ -137,7 +128,7 @@ const Tables = () => {
                                                 Realizados
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                {/* {performedServices} */}
+                                                {performedServices}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
@@ -167,7 +158,7 @@ const Tables = () => {
                                                 Vendidos
                                             </CardTitle>
                                             <span className="h2 font-weight-bold mb-0">
-                                                {/* {selledProducts} */}
+                                                {selledProducts}
                                             </span>
                                         </div>
                                         <Col className="col-auto">
