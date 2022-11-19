@@ -167,6 +167,7 @@ const VerOrden = () => {
                 document.getElementById("btn-finalizar").classList.add("hide");
                 document.getElementById("btn-guardar").classList.add("hide");
                 document.getElementById("btn-agregar").classList.add("hide");
+                document.getElementById("btn-agregar1").classList.add("hide");
 
                 var f = document.getElementsByClassName('form-control-alternative');
                 for (var j = 0; j< f.length; ++j) {
@@ -182,6 +183,7 @@ const VerOrden = () => {
                 document.getElementById("btn-finalizar").classList.add("hide");
                 document.getElementById("btn-guardar").classList.add("hide");
                 document.getElementById("btn-agregar").classList.add("hide");
+                document.getElementById("btn-agregar1").classList.add("hide");
 
                 var c = document.getElementsByClassName('form-control-alternative');
                 for (var i = 0; i< c.length; ++i) {
@@ -235,10 +237,7 @@ const VerOrden = () => {
                     kms: doc.kms,
                     gas: doc.gas
                 });
-            });
-
-            //getProducts();
-            //getServices();
+            });            
 
         }
     };
@@ -291,6 +290,8 @@ const VerOrden = () => {
 
     useEffect(() => {
         getDocuments();
+        getProducts();
+        getServices();
     }, []);
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
@@ -770,7 +771,7 @@ const VerOrden = () => {
                                         <Button
                                             color="primary"
                                             href="#servicios"
-                                            className="btn-agregar"
+                                            id="btn-agregar"
                                             onClick={handleModalService}
                                             size="sm"
                                         >
@@ -832,7 +833,7 @@ const VerOrden = () => {
                                         <Button
                                             color="primary"
                                             href="#products"
-                                            className="btn-agregar"
+                                            id="btn-agregar1"
                                             onClick={handleModalProducts}
                                             size="sm"
                                         >
