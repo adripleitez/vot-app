@@ -163,9 +163,31 @@ const VerOrden = () => {
             if (orderState === "FINALIZADA") {
                 document.getElementById("state").classList.add("form-control-custom-cancel");
                 document.getElementById("state").classList.remove("form-control-custom-active");
+                document.getElementById("btn-anular").classList.add("hide");
+                document.getElementById("btn-finalizar").classList.add("hide");
+                document.getElementById("btn-guardar").classList.add("hide");
+                document.getElementById("btn-agregar").classList.add("hide");
+
+                var f = document.getElementsByClassName('form-control-alternative');
+                for (var j = 0; j< f.length; ++j) {
+
+                    document.getElementsByClassName("form-control-alternative")[j].setAttribute("disabled","true");
+                }
+
             } else if (orderState === "ACTIVA") {
                 document.getElementById("state").classList.add("form-control-custom-active");
                 document.getElementById("state").classList.remove("form-control-custom-cancel");
+            }else{
+                document.getElementById("btn-anular").classList.add("hide");
+                document.getElementById("btn-finalizar").classList.add("hide");
+                document.getElementById("btn-guardar").classList.add("hide");
+                document.getElementById("btn-agregar").classList.add("hide");
+
+                var c = document.getElementsByClassName('form-control-alternative');
+                for (var i = 0; i< c.length; ++i) {
+
+                    document.getElementsByClassName("form-control-alternative")[i].setAttribute("disabled","true");
+                }
             }
 
             const q1 = query(collection(db, "Cliente"), where("dui", "==", clientId), limit(1));
@@ -215,7 +237,8 @@ const VerOrden = () => {
                 });
             });
 
-
+            //getProducts();
+            //getServices();
 
         }
     };
@@ -268,15 +291,7 @@ const VerOrden = () => {
 
     useEffect(() => {
         getDocuments();
-    });
-
-    useEffect(() => {
-        getProducts();
-    });
-
-    useEffect(() => {
-        getServices();
-    });
+    }, []);
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
         order.estado = estadoOrden;
@@ -290,16 +305,6 @@ const VerOrden = () => {
         }
 
         try {
-            //Guardando servicios
-            for (const service of services) {
-                await addDoc(collection(db, 'ServiciosRealizados'), service);
-            }
-
-            //Guardando productos
-            for (const product of products) {
-                await addDoc(collection(db, 'ProductosVendidos'), product);
-            }
-
             await addDoc(collection(db, 'Orden_trabajo'), OT);
             await addDoc(collection(db, 'Diagnostico'), diagnosis);
             //await addDoc(collection(db, 'Revisiones'), checks);
@@ -319,10 +324,10 @@ const VerOrden = () => {
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Alert color="success" isOpen={visible} toggle={onDismiss} fade={false}>
-                    Orden creada exitosamente <i className="ni ni-check-bold" />
+                    Orden modificada exitosamente <i className="ni ni-check-bold" />
                 </Alert>
                 <Alert color="danger" isOpen={error} toggle={onDismiss2} fade={false}>
-                    Orden no creada <i className="ni ni-check-bold" />
+                    Ha habido un error porfavor intentar de nuevo <i className="ni ni-check-bold" />
                 </Alert>
                 <Row className="mb-3">
                     <Col className="order-xl-1" xl="12">
@@ -335,7 +340,7 @@ const VerOrden = () => {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                                <Row className="justify-content-left">
+                                <Row className="justify-content-left" id="disable-1">
                                     <Col lg="4">
                                         <FormGroup>
                                             <label
@@ -609,7 +614,7 @@ const VerOrden = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Row>
+                <Row id="disable-1">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
@@ -753,7 +758,7 @@ const VerOrden = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-3" id="disable-1">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
@@ -764,7 +769,8 @@ const VerOrden = () => {
                                     <Col className="text-right" xs="4">
                                         <Button
                                             color="primary"
-                                            href="#servicos"
+                                            href="#servicios"
+                                            className="btn-agregar"
                                             onClick={handleModalService}
                                             size="sm"
                                         >
@@ -814,7 +820,7 @@ const VerOrden = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-3" id="disable-1">
                     <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
@@ -825,7 +831,8 @@ const VerOrden = () => {
                                     <Col className="text-right" xs="4">
                                         <Button
                                             color="primary"
-                                            href="#servicos"
+                                            href="#products"
+                                            className="btn-agregar"
                                             onClick={handleModalProducts}
                                             size="sm"
                                         >
@@ -864,6 +871,7 @@ const VerOrden = () => {
                                     color="warning"
                                     href="#AnularOrden"
                                     className="btn-anular"
+                                    id="btn-anular"
                                     onClick={e => { saveOrdenTrabajo(e, "ANULADA") }}
                                     size="m"
                                 >
@@ -873,6 +881,8 @@ const VerOrden = () => {
                                 <Button
                                     color="primary"
                                     href="#finalizarOrden"
+                                    className="btn-finalizar"
+                                    id="btn-finalizar"
                                     onClick={e => { saveOrdenTrabajo(e, "FINALIZADA") }}
                                     size="m"
                                 >
@@ -884,6 +894,7 @@ const VerOrden = () => {
                                 <Button
                                     color="primary"
                                     href="#guardarOrden"
+                                    id="btn-guardar"
                                     onClick={e => { saveOrdenTrabajo(e, "ACTIVA") }}
                                     size="m"
                                 >

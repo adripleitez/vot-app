@@ -2,6 +2,10 @@
     color: slategrey;
 }
 
+.hide{
+    display: none;
+}
+
 .form-control-custom-active{
     color: #42dd80;
 }

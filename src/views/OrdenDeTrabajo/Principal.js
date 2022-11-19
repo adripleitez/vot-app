@@ -117,9 +117,8 @@ useEffect(() => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Órdenes de trabajo</h3>
                 <div class="d-flex">
-                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <input class="d-inline-block" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}}  value={search} onChange={searcher} type="text" placeholder="Buscar orden..."></input>
                     <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                     <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                 </div> 
@@ -159,42 +158,7 @@ useEffect(() => {
                                         <td>{s.vehiculo_id}</td>
                                         <td>{s.fecha_inicio}</td>
                                         <td>{s.fecha_cierre}</td>
-                                        <td><Button color="secondary" className="btn-icon-only" type="button" onClick={e => handleBtn(s.OT_id, e)}> <i className="fas fa-eye text-primary"></i> </Button></td>
-                                        {/* <td className="text-right">
-                                      
-                                        <UncontrolledDropdown>
-                                                <DropdownToggle
-                                                className="btn-icon-only text-light"
-                                                href="#pablo"
-                                                role="button"
-                                                size="sm"
-                                                color=""
-                                                onClick={(e) => e.preventDefault()}
-                                                >
-                                                <i className="fas fa-ellipsis-v" />
-                                                </DropdownToggle>
-                                                <DropdownMenu className="dropdown-menu-arrow" right>
-                                                <DropdownItem
-                                                    href="#pablo"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    Action
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    href="#pablo"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    Another action
-                                                </DropdownItem>
-                                                <DropdownItem
-                                                    href="#pablo"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    Something else here
-                                                </DropdownItem>
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>
-                                        </td> */}
+                                        <td><Button color="primary" className="btn-icon-only" type="button" onClick={e => handleBtn(s.OT_id, e)}> <i className="fas fa-eye"></i> </Button></td>
                                     </tr>
                             })}
                   </tbody> 

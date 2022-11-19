@@ -230,7 +230,7 @@ const Profile = () => {
         lastDoc();
         getVehicles();
         getClients();
-    });
+    }, []);
 
     const handleOrderChange = (e) => {
         const { name, value } = e.target;
