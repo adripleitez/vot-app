@@ -44,7 +44,6 @@ const Tables = () => {
     'Placa', 'Marca', 'Modelo', 'Color', 'Año', 'Chasis VIN', 'Chasis Grabado', 'Numero de Motor'
   ];
   const defaultOption = options[0];
-  var dFilter = 'Placa';
 
   const handleVehicleChange = (e) => {
     const { name, value } = e.target;
@@ -298,9 +297,8 @@ const Tables = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">Listado de vehículos</h3>
                     <div class="d-flex">
-                    <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                    <input class="d-inline-block" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}} value={search} onChange={searcher} type="text" placeholder="Buscar Vehículo..."></input>
                     <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                     <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                     </div>                

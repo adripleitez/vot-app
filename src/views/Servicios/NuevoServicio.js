@@ -320,9 +320,8 @@ const Profile = () => {
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
                                     <Col xs="8">
-                                        <h3 className="mb-0">Listado de servicios</h3>
                                         <div class="d-flex">
-                                        <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                                        <input class="d-inline-block" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}} value={search} onChange={searcher} type="text" placeholder="Buscar Servicio..."></input>
                                         <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                                         <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                                         </div>  

@@ -49,8 +49,6 @@ import {
     'Dui', 'Nombres', 'Apellidos', 'Email', 'Telefono', 'Tipo de Cliente'
   ];
   const defaultOption = options[0];
-  //var dFilter = 'Dui';
-
 
   const getClient = () => {
     onSnapshot(query(collection(db, "Cliente")), (querySnapshot) => {
@@ -82,8 +80,6 @@ else{
     else if(filter === 'Apellidos') results=clientData.filter((dato)=> dato.lastname.toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter === 'Telefono') results=clientData.filter((dato)=> dato.tel.toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter === 'Tipo de Cliente') results=clientData.filter((dato)=> dato.type.toLowerCase().includes(search.toLocaleLowerCase()));
-
-    
     
     /*results = clientData.filter((dato)=>
     dato.correo.toLowerCase().includes(search.toLocaleLowerCase())
@@ -104,9 +100,8 @@ else{
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Clientes</h3>
                   <div class="d-flex">
-                  <input class="d-inline-block" style={{height: 'fit-content', padding: '10px'}} value={search} onChange={searcher} type="text" placeholder="Buscar..."></input>
+                  <input class="d-inline-block" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}} value={search} onChange={searcher} type="text" placeholder="Buscar Cliente..."></input>
                   <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                   <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                   </div>                

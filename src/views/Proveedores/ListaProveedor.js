@@ -214,7 +214,7 @@ const Profile = () => {
                 <Row className="align-items-center">
                   <Col xs="8">
                     <div class="d-flex">
-                    <input class="d-inline-block fontAwesome" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}} value={search} onChange={searcher} type="text" placeholder="Buscar Proveedor..."></input>
+                    <input class="d-inline-block" style={{ height: 'fit-content', padding: '9px', borderColor: '#ffffff5c', borderStyle: "groove"}} value={search} onChange={searcher} type="text" placeholder="Buscar Proveedor..."></input>
                     <p class="d-inline-block" style={{padding: '10px'}}>Filtrar por:</p>
                     <Dropdown class="d-inline-block" options={options} onChange={selectAction} value={defaultOption} placeholder="Select an option" responsive/>
                     </div> 
