@@ -11,7 +11,7 @@ import {
     Col,
 } from "reactstrap";
 import { db } from '../../firebase'
-import { collection, doc, getDoc, query, onSnapshot, addDoc } from "firebase/firestore";
+import { collection, doc, getDoc, query, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
 
 const ModalComponent = (props) => {
 
@@ -21,7 +21,8 @@ const ModalComponent = (props) => {
         seccion: "",
         costo_unitario: "",
         cantidad: "",
-        OT_id: props.lastOrder
+        OT_id: props.lastOrder,
+        timestamp: serverTimestamp()
     };
 
 
