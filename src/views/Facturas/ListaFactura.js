@@ -38,13 +38,15 @@ import {
     Col,
     FormGroup,
     Input,
-    CardBody
+    CardBody,
+    Button,
+    Form
   } from "reactstrap";
   // core components
   import Header from "components/Headers/HeaderGeneric.js";
   import { React, useState, useEffect ,ref} from 'react';
   import { db } from '../../firebase'
-  import { collection, doc, getDocs, query, onSnapshot,where } from "firebase/firestore";
+  import { collection, addDoc, getDocs, query, onSnapshot,where } from "firebase/firestore";
   import Dropdown from 'react-dropdown';
   import '../dropdown.css';
 import { async } from "@firebase/util";
@@ -54,10 +56,14 @@ import { event } from "jquery";
 
 
   const Tables = () => {
+   
 //Para la suma de costos 
 const [costos,setCostos] = useState(0);
      //Para agregar el dropdown de Servicios
+     
   const [servData, setServData] = useState([]);
+   
+  
   //Para agregar el dropdown de productos
   const [prodData, setProdData] = useState([]);
 // Para jalar la orden de trabajo al dropdown
@@ -66,8 +72,17 @@ const [otData, setotData] = useState([]);
   const [clientData, setClientData] = useState([]);
   const [search,setSearch]= useState("");
   const [filter,setFilter]= useState("Codigo Factura");
-  
-  
+ 
+  const defaultFactura = {
+    codigo_factura:"",
+    fecha_factura: "",
+    id_orden_de_trabajo:"",
+    nombre_cliente:"",
+    total:"",
+    vehiculo:""
+  };
+   //Para llenar la factura 
+   const [factura,setFactura] = useState(defaultFactura)
 
 
 
@@ -78,38 +93,17 @@ const [otData, setotData] = useState([]);
   var dFilter = 'Codigo Factura';
 
 //Para capturar el evento ( id) 
-const handleChanges = async (event) =>{console.log(event.target.value)
+const handleChanges = async (event) =>{
+  console.log(event.target.value)
+  setCostos(0);
 //setSelectedOption(event.target.value)
 await getServicesByFilter(event.target.value)
 await getProductByFilter(event.target.value )
 
+
 };
 
 
-
-
-
-  //read service
-  const getServices = () => {
-    onSnapshot(query(collection(db, "ServiciosRealizados")), (querySnapshot) => {
-        const services = [];
-        querySnapshot.forEach((doc) => {
-            services.push({ ...doc.data(), id: doc.id });
-        });
-        setServData(services);
-    });
-}
-
-  //read products
-  const getProducts = async () => {
-    await onSnapshot(query(collection(db, "ProductosVendidos")), (querySnapshot) => {
-        const products = [];
-        querySnapshot.forEach((doc) => {
-            products.push({ ...doc.data(), id: doc.id });
-        });
-        setProdData(products);
-    });
-}
 // read Orders
 const getOrder = async () => {
   await onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
@@ -181,6 +175,20 @@ const getOrder = async () => {
     console.log(e.target.value)
 
   }
+// Toda la parte de agregar factura 
+  const handleFacturaChanges = (e) => {
+    const { name, value } = e.target;
+    setFactura({ ...factura, [name]: value });
+    console.log(name, value);
+  };
+
+  const handleFactura = async (e) => {
+    e.preventDefault();
+    console.log(factura);
+    await addDoc(collection(db, "Facturas"), factura);
+  };
+
+
 
   const selectAction = (e) => {
     setFilter(e.value);
@@ -260,7 +268,7 @@ useEffect(() => {
                                         
                                         <CardBody>
                                         <h3 className="mb-0">Listado de servicios Vendidos</h3>
-                                        {JSON.stringify(costos)}
+                                        
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                         <tr>
@@ -294,7 +302,7 @@ useEffect(() => {
                                                 <td>{s.seccion}</td>
                                                 <td>{s.observaciones}</td>
                                                 <td>{s.impuesto}</td>
-                                                <td> <button> Agregar </button></td>
+                                                <td> <button onClick={()=>setCostos(costos+Number(s.costo)+Number(s.impuesto))}> Agregar </button></td>
                                             </tr>
                                         })}
                                     </tbody>
@@ -322,8 +330,10 @@ useEffect(() => {
                           <td>{s.cantidad}</td>
                           <td>{s.costo_unitario}</td>
                           <td>{s.seccion}</td>
-                          <td><button>Agregar</button></td>
+                          <td> <button onClick={()=>setCostos(costos+Number(s.costo_unitario))}> Agregar </button></td>
                           <td className="text-right">
+
+                          
                             <UncontrolledDropdown>
                               <DropdownToggle
                                 className="btn-icon-only text-light"
@@ -356,6 +366,146 @@ useEffect(() => {
                     })}
                   </tbody>
                 </Table>
+                <h4 className="mb-0"> Total a facturar en dolares</h4>
+                                        {JSON.stringify(costos)}
+                <Row className="px-4">
+          <Col className="order-xl-1" xl="12">
+            <Card className="bg-secondary shadow">
+              <CardHeader className="bg-white border-0">
+                <Row className="align-items-center">
+                  <Col xs="8">
+                    <h3 className="mb-0">Agregar Factura</h3>
+                  </Col>
+                  <Col className="text-right" xs="4">
+                    <Button
+                      color="primary"
+                      href="#cliente"
+                      onClick={handleFactura}
+                      size="sm"
+                    >
+                      Agregar factura
+                    </Button>
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <Form>
+                  <div className="pl-lg-4">
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-codigo_factura"
+                          >
+                            Código Factura
+                          </label>
+                          <Input
+                            name="codigo_factura"
+                            className="form-control-alternative"
+                            id="input-codigo_factura"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-fecha_factura"
+                          >
+                            Fecha de la factura
+                          </label>
+                          <Input
+                            name="fecha_factura"
+                            className="form-control-alternative"
+                            id="input-fecha_factura"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-id_orden_de_trabajo"
+                          >
+                            ID de la orden de trabajo
+                          </label>
+                          <Input
+                            name="id_orden_de_trabajo"
+                            className="form-control-alternative"
+                            id="input-id_orden_de_trabajo"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-nombre_cliente"
+                          >
+                           Nombre del cliente
+                          </label>
+                          <Input
+                            name="nombre_cliente"
+                            className="form-control-alternative"
+                            id="input-nombre_cliente"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col lg="6">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-total"
+                          >
+                            Total a facturar
+                          </label>
+                          <Input
+                            name="total"
+                            className="form-control-alternative"
+                            id="input-total"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="4">
+                        <FormGroup>
+                          <label
+                            className="form-control-label"
+                            htmlFor="input-vehiculo"
+                          >
+                            Vehiculo
+                          </label>
+                          <Input
+                            name="vehiculo"
+                            className="form-control-alternative"
+                            id="input-vehiculo"
+                            type="text"
+                            onChange={handleFacturaChanges}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                  </div>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
               </CardBody>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -374,18 +524,6 @@ useEffect(() => {
                             return <tr key={s.id}>
                                     <th scope="row">{s.codigo_factura}</th>
                                     <td>{s.fecha_factura}</td>
-                                    {/* <td>
-                                                        {s.status == false 
-                                                            ?   <Badge color="" className="badge-dot mr-4">
-                                                                <i className="bg-success" />
-                                                                        Pendiente
-                                                                </Badge>
-                                                            :   <Badge color="" className="badge-dot mr-4">
-                                                                    <i className="bg-warning" />
-                                                                        Realizado
-                                                                </Badge>
-                                                        }
-                                                    </td> */}
                                         <td>{s.id_orden_de_trabajo}</td>
                                         <td>{s.nombre_cliente}</td>
                                         <td>{s.total}</td>
