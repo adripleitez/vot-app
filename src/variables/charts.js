@@ -267,8 +267,8 @@ function chartOptions(theme) {
             color: mode === "dark" ? colors.gray[900] : colors.gray[600],
             drawBorder: false,
             drawTicks: false,
-            lineWidth: 0,
-            zeroLineWidth: 0,
+            lineWidth: 1,
+            zeroLineWidth: 1,
             zeroLineColor: mode === "dark" ? colors.gray[900] : colors.gray[600],
             zeroLineBorderDash: [2],
             zeroLineBorderDashOffset: [2]
@@ -317,8 +317,8 @@ let chartExample1 = {
             yAxes: [
                 {
                     gridLines: {
-                        color: colors.gray[900],
-                        zeroLineColor: colors.gray[900]
+                        color: colors.gray[700],
+                        zeroLineColor: colors.gray[700]
                     },
                     ticks: {
                         callback: function (value) {
@@ -347,16 +347,14 @@ let chartExample1 = {
             }
         }
     },
-    data1: (canvas) => {
-        return {
-            labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-            datasets: [
-                {
-                    label: "Ordenes",
-                    data: [10, 12, 11, 15, 11, 16, 14, 15, 17, 17, 20, 23]
-                }
-            ]
-        };
+    data: {
+        labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        datasets: [
+            {
+                label: "Ordenes",
+                data: [10, 12, 11, 15, 11, 16, 14, 15, 17, 17, 20, 23]
+            }
+        ]
     },
 };
 
@@ -370,7 +368,7 @@ let chartExample2 = {
                         callback: function (value) {
                             if (!(value % 10)) {
                                 //return '$' + value + 'k'
-                                return  "$" + value;
+                                return "$" + value;
                             }
                         }
                     }
@@ -384,9 +382,9 @@ let chartExample2 = {
                     var yLabel = item.yLabel;
                     var content = "";
                     if (data.datasets.length > 1) {
-                        content += "$" +  label;
+                        content += "$" + label;
                     }
-                    content += "$" +  yLabel;
+                    content += "$" + yLabel;
                     return content;
                 }
             }
@@ -415,7 +413,7 @@ let chartExample3 = {
                         callback: function (value) {
                             if (!(value % 10)) {
                                 //return '$' + value + 'k'
-                                return  "$" + value;
+                                return "$" + value;
                             }
                         }
                     }
@@ -431,8 +429,19 @@ let chartExample3 = {
             ]
         },
         elements: {
+            point: {
+                radius: 0,
+                backgroundColor: colors.theme["secondary"]
+            },
             rectangle: {
                 backgroundColor: colors.theme["secondary"]
+            },
+            line: {
+                tension: 0.4,
+                borderWidth: 4,
+                borderColor: colors.theme["secondary"],
+                backgroundColor: colors.transparent,
+                borderCapStyle: "rounded"
             }
         },
         tooltips: {
@@ -442,7 +451,7 @@ let chartExample3 = {
                     var yLabel = item.yLabel;
                     var content = "";
                     if (data.datasets.length > 1) {
-                        content += "$" +  label;
+                        content += "$" + label;
                     }
                     content += "$" + yLabel;
                     return content;
@@ -451,7 +460,7 @@ let chartExample3 = {
         }
     },
     data: {
-        labels:  ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
         datasets: [
             {
                 label: "Productos",
@@ -462,11 +471,70 @@ let chartExample3 = {
     }
 };
 
+let chartExample4 = {
+    options: {
+        scales: {
+            yAxes: [
+                {
+                    gridLines: {
+                        color: colors.gray[900],
+                        zeroLineColor: colors.gray[900]
+                    },
+                    ticks: {
+                        color: colors.black,
+                        fontColor: colors.black,
+                        callback: function (value) {
+                            if (!(value % 10)) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            ], xAxes: [
+                {
+                    ticks: {
+                        color: colors.black,
+                        fontColor: colors.black,
+                    }
+                }
+            ]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (item, data) {
+                    var label = data.datasets[item.datasetIndex].label || "";
+                    var yLabel = item.yLabel;
+                    var content = "";
+
+                    if (data.datasets.length > 1) {
+                        content += label;
+                    }
+
+                    content += yLabel;
+                    return content;
+                }
+            }
+        }
+    },
+    data: {
+        labels: ["EconoParts", "Super Rep", "Impressa Rep", "JP Rep"],
+        datasets: [
+            {
+                label: "Piezas",
+                data: [50, 70, 55, 75],
+                maxBarThickness: 40,
+
+            }
+        ]
+    },
+};
+
 module.exports = {
     chartOptions, // used inside src/views/Index.js
     parseOptions, // used inside src/views/Index.js
     chartExample1, // used inside src/views/Index.js
     chartExample2, // used inside src/views/Index.js
     chartExample3, // used inside src/views/Index.js
+    chartExample4, // used inside src/views/Index.js
     themeMode
 };

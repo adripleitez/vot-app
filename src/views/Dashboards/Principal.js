@@ -14,7 +14,6 @@ import Header from "components/Headers/HeaderGeneric.js";
 import { useState, useEffect } from "react";
 import { db } from '../../firebase'
 import { collection, query, onSnapshot, getCountFromServer, where } from "firebase/firestore";
-import classnames from "classnames";
 import Chart from "chart.js";
 import { Line, Bar } from "react-chartjs-2"
 import {
@@ -23,16 +22,16 @@ import {
     chartExample1,
     chartExample2,
     chartExample3,
+    chartExample4,
 } from "variables/charts.js";
 
 const Tables = () => {
     const [otData, setotData] = useState([]);
-    const [servData, setServData] = useState([]);
-    const [prodData, setProdData] = useState([]);
+    // const [servData, setServData] = useState([]);
+    // const [prodData, setProdData] = useState([]);
     const [activeOrders, setActiveOrders] = useState([]);
     const [selledProducts, setSelledProducts] = useState([]);
     const [performedServices, setPerformedServices] = useState([]);
-    const [chartExample1Data, setChartExample1Data] = useState("data1");
 
     const getOrder = () => {
         onSnapshot(query(collection(db, "Orden_trabajo")), (querySnapshot) => {
@@ -202,14 +201,14 @@ const Tables = () => {
                     <Col className="order-xl-1" xl="10">
                         <Row className="h-100">
                             <Col>
-                                <Row className="ml-6 mb-2">
-                                    <Col lg="11" className="mr-n3 ml-2">
+                                <Row className="mb-3">
+                                    <Col lg="6" className="mr-n3 ml-2">
                                         <Card className="bg-default shadow">
                                             <CardHeader className="bg-transparent">
                                                 <Row className="align-items-center">
                                                     <div className="col">
                                                         <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Resumen
+                                                            2022
                                                         </h6>
                                                         <h2 className="text-white mb-0">Ordenes de Trabajo</h2>
                                                     </div>
@@ -219,15 +218,36 @@ const Tables = () => {
                                                 {/* Chart */}
                                                 <div className="chart">
                                                     <Line
-                                                        data={chartExample1[chartExample1Data]}
+                                                        data={chartExample1.data}
                                                         options={chartExample1.options}
-                                                        getDatasetAtEvent={(e) => console.log(e)}
                                                     />
                                                 </div>
                                             </CardBody>
                                         </Card>
                                     </Col>
-
+                                    <Col lg="6" className="mr-n3">
+                                        <Card className="bg-secondary shadow">
+                                            <CardHeader className="bg-transparent">
+                                                <Row className="align-items-center">
+                                                    <div className="col">
+                                                        <h6 className="text-uppercase text-dark ls-1 mb-1">
+                                                            2022
+                                                        </h6>
+                                                        <h2 className="text-dark mb-0">Ventas x Proveedor</h2>
+                                                    </div>
+                                                </Row>
+                                            </CardHeader>
+                                            <CardBody>
+                                                {/* Chart */}
+                                                <div className="chart">
+                                                    <Bar
+                                                        data={chartExample4.data}
+                                                        options={chartExample4.options}
+                                                    />
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    </Col>
                                 </Row>
                                 <Row>
                                     <Col lg="6" className="mr-n3 ml-2">
@@ -236,7 +256,7 @@ const Tables = () => {
                                                 <Row className="align-items-center">
                                                     <div className="col">
                                                         <h6 className="text-uppercase text-dark ls-1 mb-1">
-                                                            Resumen
+                                                            2022
                                                         </h6>
                                                         <h2 className="text-dark mb-0">Ingresos Servicios</h2>
                                                     </div>
@@ -245,7 +265,7 @@ const Tables = () => {
                                             <CardBody>
                                                 {/* Chart */}
                                                 <div className="chart">
-                                                    <Bar
+                                                    <Line
                                                         data={chartExample2.data}
                                                         options={chartExample2.options}
                                                     />
@@ -259,7 +279,7 @@ const Tables = () => {
                                                 <Row className="align-items-center">
                                                     <div className="col">
                                                         <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Resumen
+                                                            2022
                                                         </h6>
                                                         <h2 className="text-white mb-0">Ingresos Productos</h2>
                                                     </div>
@@ -268,7 +288,7 @@ const Tables = () => {
                                             <CardBody>
                                                 {/* Chart */}
                                                 <div className="chart">
-                                                    <Bar
+                                                    <Line
                                                         data={chartExample3.data}
                                                         options={chartExample3.options}
                                                     />
