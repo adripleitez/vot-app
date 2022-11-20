@@ -35,6 +35,8 @@ const ModalComponent = (props) => {
 
     const [servData, setServData] = useState([]);
 
+    const [flag, setFlag] = useState([]);
+
     //read service
     const getServices = () => {
         onSnapshot(query(collection(db, "Servicio")), (querySnapshot) => {
@@ -49,6 +51,7 @@ const ModalComponent = (props) => {
     const handleClose = (e) => {
         e.preventDefault();
         props.close(false);
+        setFlag(true);
         setService(defaultService);
     }
 
@@ -66,11 +69,13 @@ const ModalComponent = (props) => {
             props.getServices();
         }
         props.close(false);
+        setFlag(true);
         setService(defaultService);
     };
 
     const handleTemplateChange = async (e) => {
         console.log(e.target.value);
+        setFlag(false);
         const docSnap = await getDoc(doc(db, "Servicio", e.target.value));
         if (docSnap.exists()) {
             console.log("Document data:", docSnap.data());
@@ -129,6 +134,7 @@ const ModalComponent = (props) => {
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
+                                                        <option hidden value="default" selected={flag}>Selecciona un servicio</option>
                                                         {servData.map((s) => {
                                                             return <option key={s.id} value={s.id}>{s.descripcion}</option>
                                                         })}

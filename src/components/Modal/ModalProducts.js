@@ -30,6 +30,9 @@ const ModalComponent = (props) => {
 
     const [prodData, setProdData] = useState([]);
 
+    const [flag, setFlag] = useState([]);
+
+
     //read product
     const getProducts = () => {
         onSnapshot(query(collection(db, "Productos")), (querySnapshot) => {
@@ -44,6 +47,7 @@ const ModalComponent = (props) => {
     const handleClose = (e) => {
         e.preventDefault();
         props.close(false);
+        setFlag(true);
         setProduct(defaultProduct);
     }
 
@@ -62,6 +66,7 @@ const ModalComponent = (props) => {
             props.getProducts();
         }
         props.close(false);
+        setFlag(true);
         setProduct(defaultProduct);
     };
 
@@ -120,6 +125,7 @@ const ModalComponent = (props) => {
                                                     </label>
                                                     <Input type="select" name="type" id="select"
                                                         onChange={handleTemplateChange}>
+                                                        <option hidden value="default" selected={flag}>Selecciona un producto</option>
                                                         {prodData.map((s) => {
                                                             return <option key={s.id_doc} value={s.id_doc}>{s.nombre}</option>
                                                         })}
