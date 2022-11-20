@@ -147,7 +147,11 @@ Chart.elements.Rectangle.prototype.draw = function () {
     }
 };
 
-var mode = "light"; //(themeMode) ? themeMode : 'light';
+const themeMode = (str) => {
+    return str;
+}
+
+var mode = 'light'; //(themeMode) ? themeMode : 'light';
 var fonts = {
     base: "Open Sans"
 };
@@ -182,15 +186,15 @@ var colors = {
 // Methods
 
 // Chart.js global options
-function chartOptions() {
+function chartOptions(theme) {
     // Options
     var options = {
         defaults: {
             global: {
                 responsive: true,
                 maintainAspectRatio: false,
-                defaultColor: mode === "dark" ? colors.gray[700] : colors.gray[600],
-                defaultFontColor: mode === "dark" ? colors.gray[700] : colors.gray[600],
+                defaultColor: theme === "dark" ? colors.gray[700] : colors.gray[600],
+                defaultFontColor: theme === "dark" ? colors.gray[700] : colors.gray[600],
                 defaultFontFamily: fonts.base,
                 defaultFontSize: 13,
                 layout: {
@@ -217,7 +221,7 @@ function chartOptions() {
                         borderCapStyle: "rounded"
                     },
                     rectangle: {
-                        backgroundColor: colors.theme["warning"]
+                        backgroundColor: colors.theme["primary"]
                     },
                     arc: {
                         backgroundColor: colors.theme["primary"],
@@ -260,12 +264,12 @@ function chartOptions() {
         gridLines: {
             borderDash: [2],
             borderDashOffset: [2],
-            color: mode === "dark" ? colors.gray[900] : colors.gray[300],
+            color: mode === "dark" ? colors.gray[900] : colors.gray[600],
             drawBorder: false,
             drawTicks: false,
             lineWidth: 0,
             zeroLineWidth: 0,
-            zeroLineColor: mode === "dark" ? colors.gray[900] : colors.gray[300],
+            zeroLineColor: mode === "dark" ? colors.gray[900] : colors.gray[600],
             zeroLineBorderDash: [2],
             zeroLineBorderDashOffset: [2]
         },
@@ -318,65 +322,7 @@ let chartExample1 = {
                     },
                     ticks: {
                         callback: function (value) {
-                            if (!(value % 10)) {
-                                return "$" + value + "k";
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        tooltips: {
-            callbacks: {
-                label: function (item, data) {
-                    var label = data.datasets[item.datasetIndex].label || "";
-                    var yLabel = item.yLabel;
-                    var content = "";
-
-                    if (data.datasets.length > 1) {
-                        content += label;
-                    }
-
-                    content += "$" + yLabel + "k";
-                    return content;
-                }
-            }
-        }
-    },
-    data1: (canvas) => {
-        return {
-            labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [
-                {
-                    label: "Performance",
-                    data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
-                }
-            ]
-        };
-    },
-    data2: (canvas) => {
-        return {
-            labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [
-                {
-                    label: "Performance",
-                    data: [0, 20, 5, 25, 10, 30, 15, 40, 40]
-                }
-            ]
-        };
-    }
-};
-
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
-let chartExample2 = {
-    options: {
-        scales: {
-            yAxes: [
-                {
-                    ticks: {
-                        callback: function (value) {
-                            if (!(value % 10)) {
-                                //return '$' + value + 'k'
+                            if (!(value % 5)) {
                                 return value;
                             }
                         }
@@ -390,22 +336,127 @@ let chartExample2 = {
                     var label = data.datasets[item.datasetIndex].label || "";
                     var yLabel = item.yLabel;
                     var content = "";
+
                     if (data.datasets.length > 1) {
                         content += label;
                     }
+
                     content += yLabel;
                     return content;
                 }
             }
         }
     },
+    data1: (canvas) => {
+        return {
+            labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            datasets: [
+                {
+                    label: "Ordenes",
+                    data: [10, 12, 11, 15, 11, 16, 14, 15, 17, 17, 20, 23]
+                }
+            ]
+        };
+    },
+};
+
+// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+let chartExample2 = {
+    options: {
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        callback: function (value) {
+                            if (!(value % 10)) {
+                                //return '$' + value + 'k'
+                                return  "$" + value;
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        tooltips: {
+            callbacks: {
+                label: function (item, data) {
+                    var label = data.datasets[item.datasetIndex].label || "";
+                    var yLabel = item.yLabel;
+                    var content = "";
+                    if (data.datasets.length > 1) {
+                        content += "$" +  label;
+                    }
+                    content += "$" +  yLabel;
+                    return content;
+                }
+            }
+        }
+    },
     data: {
-        labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
         datasets: [
             {
-                label: "Sales",
-                data: [25, 20, 30, 22, 17, 29],
-                maxBarThickness: 10
+                label: "Servicios",
+                data: [0, 0, 200, 500, 300, 600, 800, 700, 900, 800, 500, 700],
+                maxBarThickness: 20
+            }
+        ]
+    }
+};
+
+let chartExample3 = {
+    options: {
+        scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        color: colors.white,
+                        fontColor: colors.white,
+                        callback: function (value) {
+                            if (!(value % 10)) {
+                                //return '$' + value + 'k'
+                                return  "$" + value;
+                            }
+                        }
+                    }
+                }
+            ],
+            xAxes: [
+                {
+                    ticks: {
+                        color: colors.white,
+                        fontColor: colors.white,
+                    }
+                }
+            ]
+        },
+        elements: {
+            rectangle: {
+                backgroundColor: colors.theme["secondary"]
+            }
+        },
+        tooltips: {
+            callbacks: {
+                label: function (item, data) {
+                    var label = data.datasets[item.datasetIndex].label || "";
+                    var yLabel = item.yLabel;
+                    var content = "";
+                    if (data.datasets.length > 1) {
+                        content += "$" +  label;
+                    }
+                    content += "$" + yLabel;
+                    return content;
+                }
+            }
+        }
+    },
+    data: {
+        labels:  ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        datasets: [
+            {
+                label: "Productos",
+                data: [0, 0, 300, 400, 400, 700, 900, 800, 900, 800, 700, 1000],
+                maxBarThickness: 20,
             }
         ]
     }
@@ -415,5 +466,7 @@ module.exports = {
     chartOptions, // used inside src/views/Index.js
     parseOptions, // used inside src/views/Index.js
     chartExample1, // used inside src/views/Index.js
-    chartExample2 // used inside src/views/Index.js
+    chartExample2, // used inside src/views/Index.js
+    chartExample3, // used inside src/views/Index.js
+    themeMode
 };

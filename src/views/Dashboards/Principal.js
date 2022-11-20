@@ -21,11 +21,14 @@ import {
     chartOptions,
     parseOptions,
     chartExample1,
-    chartExample2
+    chartExample2,
+    chartExample3,
 } from "variables/charts.js";
 
 const Tables = () => {
     const [otData, setotData] = useState([]);
+    const [servData, setServData] = useState([]);
+    const [prodData, setProdData] = useState([]);
     const [activeOrders, setActiveOrders] = useState([]);
     const [selledProducts, setSelledProducts] = useState([]);
     const [performedServices, setPerformedServices] = useState([]);
@@ -199,40 +202,16 @@ const Tables = () => {
                     <Col className="order-xl-1" xl="10">
                         <Row className="h-100">
                             <Col>
-                                <Row className="mb-2">
-                                    <Col lg="6" className="mr-n3 ml-2">
+                                <Row className="ml-6 mb-2">
+                                    <Col lg="11" className="mr-n3 ml-2">
                                         <Card className="bg-default shadow">
                                             <CardHeader className="bg-transparent">
                                                 <Row className="align-items-center">
                                                     <div className="col">
                                                         <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Overview
+                                                            Resumen
                                                         </h6>
-                                                        <h2 className="text-white mb-0">Sales value</h2>
-                                                    </div>
-                                                </Row>
-                                            </CardHeader>
-                                            <CardBody>
-                                                {/* Chart */}
-                                                <div className="chart">
-                                                    <Line
-                                                        data={chartExample1[chartExample1Data]}
-                                                        options={chartExample1.options}
-                                                        getDatasetAtEvent={(e) => console.log(e)}
-                                                    />
-                                                </div>
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                    <Col lg="6">
-                                        <Card className="shadow">
-                                            <CardHeader className="bg-transparent">
-                                                <Row className="align-items-center">
-                                                    <div className="col">
-                                                        <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Overview
-                                                        </h6>
-                                                        <h2 className="text-white mb-0">Sales value</h2>
+                                                        <h2 className="text-white mb-0">Ordenes de Trabajo</h2>
                                                     </div>
                                                 </Row>
                                             </CardHeader>
@@ -252,48 +231,46 @@ const Tables = () => {
                                 </Row>
                                 <Row>
                                     <Col lg="6" className="mr-n3 ml-2">
-                                        <Card className="bg-default shadow">
+                                        <Card className="bg-secondary shadow">
                                             <CardHeader className="bg-transparent">
                                                 <Row className="align-items-center">
                                                     <div className="col">
-                                                        <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Overview
+                                                        <h6 className="text-uppercase text-dark ls-1 mb-1">
+                                                            Resumen
                                                         </h6>
-                                                        <h2 className="text-white mb-0">Sales value</h2>
+                                                        <h2 className="text-dark mb-0">Ingresos Servicios</h2>
                                                     </div>
                                                 </Row>
                                             </CardHeader>
                                             <CardBody>
                                                 {/* Chart */}
                                                 <div className="chart">
-                                                    <Line
-                                                        data={chartExample1[chartExample1Data]}
-                                                        options={chartExample1.options}
-                                                        getDatasetAtEvent={(e) => console.log(e)}
+                                                    <Bar
+                                                        data={chartExample2.data}
+                                                        options={chartExample2.options}
                                                     />
                                                 </div>
                                             </CardBody>
                                         </Card>
                                     </Col>
                                     <Col lg="6">
-                                        <Card className="bg-gradient-default shadow">
+                                        <Card className="bg-primary shadow">
                                             <CardHeader className="bg-transparent">
                                                 <Row className="align-items-center">
                                                     <div className="col">
                                                         <h6 className="text-uppercase text-light ls-1 mb-1">
-                                                            Overview
+                                                            Resumen
                                                         </h6>
-                                                        <h2 className="text-white mb-0">Sales value</h2>
+                                                        <h2 className="text-white mb-0">Ingresos Productos</h2>
                                                     </div>
                                                 </Row>
                                             </CardHeader>
                                             <CardBody>
                                                 {/* Chart */}
                                                 <div className="chart">
-                                                    <Line
-                                                        data={chartExample1[chartExample1Data]}
-                                                        options={chartExample1.options}
-                                                        getDatasetAtEvent={(e) => console.log(e)}
+                                                    <Bar
+                                                        data={chartExample3.data}
+                                                        options={chartExample3.options}
                                                     />
                                                 </div>
                                             </CardBody>
