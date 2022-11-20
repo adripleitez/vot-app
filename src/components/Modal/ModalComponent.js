@@ -63,6 +63,7 @@ const ModalComponent = (props) => {
             props.setServices([...props.services, service])
         }else{
             await addDoc(collection(db, 'ServiciosRealizados'), service);
+            props.getServices();
         }
         props.close(false);
         setService(defaultService);

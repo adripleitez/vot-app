@@ -59,6 +59,7 @@ const ModalComponent = (props) => {
             props.setProducts([...props.products, product])
         }else{
             await addDoc(collection(db, 'ProductosVendidos'), product);
+            props.getProducts();
         }
         props.close(false);
         setProduct(defaultProduct);

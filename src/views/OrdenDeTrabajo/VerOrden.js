@@ -292,6 +292,7 @@ const VerOrden = () => {
         getDocuments();
         getProducts();
         getServices();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
@@ -750,7 +751,7 @@ const VerOrden = () => {
                                             >
                                                 Ver Revisiones
                                             </Button>
-                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id} />
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id}/>
                                         </Col>
                                     </Row>
                                 </div>
@@ -779,7 +780,7 @@ const VerOrden = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={order.OT_id} isNew={false} />
+                                <ModalComponent open={modalService} close={setModalService} setServices={setServices} services={services} lastOrder={order.OT_id} isNew={false} getServices={getServices}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
@@ -841,7 +842,7 @@ const VerOrden = () => {
                                         </Button>
                                     </Col>
                                 </Row>
-                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={order.OT_id} isNew={false} />
+                                <ModalProducts open={modalProducts} close={setModalProducts} setProducts={setProducts} products={products} lastOrder={order.OT_id} isNew={false} getProducts={getProducts}/>
                             </CardHeader>
                             <CardBody>
                                 <Table className="align-items-center table-flush" responsive>
