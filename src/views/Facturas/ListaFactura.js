@@ -54,7 +54,8 @@ import { event } from "jquery";
 
 
   const Tables = () => {
-
+//Para la suma de costos 
+const [costos,setCostos] = useState(0);
      //Para agregar el dropdown de Servicios
   const [servData, setServData] = useState([]);
   //Para agregar el dropdown de productos
@@ -259,6 +260,7 @@ useEffect(() => {
                                         
                                         <CardBody>
                                         <h3 className="mb-0">Listado de servicios Vendidos</h3>
+                                        {JSON.stringify(costos)}
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                         <tr>
@@ -272,6 +274,7 @@ useEffect(() => {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                      {/* tabla de servicios acm1pt */}
                                         {servData.map((s, i) => {
                                             return <tr key={i}>
                                                 <th scope="row">{s.descripcion}</th>
