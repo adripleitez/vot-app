@@ -328,7 +328,7 @@ const VerOrden = () => {
             await updateDoc(doc(db, "Orden_trabajo", order.doc_id), OT);
             await updateDoc(doc(db, "Diagnostico", diagnosis.doc_id), diagnosis);
             
-            await addDoc(collection(db, 'Revisiones'), checks);
+            //await addDoc(collection(db, 'Revisiones'), checks);
 
             setVisible(true);
             window.scrollTo(0, 0);
