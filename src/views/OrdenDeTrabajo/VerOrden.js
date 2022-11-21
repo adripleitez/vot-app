@@ -17,12 +17,13 @@ import {
 import Header from "components/Headers/HeaderGeneric.js";
 import { useState, useEffect, React } from "react";
 import { db } from '../../firebase'
-import { collection, addDoc, query, limit, serverTimestamp, getDoc, doc, where, getDocs } from "firebase/firestore";
+import { collection, updateDoc, query, limit, serverTimestamp, getDoc, doc, where, getDocs } from "firebase/firestore";
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
 import { useParams } from "react-router-dom";
 import '../custom.css';
+import { useHistory } from 'react-router-dom';
 
 const VerOrden = () => {
 
@@ -51,7 +52,8 @@ const VerOrden = () => {
         presupuesto: "",
         vehiculo_id: "",
         cliente_id: "",
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
+        doc_id:""
     };
 
     const defaultVehicle = {
@@ -73,7 +75,8 @@ const VerOrden = () => {
         date: date,
         kms: "",
         gas: "",
-        OT_id: ""
+        OT_id: "",
+        doc_id:""
     };
 
     const defaultChecks = {
@@ -100,6 +103,8 @@ const VerOrden = () => {
         OT_id: ""
     };
 
+    const history = useHistory();
+    
     const [order, setOrder] = useState(defaultOrder);
 
     const [client, setClient] = useState(defaultClient);
@@ -147,7 +152,7 @@ const VerOrden = () => {
                 orderState = doc.estado
 
                 setOrder({
-                    id: doc.id,
+                    doc_id: doc.id,
                     OT_id: doc.OT_id,
                     encargado: doc.encargado,
                     estado: doc.estado,
@@ -229,6 +234,7 @@ const VerOrden = () => {
             docSnap3.forEach((d) => {
                 const doc = d.data();
                 setDiagnosis({
+                    doc_id: doc.id,
                     workshopManager: doc.workshopManager,
                     workshopRemarks: doc.workshopRemarks,
                     numero_motor: doc.numero_motor,
@@ -266,10 +272,20 @@ const VerOrden = () => {
         }
     };
 
+    const getChecks = async () => {
+        if (params.id) {
+            const q5 = query(collection(db, "Revisiones"), where("OT_id", "==", params.id));
+            const docSnap5 = await getDocs(q5);
+            docSnap5.forEach((doc) => {
+                setChecks({ ...doc.data(), doc_id: doc.id });
+            });
+        }
+    };
+
     const handleDiagnosisChange = (e) => {
         const { name, value } = e.target;
         setDiagnosis({ ...diagnosis, [name]: value })
-        console.log(diagnosis)
+        //console.log(diagnosis)
     };
 
     const handleModalService = (e) => {
@@ -284,36 +300,43 @@ const VerOrden = () => {
 
     const handleChecks = (e) => {
         e.preventDefault();
-        // setModalChecks(true);
-        console.log(products);
+        setModalChecks(true);
     };
 
     useEffect(() => {
         getDocuments();
         getProducts();
         getServices();
+        getChecks();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
         order.estado = estadoOrden;
+        
         e.preventDefault();
-        console.log(services);
-        console.log(products);
+        //console.log(services);
+        //console.log(products);
         const OT = {
             ...order,
             vehiculo_id: vehicle.placa,
-            cliente_id: client.dui
+            cliente_id: client.dui,
+
         }
 
         try {
-            await addDoc(collection(db, 'Orden_trabajo'), OT);
-            await addDoc(collection(db, 'Diagnostico'), diagnosis);
+            await updateDoc(doc(db, "Orden_trabajo", order.doc_id),OT);
+            await updateDoc(doc(db, "Diagnostico", diagnosis.doc_id),diagnosis);
+              
             //await addDoc(collection(db, 'Revisiones'), checks);
 
             setVisible(true);
+            window.scrollTo(0, 0);
+            setTimeout(() => {history.push("/admin/index")}, 1.3*1000);
 
         } catch (error) {
+            console.log(error)
+            window.scrollTo(0, 0);
             setError(true);
         }
 
@@ -734,7 +757,7 @@ const VerOrden = () => {
                                                     Recibido por
                                                 </label>
                                                 <Input
-                                                    name="workshopManagerr"
+                                                    name="workshopManager"
                                                     className="form-control-alternative"
                                                     id="input-recibido-por"
                                                     type="text"
@@ -751,7 +774,7 @@ const VerOrden = () => {
                                             >
                                                 Ver Revisiones
                                             </Button>
-                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id}/>
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={order.OT_id} isNew={false}/>
                                         </Col>
                                     </Row>
                                 </div>

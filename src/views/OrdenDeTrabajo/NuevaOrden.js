@@ -944,7 +944,7 @@ const Profile = () => {
                                             >
                                                 Ver Revisiones
                                             </Button>
-                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={lastOrder} />
+                                            <ModalComponentChecks open={modalChecks} close={setModalChecks} checks={checks} setChecks={setChecks} lastOrder={lastOrder} isNew={true}/>
                                         </Col>
                                     </Row>
                                 </div>

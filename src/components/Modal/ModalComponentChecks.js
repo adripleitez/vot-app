@@ -9,6 +9,7 @@ import {
     Row,
     Col,
 } from "reactstrap";
+import { isPropertyAccessChain } from 'typescript';
 
 const ModalComponentChecks = (props) => {
 
@@ -192,7 +193,7 @@ const ModalComponentChecks = (props) => {
                     >
                         Cerrar
                     </Button> */}
-                    <Button color="primary" type="button" onClick={handleChecks}>
+                    <Button color="primary" type="button" onClick={handleChecks} hidden={!props.isNew}>
                         Guardar
                     </Button>
                 </div>

@@ -15,24 +15,21 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
+//import Index from "views/Index.js";
+//import Profile from "views/examples/Profile.js";
+//import Maps from "views/examples/Maps.js";
+//import Register from "views/examples/Register.js";
+//import Login from "views/examples/Login.js";
+//import Tables from "views/examples/Tables.js";
+//import Icons from "views/examples/Icons.js";
 import OrdenDeTrabajo from "views/OrdenDeTrabajo/Principal";
 import NuevoServicio from "views/Servicios/NuevoServicio";
-import Revisiones from "views/OrdenDeTrabajo/Revisiones";
 import NuevaOrdenDeTrabajo from "views/OrdenDeTrabajo/NuevaOrden";
-import ListaServicio from "views/Servicios/ListaServicio";
-import ListaVehiculo from "views/Vehiculos/ListaVehiculo";
+import CrearFactura from "views/Facturas/CrearFactura";
 import NuevoVehiculo from "views/Vehiculos/NuevoVehiculo";
 import ListaCliente from "views/Clientes/ListaCliente";
 import ListaProveedor from "views/Proveedores/ListaProveedor";
 import ListaFactura from "views/Facturas/ListaFactura";
-import ListaProducto from "views/Productos/ListaProducto";
 import NuevoProducto from "views/Productos/NuevoProducto";
 import DasboardPage from "views/Dashboards/Principal";
 import verOrden from "views/OrdenDeTrabajo/VerOrden";
@@ -99,6 +96,13 @@ var routes = [
     name: "Facturas",
     icon: "ni ni-credit-card text-blue",
     component: ListaFactura,
+    layout: "/admin"
+  },
+  {
+    path: "/crear-facturas",
+    name: "Facturas",
+    icon: "ni ni-credit-card text-blue",
+    component: CrearFactura,
     layout: "/admin"
   },
   {
