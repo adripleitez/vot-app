@@ -3,10 +3,6 @@
   "version": "1.2.2",
   "description": "React",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
-  },
   "keywords": [
     "react",
     "reactjs",
@@ -19,11 +15,10 @@
   ],
   "author": "Creative Tim",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  "homepage": "https://adripleitez.github.io/vot-app/",
   "scripts": {
+    "deploy": "gh-pages -d build",
+    "predeploy":"npm run build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,11 +45,11 @@
     "firebase": "^9.12.1",
     "moment": "2.29.4",
     "nouislider": "15.2.0",
-    "react": "18.0.0",
+    "react": ">=16.0.0",
     "react-chartjs-2": "2.11.1",
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.1.1",
-    "react-dom": "18.0.0",
+    "react-dom": ">=16.0.0",
     "react-dropdown": "^1.11.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "^5.0.1",
@@ -62,6 +57,7 @@
     "sass": "1.54.5"
   },
   "devDependencies": {
+    "gh-pages": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-append-prepend": "1.0.9"
   },
