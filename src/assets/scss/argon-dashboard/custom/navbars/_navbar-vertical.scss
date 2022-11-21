@@ -266,7 +266,7 @@
                         padding-left: $navbar-vertical-padding-x * 1.5 + $navbar-icon-min-width;
                     }
 
-                    .navbar-nav > li:nth-child(2) > a{
+                    .navbar-nav > li:nth-child(2) > a, .navbar-nav > li:nth-child(3) > a{
                         display: none!important;
                     }
 

@@ -50,6 +50,13 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/listado-facturas",
+    name: "Facturas",
+    icon: "ni ni-single-02 text-white",
+    component: ListaFactura,
+    layout: "/admin"
+  },
+  {
     path: "/ordenes-de-trabajo",
     name: "Órdenes de Trabajo",
     icon: "ni ni-collection text-blue",
@@ -92,14 +99,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/facturas",
-    name: "Facturas",
-    icon: "ni ni-credit-card text-blue",
-    component: ListaFactura,
-    layout: "/admin"
-  },
-  {
-    path: "/crear-facturas",
+    path: "/agregar-facturas",
     name: "Facturas",
     icon: "ni ni-credit-card text-blue",
     component: CrearFactura,

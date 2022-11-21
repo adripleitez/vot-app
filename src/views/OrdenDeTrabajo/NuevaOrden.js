@@ -320,7 +320,7 @@ const Profile = () => {
 
             setVisible(true);
             window.scrollTo(0, 0);
-            setTimeout(() => {history.push("/admin/index")}, 1.3*1000);
+            setTimeout(() => {history.push("/admin/ordenes-de-trabajo")}, 1.3*1000);
 
 
         } catch (error) {
