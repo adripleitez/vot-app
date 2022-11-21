@@ -293,7 +293,7 @@ const ModalComponent = (props) => {
                                                         id="input-commission"
                                                         placeholder="%"
                                                         type="text"
-                                                        value={service.impuesto}
+                                                        value={service.comision}
                                                         onChange={handleServiceChange}
                                                     />
                                                 </FormGroup>
