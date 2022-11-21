@@ -237,7 +237,6 @@ const VerOrden = () => {
                     doc_id: d.id,
                     workshopManager: doc.workshopManager,
                     workshopRemarks: doc.workshopRemarks,
-                    numero_motor: doc.numero_motor,
                     clientRemarks: doc.clientRemarks,
                     date: doc.date,
                     kms: doc.kms,
@@ -325,8 +324,9 @@ const VerOrden = () => {
         }
 
         try {
-            await updateDoc(doc(db, "Orden_trabajo", order.doc_id), OT);
+            console.log(diagnosis);
             await updateDoc(doc(db, "Diagnostico", diagnosis.doc_id), diagnosis);
+            await updateDoc(doc(db, "Orden_trabajo", order.doc_id), OT);
             
             //await addDoc(collection(db, 'Revisiones'), checks);
 
