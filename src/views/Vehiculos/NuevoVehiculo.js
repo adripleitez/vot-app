@@ -25,9 +25,8 @@ import '../dropdown.css';
 
 const Tables = () => {
   const defaultVehicle = {
-    Chasis_VIN: "",
+    no_chasis: "",
     año: "",
-    chasis_grabado: "",
     color: "",
     marca: "",
     modelo: "",
@@ -41,7 +40,7 @@ const Tables = () => {
   const [filter,setFilter]= useState("Placa");
 
   const options = [
-    'Placa', 'Marca', 'Modelo', 'Color', 'Año', 'Chasis VIN', 'Chasis Grabado', 'Numero de Motor'
+    'Placa', 'Marca', 'Modelo', 'Color', 'Año', 'No.Chasis', 'Numero de Motor'
   ];
   const defaultOption = options[0];
 
@@ -87,8 +86,7 @@ const Tables = () => {
     else if(filter==='Modelo') results=vehData.filter((dato)=> dato.modelo.toString().toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter==='Color') results=vehData.filter((dato)=> dato.color.toString().toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter==='Año') results=vehData.filter((dato)=> dato.año.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Chasis VIN') results=vehData.filter((dato)=> dato.Chasis_VIN.toString().toLowerCase().includes(search.toLocaleLowerCase()));
-    else if(filter==='Chasis Grabado') results=vehData.filter((dato)=> dato.chasis_grabado.toString().toLowerCase().includes(search.toLocaleLowerCase()));
+    else if(filter==='No.Chasis') results=vehData.filter((dato)=> dato.chasis.toString().toLowerCase().includes(search.toLocaleLowerCase()));
     else if(filter==='Numero de Motor') results=vehData.filter((dato)=> dato.numero_motor.toString().toLowerCase().includes(search.toLocaleLowerCase()));
 
     /*results = clientData.filter((dato)=>
@@ -133,14 +131,14 @@ const Tables = () => {
                         <FormGroup>
                           <label
                             className="form-control-label"
-                            htmlFor="input-chasisVin"
+                            htmlFor="input-placa"
                           >
-                            Chasis_VIN
+                            Placa
                           </label>
                           <Input
-                            name="Chasis_VIN"
+                            name="placa"
                             className="form-control-alternative"
-                            id="input-chasisVin"
+                            id="input-placa"
                             type="text"
                             onChange={handleVehicleChange}
                           />
@@ -203,10 +201,10 @@ const Tables = () => {
                             className="form-control-label"
                             htmlFor="input-chasisGrabado"
                           >
-                            Chasis grabado
+                            Chasis
                           </label>
                           <Input
-                            name="chasis_grabado"
+                            name="no_chasis"
                             className="form-control-alternative"
                             id="input-chasisGrabado"
                             type="text"
@@ -267,23 +265,6 @@ const Tables = () => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-placa"
-                          >
-                            Placa
-                          </label>
-                          <Input
-                            name="placa"
-                            className="form-control-alternative"
-                            id="input-placa"
-                            type="text"
-                            onChange={handleVehicleChange}
-                          />
-                        </FormGroup>
-                      </Col>
                     </Row>
                   </div>
                 </Form>
@@ -314,8 +295,7 @@ const Tables = () => {
                       <th scope="col">Modelo</th>
                       <th scope="col">Color</th>
                       <th scope="col">Año</th>
-                      <th scope="col">Chasis VIN</th>
-                      <th scope="col">Chasis Grabado</th>
+                      <th scope="col">Chasis</th>
                       <th scope="col">Numero de Motor</th>
                       <th scope="col" />
                     </tr>
@@ -341,8 +321,7 @@ const Tables = () => {
                           <td>{s.modelo}</td>
                           <td>{s.color}</td>
                           <td>{s.año}</td>
-                          <td>{s.chasis_VIN}</td>
-                          <td>{s.chasis_grabado}</td>
+                          <td>{s.no_chasis}</td>
                           <td>{s.numero_motor}</td>
                           <td className="text-right">
                             <UncontrolledDropdown>

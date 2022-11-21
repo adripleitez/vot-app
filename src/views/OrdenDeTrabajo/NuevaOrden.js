@@ -60,7 +60,7 @@ const Profile = () => {
         marca: "",
         modelo: "",
         color: "",
-        Chasis_VIN: "",
+        no_chasis: "",
         aseguradora: ""
     };
 
@@ -195,7 +195,7 @@ const Profile = () => {
                     marca: doc.marca,
                     modelo: doc.modelo,
                     color: doc.color,
-                    Chasis_VIN: doc.Chasis_VIN,
+                    no_chasis: doc.no_chasis,
                     aseguradora: doc.aseguradora
                 });
             } else {
@@ -752,14 +752,14 @@ const Profile = () => {
                                                         className="form-control-label"
                                                         htmlFor="input-VIN"
                                                     >
-                                                        Chasis VIN
+                                                        Chasis
                                                     </label>
                                                     <Input
-                                                        name="Chasis_VIN"
+                                                        name="no_chasis"
                                                         className="form-control-alternative"
                                                         id="input-vin"
                                                         type="text"
-                                                        value={vehicle.Chasis_VIN}
+                                                        value={vehicle.no_chasis}
                                                         onChange={handleVehicleChange}
                                                     />
                                                 </FormGroup>

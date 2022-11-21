@@ -312,6 +312,10 @@ const VerOrden = () => {
 
     const saveOrdenTrabajo = async (e, estadoOrden) => {
         order.estado = estadoOrden;
+
+        if (order.estado !== "ACTIVA"){
+            order.fecha_cierre = date;
+        }
         
         e.preventDefault();
         //console.log(services);
@@ -332,7 +336,12 @@ const VerOrden = () => {
 
             setVisible(true);
             window.scrollTo(0, 0);
-            setTimeout(() => {history.push("/admin/index")}, 1.3*1000);
+
+            if (order.estado === "ACTIVA"){
+                setTimeout(() => {history.push("/admin/index")}, 1.3*1000);
+            }else if (order.estado === "FINALIZADA"){
+                setTimeout(() => {history.push("/admin/agregar-facturas")}, 1.3*1000);
+            }
 
         } catch (error) {
             console.log(error)
