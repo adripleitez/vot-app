@@ -132,7 +132,7 @@ const Tables = () => {
             docs.push({ ...doc.data(), id: doc.id });
         });
         setVehicle(docs[0].vehiculo_id);
-        setClientDui(docs[0].dui)
+        setClientDui(docs[0].cliente_id);
         setFactura({ ...factura, vehiculo: docs[0].vehiculo_id});
       });
 
@@ -232,9 +232,9 @@ const Tables = () => {
 
   const handleFactura = async (e) => {
     e.preventDefault();
-    setFactura({ ...factura, total: costos});
+     const f = { ...factura, total: costos, vehiculo: vehicle};
     //console.log(factura);
-    await addDoc(collection(db, "Facturas"), factura);
+    await addDoc(collection(db, "Facturas"), f);
     history.push("/admin/listado-facturas")
   };
 
