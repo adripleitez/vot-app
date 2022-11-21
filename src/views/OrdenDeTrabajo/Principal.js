@@ -127,7 +127,6 @@ useEffect(() => {
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">No Orden</th>
-                    <th scope="col">Presupuesto</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Encargado</th>
                     <th scope="col">Vehículo</th>
@@ -140,7 +139,6 @@ useEffect(() => {
                 {results.map((s)=>{
                             return <tr key={s.id}>
                                     <th scope="row">{s.OT_id}</th>
-                                    <td>{s.presupuesto}</td>
                                     {/* <td>
                                                         {s.status == false 
                                                             ?   <Badge color="" className="badge-dot mr-4">
