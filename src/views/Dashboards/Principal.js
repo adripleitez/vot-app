@@ -274,7 +274,7 @@ const Tables = () => {
                                         </Card>
                                     </Col>
                                     <Col lg="6">
-                                        <Card className="bg-primary shadow">
+                                        <Card className="bg-default shadow">
                                             <CardHeader className="bg-transparent">
                                                 <Row className="align-items-center">
                                                     <div className="col">
@@ -290,7 +290,7 @@ const Tables = () => {
                                                 <div className="chart">
                                                     <Line
                                                         data={chartExample3.data}
-                                                        options={chartExample3.options}
+                                                        options={chartExample1.options}
                                                     />
                                                 </div>
                                             </CardBody>
