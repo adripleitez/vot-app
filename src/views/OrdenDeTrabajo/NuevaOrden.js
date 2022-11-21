@@ -22,7 +22,7 @@ import { collection, addDoc, query, onSnapshot, orderBy, limit, serverTimestamp,
 import ModalComponent from '../../components/Modal/ModalComponent'
 import ModalProducts from '../../components/Modal/ModalProducts'
 import ModalComponentChecks from '../../components/Modal/ModalComponentChecks'
-//import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
 
@@ -106,7 +106,7 @@ const Profile = () => {
     };
 
 
-    //const history = useHistory();
+    const history = useHistory();
 
     const [order, setOrder] = useState(defaultOrder);
 
@@ -198,7 +198,6 @@ const Profile = () => {
                     Chasis_VIN: doc.Chasis_VIN,
                     aseguradora: doc.aseguradora
                 });
-                setFlags({ selectedVehicle: e.target.value })
             } else {
                 console.log("No such document!");
             }
@@ -219,7 +218,6 @@ const Profile = () => {
                     type: doc.type,
                     repName: doc.repName
                 });
-                setFlags({ selectedClient: e.target.value })
             } else {
                 console.log("No such document!");
             }
@@ -321,8 +319,12 @@ const Profile = () => {
             await addDoc(collection(db, 'Revisiones'), checks);
 
             setVisible(true);
+            window.scrollTo(0, 0);
+            setTimeout(() => {history.push("/admin/index")}, 1.3*1000);
+
 
         } catch (error) {
+            window.scrollTo(0, 0);
             setError(true);
         }
 
