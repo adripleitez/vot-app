@@ -103,7 +103,7 @@ const Tables = () => {
     //setSelectedOption(event.target.value)
     await getServicesByFilter(event.target.value);
     await getProductByFilter(event.target.value);
-    await setNamebyFilter;
+    //await setNamebyFilter;
 
     setFactura({ ...factura, id_orden_de_trabajo: event.target.value});
   };
@@ -131,6 +131,15 @@ const Tables = () => {
         querySnapshot.forEach((doc) => {
             docs.push({ ...doc.data(), id: doc.id });
         });
+
+        onSnapshot(query(collection(db, "Cliente"), where("dui", "==", docs[0].cliente_id), limit(1)), (querySnapshot) => {
+            const docs1 = [];
+            querySnapshot.forEach((doc) => {
+                docs1.push({ ...doc.data(), id: doc.id });
+            });
+            setClienteNombre(docs1[0].name);
+        });
+    
         setVehicle(docs[0].vehiculo_id);
         setClientDui(docs[0].cliente_id);
         setFactura({ ...factura, vehiculo: docs[0].vehiculo_id});
@@ -226,13 +235,15 @@ const Tables = () => {
   // Toda la parte de agregar factura
   const handleFacturaChanges = (e) => {
     const { name, value } = e.target;
+    setVehicle(value);
+    setClienteNombre(value);
     setFactura({ ...factura, [name]: value });
     //console.log(name, value);
   };
 
   const handleFactura = async (e) => {
     e.preventDefault();
-     const f = { ...factura, total: costos, vehiculo: vehicle};
+     const f = { ...factura, total: costos, vehiculo: vehicle, nombre_cliente: nombreCliente};
     //console.log(factura);
     await addDoc(collection(db, "Facturas"), f);
     history.push("/admin/listado-facturas")
