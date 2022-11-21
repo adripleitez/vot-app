@@ -152,7 +152,7 @@ const VerOrden = () => {
                 orderState = doc.estado
 
                 setOrder({
-                    doc_id: doc.id,
+                    doc_id: d.id,
                     OT_id: doc.OT_id,
                     encargado: doc.encargado,
                     estado: doc.estado,
@@ -234,7 +234,7 @@ const VerOrden = () => {
             docSnap3.forEach((d) => {
                 const doc = d.data();
                 setDiagnosis({
-                    doc_id: doc.id,
+                    doc_id: d.id,
                     workshopManager: doc.workshopManager,
                     workshopRemarks: doc.workshopRemarks,
                     numero_motor: doc.numero_motor,
@@ -325,10 +325,10 @@ const VerOrden = () => {
         }
 
         try {
-            await updateDoc(doc(db, "Orden_trabajo", order.doc_id),OT);
-            await updateDoc(doc(db, "Diagnostico", diagnosis.doc_id),diagnosis);
-              
-            //await addDoc(collection(db, 'Revisiones'), checks);
+            await updateDoc(doc(db, "Orden_trabajo", order.doc_id), OT);
+            await updateDoc(doc(db, "Diagnostico", diagnosis.doc_id), diagnosis);
+            
+            await addDoc(collection(db, 'Revisiones'), checks);
 
             setVisible(true);
             window.scrollTo(0, 0);
